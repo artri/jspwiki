@@ -19,14 +19,13 @@
 
 package org.apache.wiki.diff;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.api.exceptions.NoRequiredPropertyException;
 import org.apache.wiki.api.providers.PageProvider;
 import org.apache.wiki.pages.PageManager;
 import org.apache.wiki.util.ClassUtil;
+import org.apache.wiki.util.WikiLogger;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -37,7 +36,7 @@ import java.util.Properties;
  */
 public class DefaultDifferenceManager implements DifferenceManager {
 
-    private static final Logger log = LogManager.getLogger( DefaultDifferenceManager.class );
+    private static final WikiLogger log = WikiLogger.getLogger( DefaultDifferenceManager.class );
 
     private DiffProvider m_provider;
 

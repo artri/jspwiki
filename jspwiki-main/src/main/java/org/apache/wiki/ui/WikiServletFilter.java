@@ -18,9 +18,6 @@
  */
 package org.apache.wiki.ui;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.ThreadContext;
 import org.apache.wiki.WikiContext;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.Engine;
@@ -29,6 +26,7 @@ import org.apache.wiki.api.spi.Wiki;
 import org.apache.wiki.auth.AuthenticationManager;
 import org.apache.wiki.auth.SessionMonitor;
 import org.apache.wiki.auth.WikiSecurityException;
+import org.apache.wiki.util.WikiLogger;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -47,7 +45,7 @@ import java.io.PrintWriter;
  */
 public class WikiServletFilter implements Filter {
 
-    private static final Logger log = LogManager.getLogger( WikiServletFilter.class );
+    private static final WikiLogger log = WikiLogger.getLogger( WikiServletFilter.class );
     protected Engine m_engine;
 
     /**
@@ -135,14 +133,7 @@ public class WikiServletFilter implements Filter {
             }
         }
 
-        try {
-            ThreadContext.push( m_engine.getApplicationName() + ":" + httpRequest.getRequestURL() );
-            chain.doFilter( httpRequest, response );
-        } finally {
-            ThreadContext.pop();
-            ThreadContext.remove( m_engine.getApplicationName() + ":" + httpRequest.getRequestURL() );
-        }
-
+        chain.doFilter( httpRequest, response );
     }
 
     /**

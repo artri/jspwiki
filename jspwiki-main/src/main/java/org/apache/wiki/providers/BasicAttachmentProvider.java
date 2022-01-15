@@ -18,8 +18,6 @@
  */
 package org.apache.wiki.providers;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.api.core.Attachment;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.api.core.Page;
@@ -32,6 +30,7 @@ import org.apache.wiki.api.spi.Wiki;
 import org.apache.wiki.pages.PageTimeComparator;
 import org.apache.wiki.util.FileUtil;
 import org.apache.wiki.util.TextUtil;
+import org.apache.wiki.util.WikiLogger;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -79,6 +78,7 @@ import java.util.regex.Pattern;
  *  </UL>
  */
 public class BasicAttachmentProvider implements AttachmentProvider {
+    private static final WikiLogger log = WikiLogger.getLogger( BasicAttachmentProvider.class );
 
     private Engine m_engine;
     private String m_storageDir;
@@ -100,8 +100,6 @@ public class BasicAttachmentProvider implements AttachmentProvider {
     
     /** The default extension for the attachment directory. */
     public static final String ATTDIR_EXTENSION = "-dir";
-    
-    private static final Logger log = LogManager.getLogger( BasicAttachmentProvider.class );
 
     /**
      *  {@inheritDoc}
@@ -119,7 +117,7 @@ public class BasicAttachmentProvider implements AttachmentProvider {
 
         //  Check if the directory exists - if it doesn't, create it.
         final File f = new File( m_storageDir );
-        if( !f.exists() ) {
+        if ( !f.exists() ) {
             f.mkdirs();
         }
 

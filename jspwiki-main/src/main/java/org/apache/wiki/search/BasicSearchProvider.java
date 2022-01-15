@@ -18,8 +18,6 @@
  */
 package org.apache.wiki.search;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.api.core.Attachment;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.Engine;
@@ -33,6 +31,7 @@ import org.apache.wiki.attachment.AttachmentManager;
 import org.apache.wiki.auth.AuthorizationManager;
 import org.apache.wiki.auth.permissions.PagePermission;
 import org.apache.wiki.pages.PageManager;
+import org.apache.wiki.util.WikiLogger;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -49,7 +48,7 @@ import java.util.TreeSet;
  */
 public class BasicSearchProvider implements SearchProvider {
 
-    private static final Logger log = LogManager.getLogger( BasicSearchProvider.class );
+    private static final WikiLogger log = WikiLogger.getLogger( BasicSearchProvider.class );
     private Engine m_engine;
 
     /**

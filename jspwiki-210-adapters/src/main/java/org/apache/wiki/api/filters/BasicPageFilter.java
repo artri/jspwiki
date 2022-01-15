@@ -18,12 +18,12 @@
  */
 package org.apache.wiki.api.filters;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.wiki.WikiContext;
 import org.apache.wiki.WikiEngine;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.api.exceptions.FilterException;
+import org.apache.wiki.util.WikiLogger;
 
 import java.lang.reflect.Method;
 import java.util.Properties;
@@ -43,8 +43,8 @@ public class BasicPageFilter extends BasePageFilter {
 
     public void initialize( final WikiEngine engine, final Properties properties ) throws FilterException {
         this.m_engine = engine;
-        LogManager.getLogger( BasicPageFilter.class ).warn( this.getClass().getName() + " implements deprecated org.apache.wiki.api.filters.BasicPageFilter" );
-        LogManager.getLogger( BasicPageFilter.class ).warn( "Please contact the filter's author so there can be a new release of the filter " +
+        WikiLogger.getLogger( BasicPageFilter.class ).warn( this.getClass().getName() + " implements deprecated org.apache.wiki.api.filters.BasicPageFilter" );
+        WikiLogger.getLogger( BasicPageFilter.class ).warn( "Please contact the filter's author so there can be a new release of the filter " +
                                                             "extending the new org.apache.wiki.api.filters.BasePageFilter class" );
     }
 

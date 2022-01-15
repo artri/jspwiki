@@ -19,8 +19,6 @@
 package org.apache.wiki.plugin;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.oro.text.GlobCompiler;
 import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.Pattern;
@@ -41,6 +39,7 @@ import org.apache.wiki.preferences.Preferences;
 import org.apache.wiki.preferences.Preferences.TimeFormat;
 import org.apache.wiki.render.RenderingManager;
 import org.apache.wiki.util.TextUtil;
+import org.apache.wiki.util.WikiLogger;
 import org.apache.wiki.util.comparators.CollatorComparator;
 import org.apache.wiki.util.comparators.HumanComparator;
 import org.apache.wiki.util.comparators.JavaNaturalComparator;
@@ -81,7 +80,7 @@ import java.util.stream.Collectors;
  */
 public abstract class AbstractReferralPlugin implements Plugin {
 
-    private static final Logger log = LogManager.getLogger( AbstractReferralPlugin.class );
+    private static final WikiLogger log = WikiLogger.getLogger( AbstractReferralPlugin.class );
 
     /** Magic value for rendering all items. */
     public static final int    ALL_ITEMS              = -1;

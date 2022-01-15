@@ -18,12 +18,10 @@
  */
 package org.apache.wiki.ui;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.wiki.InternalWikiException;
 import org.apache.wiki.api.core.Command;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.api.core.Page;
+import org.apache.wiki.api.exceptions.WikiRuntimeException;
 import org.apache.wiki.api.exceptions.ProviderException;
 import org.apache.wiki.api.providers.WikiProvider;
 import org.apache.wiki.api.spi.Wiki;
@@ -32,6 +30,7 @@ import org.apache.wiki.pages.PageManager;
 import org.apache.wiki.parser.MarkupParser;
 import org.apache.wiki.url.URLConstructor;
 import org.apache.wiki.util.TextUtil;
+import org.apache.wiki.util.WikiLogger;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -46,6 +45,7 @@ import java.util.Properties;
  * @since 2.4.22
  */
 public class DefaultCommandResolver implements CommandResolver {
+    private static final WikiLogger LOG = WikiLogger.getLogger( DefaultCommandResolver.class );
 
     /** Private map with request contexts as keys, Commands as values */
     private static final Map< String, Command > CONTEXTS;
@@ -63,8 +63,6 @@ public class DefaultCommandResolver implements CommandResolver {
             CONTEXTS.put( command.getRequestContext(), command );
         }
     }
-
-    private static final Logger LOG = LogManager.getLogger( DefaultCommandResolver.class );
 
     private final Engine m_engine;
 
@@ -285,7 +283,7 @@ public class DefaultCommandResolver implements CommandResolver {
             }
         } catch( final IOException e ) {
             LOG.error( "Unable to create context", e );
-            throw new InternalWikiException( "Big internal booboo, please check logs." , e );
+            throw new WikiRuntimeException( "Big internal booboo, please check logs." , e );
         }
 
         // Didn't resolve; return null

@@ -18,13 +18,13 @@
  */
 package org.apache.wiki.tags;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.api.core.Page;
+import org.apache.wiki.api.exceptions.WikiRuntimeException;
 import org.apache.wiki.api.exceptions.ProviderException;
 import org.apache.wiki.pages.PageManager;
+import org.apache.wiki.util.WikiLogger;
 
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
@@ -45,7 +45,7 @@ import java.util.List;
 public class HistoryIteratorTag extends IteratorTag  {
 
     private static final long serialVersionUID = 0L;
-    private static final Logger LOG = LogManager.getLogger( HistoryIteratorTag.class );
+    private static final WikiLogger LOG = WikiLogger.getLogger( HistoryIteratorTag.class );
 
     /** {@inheritDoc} */
     @Override
@@ -77,11 +77,9 @@ public class HistoryIteratorTag extends IteratorTag  {
 
             return EVAL_BODY_BUFFERED;
         } catch( final ProviderException e ) {
-            LOG.fatal("Provider failed while trying to iterator through history",e);
-            // FIXME: THrow something.
+            LOG.error("Provider failed while trying to iterator through history", e);
+            throw new WikiRuntimeException(e);
         }
-
-        return SKIP_BODY;
     }
 
     /** {@inheritDoc} */

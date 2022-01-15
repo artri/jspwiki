@@ -23,14 +23,13 @@ import com.vladsch.flexmark.ext.toc.TocBlock;
 import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.util.ast.NodeTracker;
 import com.vladsch.flexmark.util.sequence.CharSubSequence;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.exceptions.PluginException;
 import org.apache.wiki.api.plugin.Plugin;
 import org.apache.wiki.markdown.nodes.JSPWikiLink;
 import org.apache.wiki.parser.PluginContent;
 import org.apache.wiki.preferences.Preferences;
+import org.apache.wiki.util.WikiLogger;
 
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
@@ -41,7 +40,7 @@ import java.util.ResourceBundle;
  */
 public class PluginLinkNodePostProcessorState implements NodePostProcessorState< JSPWikiLink > {
 
-    private static final Logger LOG = LogManager.getLogger( PluginLinkNodePostProcessorState.class );
+    private static final WikiLogger LOG = WikiLogger.getLogger( PluginLinkNodePostProcessorState.class );
     private final Context wikiContext;
     private final boolean m_wysiwygEditorMode;
 

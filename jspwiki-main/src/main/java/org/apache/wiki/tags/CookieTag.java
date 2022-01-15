@@ -33,9 +33,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.TagSupport;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
+import org.apache.wiki.util.WikiLogger;
 
 /**
  * Sets or gets Cookie values. This implementation makes the following
@@ -48,36 +46,42 @@ import org.apache.logging.log4j.Logger;
  * <li>A decoded name-value pair separates the name and value with a "="
  * </ul>
  *
- * <p>The value of a cookie carrying values n1="v1" and n2="v2 with space"
- * would thus be
+ * <p>
+ * The value of a cookie carrying values n1="v1" and n2="v2 with space" would
+ * thus be
+ * 
  * <pre>
  *   n1%3Dv1&n2%3Dv2%20with%20space
  * </pre>
  *
- * <p>Usage:
+ * <p>
+ * Usage:
  *
  * <pre>
  * &lt;wiki:cookie name="cookiename" var="contextvariable" scope="page" /&gt;
  * </pre>
- * - Returns the value of the named cookie, or an empty string if not set.
- * If 'var' is specified, the value is set into a context variable of this name.
- * The 'scope' parameter may be added to specify the context: "session",
- * "page", "request". If var is omitted, the output is placed directly into
- * the JSP page.
+ * 
+ * - Returns the value of the named cookie, or an empty string if not set. If
+ * 'var' is specified, the value is set into a context variable of this name.
+ * The 'scope' parameter may be added to specify the context: "session", "page",
+ * "request". If var is omitted, the output is placed directly into the JSP
+ * page.
  *
  * <pre>
  * &lt;wiki:cookie name="cookiename" value="encoded_value" /&gt;
  * </pre>
- * - Sets the named cookie to the given value. If the value string is empty,
- * the cookie value is set to empty; otherwise the cookie encoding rules of
- * this class must be followed for the value.
+ * 
+ * - Sets the named cookie to the given value. If the value string is empty, the
+ * cookie value is set to empty; otherwise the cookie encoding rules of this
+ * class must be followed for the value.
  *
  * <pre>
  * &lt;wiki:cookie name="cookiename" item="parameter_name" /&gt;
  * </pre>
- * - Assumes that the cookie contains URLEncoded name-value pairs,
- * with name and value separated by an equals sign, and returns the value
- * of the specified item.
+ * 
+ * - Assumes that the cookie contains URLEncoded name-value pairs, with name and
+ * value separated by an equals sign, and returns the value of the specified
+ * item.
  *
  * &lt;wiki:cookie name="cookiename" item="parameter_name" value="value" /&gt;
  * </pre>
@@ -86,20 +90,21 @@ import org.apache.logging.log4j.Logger;
  * <pre>
  * &lt;wiki:cookie name="cookiename" clear="parameter_name" /&gt;
  * </pre>
+ * 
  * - Removes the named parameter from the cookie.
  *
  * <pre>
  * &lt;wiki:cookie clear="cookiename" /&gt;
  * </pre>
- * - Removes the named cookie. Clear may be used at the same time as a value
- * is retrieved (or set, despite the dubious usefulness of that operation).
+ * 
+ * - Removes the named cookie. Clear may be used at the same time as a value is
+ * retrieved (or set, despite the dubious usefulness of that operation).
  */
-public class CookieTag
-    extends TagSupport
-{
-    private static final long serialVersionUID = 0L;
+public class CookieTag extends TagSupport {
 
-    private static final Logger log = LogManager.getLogger( CookieTag.class );
+    private static final long serialVersionUID = 7021037687670214334L;
+
+    private static final WikiLogger log = WikiLogger.getLogger(CookieTag.class);
 
     /** Name of the cookie value. Required. */
     private String m_name;
@@ -107,7 +112,7 @@ public class CookieTag
     private String m_item;
     /** A value to echo or set. Optional. */
     private String m_value;
-    /** Name of a context variable to set result in. Optional, defaults to out.*/
+    /** Name of a context variable to set result in. Optional, defaults to out. */
     private String m_var;
     /** Scope of m_var: request, session, page. */
     private String m_scope;
@@ -115,96 +120,84 @@ public class CookieTag
     private String m_clear;
 
     /**
-     *  Set the "name" parameter.
-     *  
-     *  @param s The name.
+     * Set the "name" parameter.
+     * 
+     * @param s The name.
      */
-    public void setName(final String s )
-    {
+    public void setName(final String s) {
         m_name = s;
     }
 
     /**
-     *  Set the "item" parameter.
-     *  
-     *  @param s The item.
+     * Set the "item" parameter.
+     * 
+     * @param s The item.
      */
-    public void setItem(final String s )
-    {
+    public void setItem(final String s) {
         m_item = s;
     }
 
     /**
-     *  Set the "value" parameter.
-     *  
-     *  @param s The value.
+     * Set the "value" parameter.
+     * 
+     * @param s The value.
      */
-    public void setValue(final String s )
-    {
+    public void setValue(final String s) {
         m_value = s;
     }
 
     /**
-     *  Set the "var" parameter.
-     *  
-     *  @param s The parameter.
+     * Set the "var" parameter.
+     * 
+     * @param s The parameter.
      */
-    public void setVar(final String s )
-    {
+    public void setVar(final String s) {
         m_scope = s;
     }
 
     /**
-     *  Set the "clear" parameter.
-     *  
-     *  @param s The parameter.
+     * Set the "clear" parameter.
+     * 
+     * @param s The parameter.
      */
-    public void setClear(final String s )
-    {
+    public void setClear(final String s) {
         m_clear = s;
     }
 
     /**
-     *  Set the "scope" parameter.
-     *  
-     *  @param s The scope.
+     * Set the "scope" parameter.
+     * 
+     * @param s The scope.
      */
-    public void setScope(final String s )
-    {
+    public void setScope(final String s) {
         m_scope = s;
     }
 
     /**
-     *  {@inheritDoc}
+     * {@inheritDoc}
      */
-    public void release()
-    {
+    public void release() {
         m_name = m_item = m_var = m_value = m_clear = m_scope = null;
         super.release();
     }
 
     /**
      * Examines the parameter and returns the corresponding scope identifier:
-     * "request" maps to PageContext.REQUEST_SCOPE, and so on.
-     * Possible values are "page", "session", "application", and "request",
-     * which is the default return value.
+     * "request" maps to PageContext.REQUEST_SCOPE, and so on. Possible values are
+     * "page", "session", "application", and "request", which is the default return
+     * value.
      */
-    private int getScope(final String s )
-    {
-        if( s == null )
-        {
+    private int getScope(final String s) {
+        if (s == null) {
             return PageContext.REQUEST_SCOPE;
         }
-        if( "page".equals( m_scope ) )
-        {
+        if ("page".equals(m_scope)) {
             return PageContext.PAGE_SCOPE;
         }
-        if( "session".equals( m_scope ) )
-        {
+        if ("session".equals(m_scope)) {
             return PageContext.SESSION_SCOPE;
         }
-        if( "application".equals( m_scope ) )
-        {
+        if ("application".equals(m_scope)) {
             return PageContext.APPLICATION_SCOPE;
         }
 
@@ -212,80 +205,57 @@ public class CookieTag
     }
 
     /**
-     *  {@inheritDoc}
+     * {@inheritDoc}
      */
-    public int doEndTag()
-    {
+    public int doEndTag() {
         String out = null;
-        final Cookie cookie = findCookie( m_name );
+        final Cookie cookie = findCookie(m_name);
         boolean changed = false;
 
-        if( m_value != null )
-        {
-            if( m_item != null )
-            {
-                setItemValue( cookie, m_item, m_value );
-            }
-            else
-            {
-                cookie.setValue( m_value );
+        if (m_value != null) {
+            if (m_item != null) {
+                setItemValue(cookie, m_item, m_value);
+            } else {
+                cookie.setValue(m_value);
             }
             changed = true;
-        }
-        else
-        {
-            if( m_item != null )
-            {
-                out = getItemValue( cookie, m_item );
-            }
-            else
-            {
+        } else {
+            if (m_item != null) {
+                out = getItemValue(cookie, m_item);
+            } else {
                 out = cookie.getValue();
             }
         }
 
-        if( out != null )
-        {
-            if( m_var != null )
-            {
-                final int scope = getScope( m_scope );
-                pageContext.setAttribute( m_var, out,  scope );
-            }
-            else
-            {
-                try
-                {
-                    pageContext.getOut().print( out );
-                }
-                catch( final IOException ioe )
-                {
-                    log.warn( "Failed to write to JSP page: " + ioe.getMessage(), ioe );
+        if (out != null) {
+            if (m_var != null) {
+                final int scope = getScope(m_scope);
+                pageContext.setAttribute(m_var, out, scope);
+            } else {
+                try {
+                    pageContext.getOut().print(out);
+                } catch (final IOException ioe) {
+                    log.warn("Failed to write to JSP page: " + ioe.getMessage(), ioe);
                 }
             }
         }
 
         Cookie cleared = null;
-        if( m_clear != null )
-        {
-            cleared = findCookie( m_clear );
-            if( m_item != null )
-            {
-                setItemValue( cookie, m_item, null );
-            }
-            else
-            {
-                cleared.setValue( null );
+        if (m_clear != null) {
+            cleared = findCookie(m_clear);
+            if (m_item != null) {
+                setItemValue(cookie, m_item, null);
+            } else {
+                cleared.setValue(null);
             }
         }
 
-        final HttpServletResponse res = (HttpServletResponse)pageContext.getResponse();
-        if( changed )
-        {
-            res.addCookie( cookie );
+        final HttpServletResponse res = (HttpServletResponse) pageContext.getResponse();
+        if (changed) {
+            res.addCookie(cookie);
         }
-        if( cleared != null )
-        {
-            res.addCookie( cleared );
+        if (cleared != null) {
+            res.addCookie(cleared);
         }
 
         return EVAL_PAGE;
@@ -294,53 +264,47 @@ public class CookieTag
     /**
      * Sets a single name-value pair in the given cookie.
      */
-    private void setItemValue(final Cookie c, final String item, final String value )
-    {
-        if( c == null )
-        {
+    private void setItemValue(final Cookie c, final String item, final String value) {
+        if (c == null) {
             return;
         }
         final String in = c.getValue();
-        final Map<String, String> values = parseCookieValues( in );
-        values.put( item, value );
-        final String cv = encodeValues( values );
-        c.setValue( cv );
+        final Map<String, String> values = parseCookieValues(in);
+        values.put(item, value);
+        final String cv = encodeValues(values);
+        c.setValue(cv);
     }
 
     /**
      * Returns the value of the given item in the cookie.
      */
-    private String getItemValue(final Cookie c, final String item )
-    {
-        if( c == null || item == null ) {
+    private String getItemValue(final Cookie c, final String item) {
+        if (c == null || item == null) {
             return null;
         }
         final String in = c.getValue();
-        final Map< String, String > values = parseCookieValues( in );
-        return values.get( item );
+        final Map<String, String> values = parseCookieValues(in);
+        return values.get(item);
     }
 
-
     /**
-     * Parses a cookie value, of format name1%3Fvalue1&name2%3Fvalue2...,
-     * into a Map<String,String>.
+     * Parses a cookie value, of format name1%3Fvalue1&name2%3Fvalue2..., into a
+     * Map<String,String>.
      */
-    private Map<String, String> parseCookieValues(final String s )
-    {
-        final Map< String, String > rval = new HashMap< String, String >();
-        if( s == null ) {
+    private Map<String, String> parseCookieValues(final String s) {
+        final Map<String, String> rval = new HashMap<String, String>();
+        if (s == null) {
             return rval;
         }
-        final String[] nvps = s.split( "&" );
-        if( nvps.length == 0 ) {
+        final String[] nvps = s.split("&");
+        if (nvps.length == 0) {
             return rval;
         }
-        for( int i = 0; i < nvps.length; i++ ) {
-            final String nvp = decode( nvps[i] );
-            final String[] nv = nvp.split( "=" );
-            if( nv[0] != null && !nv[0].trim().isEmpty() )
-            {
-                rval.put( nv[0], nv[1] );
+        for (int i = 0; i < nvps.length; i++) {
+            final String nvp = decode(nvps[i]);
+            final String[] nv = nvp.split("=");
+            if (nv[0] != null && !nv[0].trim().isEmpty()) {
+                rval.put(nv[0], nv[1]);
             }
         }
 
@@ -351,21 +315,20 @@ public class CookieTag
      * Encodes name-value pairs in the map into a single string, in a format
      * understood by this class and JavaScript decodeURIComponent().
      */
-    private String encodeValues(final Map<String, String> values )
-    {
+    private String encodeValues(final Map<String, String> values) {
         final StringBuilder rval = new StringBuilder();
-        if( values == null || values.size() == 0 ) {
+        if (values == null || values.size() == 0) {
             return rval.toString();
         }
 
-        final Iterator< Map.Entry< String, String > > it = values.entrySet().iterator();
-        while( it.hasNext() ) {
-            final Map.Entry< String, String > e = it.next();
+        final Iterator<Map.Entry<String, String>> it = values.entrySet().iterator();
+        while (it.hasNext()) {
+            final Map.Entry<String, String> e = it.next();
             final String n = e.getKey();
             final String v = e.getValue();
-            if( v != null ) {
+            if (v != null) {
                 final String nv = n + "=" + v;
-                rval.append( encode( nv ) );
+                rval.append(encode(nv));
             }
         }
 
@@ -373,66 +336,51 @@ public class CookieTag
     }
 
     /**
-     * Converts a String to an encoding understood by JavaScript
-     * decodeURIComponent.
+     * Converts a String to an encoding understood by JavaScript decodeURIComponent.
      */
-    private String encode(final String nvp )
-    {
+    private String encode(final String nvp) {
         String coded = "";
-        try
-        {
-            coded = URLEncoder.encode( nvp, StandardCharsets.UTF_8.name() );
-        }
-        catch( final UnsupportedEncodingException e )
-        {
+        try {
+            coded = URLEncoder.encode(nvp, StandardCharsets.UTF_8.name());
+        } catch (final UnsupportedEncodingException e) {
             /* never happens */
-            log.info( "Failed to encode UTF-8", e );
+            log.info("Failed to encode UTF-8", e);
         }
-        return coded.replaceAll( "\\+", "%20" );
+        return coded.replaceAll("\\+", "%20");
     }
 
     /**
      * Converts a cookie value (set by this class, or by a JavaScript
      * encodeURIComponent call) into a plain string.
      */
-    private String decode(final String envp )
-    {
+    private String decode(final String envp) {
         final String rval;
-        try
-        {
-            rval = URLDecoder.decode( envp , StandardCharsets.UTF_8.name() );
+        try {
+            rval = URLDecoder.decode(envp, StandardCharsets.UTF_8.name());
             return rval;
-        }
-        catch( final UnsupportedEncodingException e )
-        {
-            log.error( "Failed to decode cookie", e );
+        } catch (final UnsupportedEncodingException e) {
+            log.error("Failed to decode cookie", e);
             return envp;
         }
     }
 
     /**
-     * Locates the named cookie in the request, or creates a new one if it
-     * doesn't exist.
+     * Locates the named cookie in the request, or creates a new one if it doesn't
+     * exist.
      */
-    private Cookie findCookie(final String cname )
-    {
-        final HttpServletRequest req = (HttpServletRequest)pageContext.getRequest();
-        if( req != null )
-        {
+    private Cookie findCookie(final String cname) {
+        final HttpServletRequest req = (HttpServletRequest) pageContext.getRequest();
+        if (req != null) {
             final Cookie[] cookies = req.getCookies();
-            if( cookies != null )
-            {
-                for( int i = 0; i < cookies.length; i++ )
-                {
-                    if( cookies[i].getName().equals( cname ) )
-                    {
+            if (cookies != null) {
+                for (int i = 0; i < cookies.length; i++) {
+                    if (cookies[i].getName().equals(cname)) {
                         return cookies[i];
                     }
                 }
             }
         }
-
-        return new Cookie( cname, null );
+        return new Cookie(cname, null);
     }
 
 }

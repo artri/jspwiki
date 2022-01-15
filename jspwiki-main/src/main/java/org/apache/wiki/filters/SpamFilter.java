@@ -21,8 +21,6 @@ package org.apache.wiki.filters;
 import net.sf.akismet.Akismet;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.MatchResult;
 import org.apache.oro.text.regex.Pattern;
@@ -30,12 +28,12 @@ import org.apache.oro.text.regex.PatternCompiler;
 import org.apache.oro.text.regex.PatternMatcher;
 import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
-import org.apache.wiki.InternalWikiException;
 import org.apache.wiki.api.core.Attachment;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.ContextEnum;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.api.core.Page;
+import org.apache.wiki.api.exceptions.WikiRuntimeException;
 import org.apache.wiki.api.exceptions.ProviderException;
 import org.apache.wiki.api.exceptions.RedirectException;
 import org.apache.wiki.api.filters.BasePageFilter;
@@ -47,6 +45,7 @@ import org.apache.wiki.ui.EditorManager;
 import org.apache.wiki.util.FileUtil;
 import org.apache.wiki.util.HttpUtil;
 import org.apache.wiki.util.TextUtil;
+import org.apache.wiki.util.WikiLogger;
 import org.suigeneris.jrcs.diff.Diff;
 import org.suigeneris.jrcs.diff.DifferentiationFailedException;
 import org.suigeneris.jrcs.diff.Revision;
@@ -196,8 +195,8 @@ public class SpamFilter extends BasePageFilter {
 
     private Date m_lastRebuild = new Date( 0L );
 
-    private static final Logger c_spamlog = LogManager.getLogger( "SpamLog" );
-    private static final Logger log = LogManager.getLogger( SpamFilter.class );
+    private static final WikiLogger c_spamlog = WikiLogger.getLogger( "SpamLog" );
+    private static final WikiLogger log = WikiLogger.getLogger( SpamFilter.class );
 
     private final Vector<Host>    m_temporaryBanList = new Vector<>();
 
@@ -268,8 +267,8 @@ public class SpamFilter extends BasePageFilter {
         try {
             m_urlPattern = m_compiler.compile( URL_REGEXP );
         } catch( final MalformedPatternException e ) {
-            log.fatal( "Internal error: Someone put in a faulty pattern.", e );
-            throw new InternalWikiException( "Faulty pattern." , e);
+            log.error( "Internal error: Someone put in a faulty pattern.", e );
+            throw new WikiRuntimeException( "Faulty pattern." , e);
         }
 
         m_akismetAPIKey = TextUtil.getStringProperty( properties, PROP_AKISMET_API_KEY, m_akismetAPIKey );
@@ -298,7 +297,7 @@ public class SpamFilter extends BasePageFilter {
                 break;
             case NOTE: reason = "NOTE";
                 break;
-            default: throw new InternalWikiException( "Illegal type " + type );
+            default: throw new WikiRuntimeException( "Illegal type " + type );
         }
         c_spamlog.info( reason + " " + source + " " + uid + " " + addr + " \"" + page + "\" " + message );
 

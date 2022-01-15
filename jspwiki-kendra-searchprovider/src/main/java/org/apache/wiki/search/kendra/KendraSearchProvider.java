@@ -27,15 +27,13 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.wiki.InternalWikiException;
 import org.apache.wiki.WatchDog;
 import org.apache.wiki.WikiBackgroundThread;
 import org.apache.wiki.api.core.Attachment;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.api.core.Page;
+import org.apache.wiki.api.exceptions.WikiRuntimeException;
 import org.apache.wiki.api.exceptions.NoRequiredPropertyException;
 import org.apache.wiki.api.exceptions.ProviderException;
 import org.apache.wiki.api.providers.PageProvider;
@@ -47,6 +45,7 @@ import org.apache.wiki.auth.permissions.PagePermission;
 import org.apache.wiki.pages.PageManager;
 import org.apache.wiki.search.SearchProvider;
 import org.apache.wiki.util.TextUtil;
+import org.apache.wiki.util.WikiLogger;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -70,7 +69,7 @@ import static java.lang.String.format;
  */
 public class KendraSearchProvider implements SearchProvider {
 
-    private static final Logger LOG = LogManager.getLogger( KendraSearchProvider.class );
+    private static final WikiLogger LOG = WikiLogger.getLogger( KendraSearchProvider.class );
     private Engine engine;
     private Properties properties;
     private Map< String, Object > contentTypes;
@@ -475,7 +474,7 @@ public class KendraSearchProvider implements SearchProvider {
             try {
                 Thread.sleep( initialDelay * 1000L );
             } catch ( final InterruptedException e ) {
-                throw new InternalWikiException( "Interrupted while waiting to start.", e );
+                throw new WikiRuntimeException( "Interrupted while waiting to start.", e );
             }
             watchdog.enterState( "Full reindex" );
             provider.initializeIndexAndDataSource();

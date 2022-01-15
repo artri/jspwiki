@@ -19,8 +19,6 @@
 package org.apache.wiki.render;
 
 import org.apache.commons.lang3.time.StopWatch;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.StringTransmutator;
 import org.apache.wiki.api.core.Attachment;
 import org.apache.wiki.api.core.Context;
@@ -46,6 +44,7 @@ import org.apache.wiki.parser.WikiDocument;
 import org.apache.wiki.references.ReferenceManager;
 import org.apache.wiki.util.ClassUtil;
 import org.apache.wiki.util.TextUtil;
+import org.apache.wiki.util.WikiLogger;
 import org.apache.wiki.variables.VariableManager;
 
 import java.io.IOException;
@@ -67,7 +66,7 @@ import java.util.Properties;
  */
 public class DefaultRenderingManager implements RenderingManager {
 
-    private static final Logger LOG = LogManager.getLogger( DefaultRenderingManager.class );
+    private static final WikiLogger LOG = WikiLogger.getLogger( DefaultRenderingManager.class );
     private static final String VERSION_DELIMITER = "::";
     /** The name of the default renderer. */
     private static final String DEFAULT_PARSER = JSPWikiMarkupParser.class.getName();

@@ -18,8 +18,6 @@
 */
 package org.apache.wiki.plugin;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.Pattern;
 import org.apache.oro.text.regex.PatternCompiler;
@@ -35,6 +33,7 @@ import org.apache.wiki.api.plugin.Plugin;
 import org.apache.wiki.pages.PageManager;
 import org.apache.wiki.references.ReferenceManager;
 import org.apache.wiki.util.TextUtil;
+import org.apache.wiki.util.WikiLogger;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -58,7 +57,7 @@ import java.util.Map;
  */
 public class ReferredPagesPlugin implements Plugin {
 
-    private static final Logger log = LogManager.getLogger( ReferredPagesPlugin.class );
+    private static final WikiLogger log = WikiLogger.getLogger( ReferredPagesPlugin.class );
     private Engine m_engine;
     private int m_depth;
     private final HashSet< String > m_exists  = new HashSet<>();

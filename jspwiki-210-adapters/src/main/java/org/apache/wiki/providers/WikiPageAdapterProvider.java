@@ -18,8 +18,6 @@
  */
 package org.apache.wiki.providers;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.WikiPage;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.api.core.Page;
@@ -31,6 +29,7 @@ import org.apache.wiki.api.search.SearchResult;
 import org.apache.wiki.search.SearchResultComparator;
 import org.apache.wiki.util.ClassUtil;
 import org.apache.wiki.util.TextUtil;
+import org.apache.wiki.util.WikiLogger;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -52,7 +51,7 @@ import java.util.stream.Collectors;
 @Deprecated
 public class WikiPageAdapterProvider implements PageProvider {
 
-    private static final Logger LOG = LogManager.getLogger( WikiPageAdapterProvider.class );
+    private static final WikiLogger LOG = WikiLogger.getLogger( WikiPageAdapterProvider.class );
     private static final String PROP_ADAPTER_IMPL = "jspwiki.pageProvider.adapter.impl";
 
     WikiPageProvider provider;

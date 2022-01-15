@@ -18,11 +18,10 @@
  */
 package org.apache.wiki.tags;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.api.core.ContextEnum;
 import org.apache.wiki.api.exceptions.ProviderException;
 import org.apache.wiki.ui.TemplateManager;
+import org.apache.wiki.util.WikiLogger;
 
 import javax.servlet.ServletException;
 import javax.servlet.jsp.JspException;
@@ -40,8 +39,8 @@ import java.util.Map;
 public class ContentTag extends WikiTagBase {
 
     private static final long serialVersionUID = 0L;
-    private static final Logger log = LogManager.getLogger( ContentTag.class );
-    
+    private static final WikiLogger log = WikiLogger.getLogger( ContentTag.class );
+
     private final Map<String, String> m_mappings = new HashMap<>();
 
     /**

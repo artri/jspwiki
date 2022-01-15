@@ -18,11 +18,10 @@
  */
 package org.apache.wiki.auth.login;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.auth.WikiPrincipal;
 import org.apache.wiki.util.HttpUtil;
 import org.apache.wiki.util.TextUtil;
+import org.apache.wiki.util.WikiLogger;
 
 import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.UnsupportedCallbackException;
@@ -60,7 +59,7 @@ public class CookieAssertionLoginModule extends AbstractLoginModule {
     /** The name of the cookie that gets stored to the user browser. */
     public static final String PREFS_COOKIE_NAME = "JSPWikiAssertedName";
 
-    private static final Logger log = LogManager.getLogger( CookieAssertionLoginModule.class );
+    private static final WikiLogger log = WikiLogger.getLogger( CookieAssertionLoginModule.class );
 
     /**
      * {@inheritDoc}

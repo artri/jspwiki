@@ -19,8 +19,6 @@
 package org.apache.wiki.search;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.document.Document;
@@ -47,13 +45,13 @@ import org.apache.lucene.search.highlight.SimpleHTMLEncoder;
 import org.apache.lucene.search.highlight.SimpleHTMLFormatter;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.NIOFSDirectory;
-import org.apache.wiki.InternalWikiException;
 import org.apache.wiki.WatchDog;
 import org.apache.wiki.WikiBackgroundThread;
 import org.apache.wiki.api.core.Attachment;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.api.core.Page;
+import org.apache.wiki.api.exceptions.WikiRuntimeException;
 import org.apache.wiki.api.exceptions.NoRequiredPropertyException;
 import org.apache.wiki.api.exceptions.ProviderException;
 import org.apache.wiki.api.providers.PageProvider;
@@ -67,6 +65,7 @@ import org.apache.wiki.pages.PageManager;
 import org.apache.wiki.util.ClassUtil;
 import org.apache.wiki.util.FileUtil;
 import org.apache.wiki.util.TextUtil;
+import org.apache.wiki.util.WikiLogger;
 
 import java.io.File;
 import java.io.IOException;
@@ -91,7 +90,7 @@ import java.util.concurrent.Executors;
  */
 public class LuceneSearchProvider implements SearchProvider {
 
-    protected static final Logger log = LogManager.getLogger(LuceneSearchProvider.class);
+    protected static final WikiLogger log = WikiLogger.getLogger(LuceneSearchProvider.class);
 
     private Engine m_engine;
     private Executor searchExecutor;
@@ -570,7 +569,7 @@ public class LuceneSearchProvider implements SearchProvider {
             try {
                 Thread.sleep( m_initialDelay * 1000L );
             } catch( final InterruptedException e ) {
-                throw new InternalWikiException("Interrupted while waiting to start.", e);
+                throw new WikiRuntimeException("Interrupted while waiting to start.", e);
             }
 
             m_watchdog.enterState( "Full reindex" );

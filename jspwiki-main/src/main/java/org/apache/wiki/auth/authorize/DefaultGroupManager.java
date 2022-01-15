@@ -19,8 +19,6 @@
 package org.apache.wiki.auth.authorize;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.api.core.Session;
@@ -40,6 +38,7 @@ import org.apache.wiki.event.WikiEventManager;
 import org.apache.wiki.event.WikiSecurityEvent;
 import org.apache.wiki.ui.InputValidator;
 import org.apache.wiki.util.ClassUtil;
+import org.apache.wiki.util.WikiLogger;
 
 import java.security.Principal;
 import java.util.HashMap;
@@ -63,7 +62,7 @@ import java.util.StringTokenizer;
  */
 public class DefaultGroupManager implements GroupManager, Authorizer, WikiEventListener {
 
-    private static final Logger log = LogManager.getLogger( DefaultGroupManager.class );
+    private static final WikiLogger log = WikiLogger.getLogger( DefaultGroupManager.class );
 
     protected Engine m_engine;
 

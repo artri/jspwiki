@@ -18,8 +18,6 @@
  */
 package org.apache.wiki.rss;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.api.core.Attachment;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.ContextEnum;
@@ -35,6 +33,7 @@ import org.apache.wiki.pages.PageManager;
 import org.apache.wiki.pages.PageTimeComparator;
 import org.apache.wiki.render.RenderingManager;
 import org.apache.wiki.util.TextUtil;
+import org.apache.wiki.util.WikiLogger;
 import org.apache.wiki.variables.VariableManager;
 
 import java.io.File;
@@ -52,7 +51,7 @@ import java.util.Set;
 // FIXME: Limit diff and page content size.
 public class DefaultRSSGenerator implements RSSGenerator {
 
-    private static final Logger log = LogManager.getLogger( DefaultRSSGenerator.class );
+    private static final WikiLogger log = WikiLogger.getLogger( DefaultRSSGenerator.class );
     private final Engine m_engine;
 
     /** The RSS file to generate. */

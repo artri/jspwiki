@@ -18,9 +18,8 @@
  */
 package org.apache.wiki.auth.login;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.auth.WikiPrincipal;
+import org.apache.wiki.util.WikiLogger;
 
 import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.UnsupportedCallbackException;
@@ -60,7 +59,7 @@ import java.security.Principal;
  */
 public class WebContainerLoginModule extends AbstractLoginModule {
 
-    protected static final Logger log = LogManager.getLogger( WebContainerLoginModule.class );
+    protected static final WikiLogger log = WikiLogger.getLogger( WebContainerLoginModule.class );
 
     /**
      * Logs in the user.

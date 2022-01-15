@@ -18,7 +18,6 @@
  */
 package org.apache.wiki.render;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.wiki.StringTransmutator;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.Page;
@@ -29,6 +28,7 @@ import org.apache.wiki.event.WikiEventListener;
 import org.apache.wiki.modules.InternalModule;
 import org.apache.wiki.parser.MarkupParser;
 import org.apache.wiki.parser.WikiDocument;
+import org.apache.wiki.util.WikiLogger;
 
 import java.io.IOException;
 
@@ -160,7 +160,7 @@ public interface RenderingManager extends RenderApi, WikiEventListener, Internal
             final WikiDocument doc = getRenderedDocument( context, pagedata );
             return getHTML( context, doc );
         } catch( final IOException e ) {
-            LogManager.getLogger( RenderingManager.class ).error("Unable to parse", e );
+            WikiLogger.getLogger( RenderingManager.class ).error("Unable to parse", e );
         }
 
         return null;

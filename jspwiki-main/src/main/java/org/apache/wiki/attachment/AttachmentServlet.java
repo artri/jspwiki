@@ -24,14 +24,13 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.ProgressListener;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.api.core.Attachment;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.ContextEnum;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.api.core.Page;
 import org.apache.wiki.api.core.Session;
+import org.apache.wiki.api.exceptions.WikiRuntimeException;
 import org.apache.wiki.api.exceptions.ProviderException;
 import org.apache.wiki.api.exceptions.RedirectException;
 import org.apache.wiki.api.exceptions.WikiException;
@@ -45,6 +44,7 @@ import org.apache.wiki.ui.progress.ProgressItem;
 import org.apache.wiki.ui.progress.ProgressManager;
 import org.apache.wiki.util.HttpUtil;
 import org.apache.wiki.util.TextUtil;
+import org.apache.wiki.util.WikiLogger;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -83,7 +83,7 @@ public class AttachmentServlet extends HttpServlet {
     private static final int BUFFER_SIZE = 8192;
 
     private Engine m_engine;
-    private static final Logger log = LogManager.getLogger( AttachmentServlet.class );
+    private static final WikiLogger log = WikiLogger.getLogger( AttachmentServlet.class );
     private static final String HDR_VERSION = "version";
 
     /** The maximum size that an attachment can be. */
@@ -127,7 +127,9 @@ public class AttachmentServlet extends HttpServlet {
         if( !f.exists() ) {
             f.mkdirs();
         } else if( !f.isDirectory() ) {
-            log.fatal( "A file already exists where the temporary dir is supposed to be: {}. Please remove it.", tmpDir );
+            String errMsg = String.format("A file already exists where the temporary dir is supposed to be: %s. Please remove it.", tmpDir);
+            log.error(errMsg);
+            throw new WikiRuntimeException(errMsg);
         }
 
         log.debug( "UploadServlet initialized. Using {} for temporary storage.", tmpDir );

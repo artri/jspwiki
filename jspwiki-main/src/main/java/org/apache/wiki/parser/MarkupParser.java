@@ -18,8 +18,6 @@
 */
 package org.apache.wiki.parser;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.oro.text.GlobCompiler;
 import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.Pattern;
@@ -28,6 +26,7 @@ import org.apache.wiki.StringTransmutator;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.util.TextUtil;
+import org.apache.wiki.util.WikiLogger;
 import org.jdom2.Element;
 
 import java.io.BufferedReader;
@@ -67,7 +66,7 @@ public abstract class MarkupParser {
     protected List< Pattern > m_inlineImagePatterns;
     protected final LinkParsingOperations m_linkParsingOperations;
 
-    private static final Logger log = LogManager.getLogger( MarkupParser.class );
+    private static final WikiLogger log = WikiLogger.getLogger( MarkupParser.class );
 
     /** If set to "true", allows using raw HTML within Wiki text.  Be warned, this is a VERY dangerous option to set -
        never turn this on in a publicly allowable Wiki, unless you are absolutely certain of what you're doing. */

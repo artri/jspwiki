@@ -18,20 +18,19 @@
 */
 package org.apache.wiki.parser;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.oro.text.regex.MatchResult;
 import org.apache.oro.text.regex.PatternMatcher;
 import org.apache.oro.text.regex.Perl5Matcher;
-import org.apache.wiki.InternalWikiException;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.Engine;
+import org.apache.wiki.api.exceptions.WikiRuntimeException;
 import org.apache.wiki.api.exceptions.PluginException;
 import org.apache.wiki.api.plugin.ParserStagePlugin;
 import org.apache.wiki.api.plugin.Plugin;
 import org.apache.wiki.api.plugin.PluginElement;
 import org.apache.wiki.plugin.PluginManager;
 import org.apache.wiki.preferences.Preferences;
+import org.apache.wiki.util.WikiLogger;
 import org.apache.wiki.variables.VariableManager;
 import org.jdom2.Text;
 
@@ -65,7 +64,7 @@ public class PluginContent extends Text implements PluginElement {
     private static final String SPACE = " ";
 
     private static final long serialVersionUID = 1L;
-    private static final Logger log = LogManager.getLogger(PluginContent.class);
+    private static final WikiLogger log = WikiLogger.getLogger(PluginContent.class);
 
     private final String m_pluginName;
     private final Map< String, String > m_params;
@@ -235,7 +234,7 @@ public class PluginContent extends Text implements PluginElement {
             }
         } catch( final ClassCastException e ) {
             log.error( "Invalid type offered in parsing plugin arguments.", e );
-            throw new InternalWikiException( "Oops, someone offered !String!", e );
+            throw new WikiRuntimeException( "Oops, someone offered !String!", e );
         } catch( final NoSuchElementException e ) {
             final String msg = "Missing parameter in plugin definition: " + commandline;
             log.warn( msg, e );

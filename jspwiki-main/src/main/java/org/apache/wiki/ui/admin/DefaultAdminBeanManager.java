@@ -18,8 +18,6 @@
  */
 package org.apache.wiki.ui.admin;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.api.Release;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.event.WikiEngineEvent;
@@ -33,6 +31,7 @@ import org.apache.wiki.ui.admin.beans.PluginBean;
 import org.apache.wiki.ui.admin.beans.SearchManagerBean;
 import org.apache.wiki.ui.admin.beans.UserBean;
 import org.apache.wiki.util.ClassUtil;
+import org.apache.wiki.util.WikiLogger;
 
 import javax.management.DynamicMBean;
 import javax.management.InstanceAlreadyExistsException;
@@ -55,12 +54,11 @@ import java.util.List;
  *  @since  2.5.52
  */
 public class DefaultAdminBeanManager implements WikiEventListener, AdminBeanManager {
+    private static final WikiLogger log = WikiLogger.getLogger( DefaultAdminBeanManager.class );
 
     private final Engine m_engine;
     private ArrayList< AdminBean > m_allBeans;
     private final MBeanServer m_mbeanServer;
-
-    private static final Logger log = LogManager.getLogger( DefaultAdminBeanManager.class );
 
     public DefaultAdminBeanManager( final Engine engine ) {
         log.info("Using JDK 1.5 Platform MBeanServer");

@@ -18,12 +18,12 @@
  */
 package org.apache.wiki;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.api.core.Engine;
+import org.apache.wiki.api.exceptions.WikiRuntimeException;
 import org.apache.wiki.event.WikiEngineEvent;
 import org.apache.wiki.event.WikiEvent;
 import org.apache.wiki.event.WikiEventListener;
+import org.apache.wiki.util.WikiLogger;
 
 
 /**
@@ -33,7 +33,7 @@ import org.apache.wiki.event.WikiEventListener;
  */
 public abstract class WikiBackgroundThread extends Thread implements WikiEventListener {
 	
-    private static final Logger LOG = LogManager.getLogger( WikiBackgroundThread.class );
+    private static final WikiLogger LOG = WikiLogger.getLogger( WikiBackgroundThread.class );
     private volatile boolean m_killMe;
     private final Engine m_engine;
     private final int m_interval;
@@ -101,7 +101,7 @@ public abstract class WikiBackgroundThread extends Thread implements WikiEventLi
      * The thread will initially pause for a full sleep interval before starting, after which it will execute 
      * {@link #startupTask()}. This method will cleanly terminate the thread if it has previously been marked as 
      * dead, before which it will execute {@link #shutdownTask()}. If any of the three methods return an exception, 
-     * it will be re-thrown as a {@link org.apache.wiki.InternalWikiException}.
+     * it will be re-thrown as a {@link org.apache.wiki.api.exceptions.WikiRuntimeException}.
      * 
      * @see java.lang.Thread#run()
      */
@@ -142,7 +142,7 @@ public abstract class WikiBackgroundThread extends Thread implements WikiEventLi
             shutdownTask();
         } catch( final Throwable t ) {
             LOG.error( "Background thread error: (stack trace follows)", t );
-            throw new InternalWikiException( t.getMessage() ,t );
+            throw new WikiRuntimeException( t.getMessage() ,t );
         }
     }
     

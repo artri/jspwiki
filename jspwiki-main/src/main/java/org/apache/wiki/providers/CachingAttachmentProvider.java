@@ -18,8 +18,6 @@
  */
 package org.apache.wiki.providers;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.api.core.Attachment;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.api.core.Page;
@@ -33,6 +31,7 @@ import org.apache.wiki.cache.CacheInfo;
 import org.apache.wiki.cache.CachingManager;
 import org.apache.wiki.util.ClassUtil;
 import org.apache.wiki.util.TextUtil;
+import org.apache.wiki.util.WikiLogger;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -53,7 +52,7 @@ import java.util.Properties;
  */
 public class CachingAttachmentProvider implements AttachmentProvider {
 
-    private static final Logger LOG = LogManager.getLogger( CachingAttachmentProvider.class );
+    private static final WikiLogger LOG = WikiLogger.getLogger( CachingAttachmentProvider.class );
 
     private AttachmentProvider m_provider;
     private CachingManager cachingManager;

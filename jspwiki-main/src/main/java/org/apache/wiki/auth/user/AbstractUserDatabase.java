@@ -19,8 +19,6 @@
 package org.apache.wiki.auth.user;
 
 import org.apache.commons.lang3.math.NumberUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.api.exceptions.NoRequiredPropertyException;
 import org.apache.wiki.auth.NoSuchPrincipalException;
@@ -28,6 +26,7 @@ import org.apache.wiki.auth.WikiPrincipal;
 import org.apache.wiki.auth.WikiSecurityException;
 import org.apache.wiki.util.ByteUtils;
 import org.apache.wiki.util.CryptoUtil;
+import org.apache.wiki.util.WikiLogger;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -44,7 +43,7 @@ import java.util.UUID;
  */
 public abstract class AbstractUserDatabase implements UserDatabase {
 
-    protected static final Logger log = LogManager.getLogger( AbstractUserDatabase.class );
+    protected static final WikiLogger log = WikiLogger.getLogger( AbstractUserDatabase.class );
     protected static final String SHA_PREFIX = "{SHA}";
     protected static final String SSHA_PREFIX = "{SSHA}";
     protected static final String SHA256_PREFIX = "{SHA-256}";
@@ -233,7 +232,7 @@ public abstract class AbstractUserDatabase implements UserDatabase {
         // Keep generating UUIDs until we find one that doesn't collide
         String uid;
         boolean collision;
-        
+
         do {
             uid = UUID.randomUUID().toString();
             collision = true;
@@ -246,7 +245,7 @@ public abstract class AbstractUserDatabase implements UserDatabase {
         while ( collision || uid == null );
         return uid;
     }
-    
+
     /**
      * Private method that calculates the salted SHA-1 or SHA-256 hash of a given <code>String</code>. Note that as of JSPWiki 2.8, this method
      * calculates a <em>salted</em> hash rather than a plain hash.

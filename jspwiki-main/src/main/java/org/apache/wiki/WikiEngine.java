@@ -19,12 +19,11 @@
 package org.apache.wiki;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.api.Release;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.api.core.Page;
 import org.apache.wiki.api.engine.Initializable;
+import org.apache.wiki.api.exceptions.WikiRuntimeException;
 import org.apache.wiki.api.exceptions.ProviderException;
 import org.apache.wiki.api.exceptions.WikiException;
 import org.apache.wiki.attachment.AttachmentManager;
@@ -58,6 +57,7 @@ import org.apache.wiki.url.URLConstructor;
 import org.apache.wiki.util.ClassUtil;
 import org.apache.wiki.util.PropertyReader;
 import org.apache.wiki.util.TextUtil;
+import org.apache.wiki.util.WikiLogger;
 import org.apache.wiki.variables.VariableManager;
 import org.apache.wiki.workflow.WorkflowManager;
 
@@ -97,7 +97,7 @@ import java.util.stream.Collectors;
 public class WikiEngine implements Engine {
 
     private static final String ATTR_WIKIENGINE = "org.apache.wiki.WikiEngine";
-    private static final Logger LOG = LogManager.getLogger( WikiEngine.class );
+    private static final WikiLogger log = WikiLogger.getLogger( WikiEngine.class );
 
     /** Stores properties. */
     private Properties m_properties;
@@ -144,9 +144,9 @@ public class WikiEngine implements Engine {
      *
      *  @param config The ServletConfig object for this servlet.
      *  @return A WikiEngine instance.
-     *  @throws InternalWikiException in case something fails. This is a RuntimeException, so be prepared for it.
+     *  @throws WikiRuntimeException in case something fails. This is a RuntimeException, so be prepared for it.
      */
-    public static synchronized WikiEngine getInstance( final ServletConfig config ) throws InternalWikiException {
+    public static synchronized WikiEngine getInstance( final ServletConfig config ) throws WikiRuntimeException {
         return getInstance( config.getServletContext(), null );
     }
 
@@ -170,9 +170,9 @@ public class WikiEngine implements Engine {
      *  @param context The ServletContext of the webapp servlet/JSP calling this method.
      *  @param props  A set of properties, or null, if we are to load JSPWiki's default jspwiki.properties (this is the usual case).
      *  @return One fully functional, properly behaving WikiEngine.
-     *  @throws InternalWikiException If the WikiEngine instantiation fails.
+     *  @throws WikiRuntimeException If the WikiEngine instantiation fails.
      */
-    public static synchronized WikiEngine getInstance( final ServletContext context, Properties props ) throws InternalWikiException {
+    public static synchronized WikiEngine getInstance( final ServletContext context, Properties props ) throws WikiRuntimeException {
         WikiEngine engine = ( WikiEngine )context.getAttribute( ATTR_WIKIENGINE );
         if( engine == null ) {
             final String appid = Integer.toString( context.hashCode() );
@@ -186,8 +186,8 @@ public class WikiEngine implements Engine {
                 context.setAttribute( ATTR_WIKIENGINE, engine );
             } catch( final Exception e ) {
                 context.log( "ERROR: Failed to create a Wiki engine: " + e.getMessage() );
-                LOG.error( "ERROR: Failed to create a Wiki engine, stacktrace follows ", e );
-                throw new InternalWikiException( "No wiki engine, check logs.", e );
+                log.error( "ERROR: Failed to create a Wiki engine, stacktrace follows ", e );
+                throw new WikiRuntimeException( "No wiki engine, check logs.", e );
             }
         }
         return engine;
@@ -225,7 +225,7 @@ public class WikiEngine implements Engine {
         try {
             //  Note: May be null, if JSPWiki has been deployed in a WAR file.
             initialize( props );
-            LOG.info( "Root path for this Wiki is: '{}'", m_rootPath );
+            log.info( "Root path for this Wiki is: '{}'", m_rootPath );
         } catch( final Exception e ) {
             final String msg = Release.APPNAME+": Unable to load and setup properties from jspwiki.properties. "+e.getMessage();
             if ( context != null ) {
@@ -242,25 +242,25 @@ public class WikiEngine implements Engine {
         m_startTime  = new Date();
         m_properties = props;
 
-        LOG.info( "*******************************************" );
-        LOG.info( "{} {} starting. Whee!", Release.APPNAME, Release.getVersionString() );
+        log.info( "*******************************************" );
+        log.info( "{} {} starting. Whee!", Release.APPNAME, Release.getVersionString() );
 
         fireEvent( WikiEngineEvent.INITIALIZING ); // begin initialization
 
-        LOG.debug( "Java version: {}", System.getProperty( "java.runtime.version" ) );
-        LOG.debug( "Java vendor: {}", System.getProperty( "java.vm.vendor" ) );
-        LOG.debug( "OS: {} {} {}", System.getProperty( "os.name" ), System.getProperty( "os.version" ), System.getProperty( "os.arch" ) );
-        LOG.debug( "Default server locale: {}", Locale.getDefault() );
-        LOG.debug( "Default server timezone: {}", TimeZone.getDefault().getDisplayName( true, TimeZone.LONG ) );
+        log.debug( "Java version: {}", System.getProperty( "java.runtime.version" ) );
+        log.debug( "Java vendor: {}", System.getProperty( "java.vm.vendor" ) );
+        log.debug( "OS: {} {} {}", System.getProperty( "os.name" ), System.getProperty( "os.version" ), System.getProperty( "os.arch" ) );
+        log.debug( "Default server locale: {}", Locale.getDefault() );
+        log.debug( "Default server timezone: {}", TimeZone.getDefault().getDisplayName( true, TimeZone.LONG ) );
 
         if( m_servletContext != null ) {
-            LOG.info( "Servlet container: {}", m_servletContext.getServerInfo() );
+            log.info( "Servlet container: {}", m_servletContext.getServerInfo() );
             if( m_servletContext.getMajorVersion() < 3 || ( m_servletContext.getMajorVersion() == 3 && m_servletContext.getMinorVersion() < 1 ) ) {
-                throw new InternalWikiException( "JSPWiki requires a container which supports at least version 3.1 of Servlet specification" );
+                throw new WikiRuntimeException( "JSPWiki requires a container which supports at least version 3.1 of Servlet specification" );
             }
         }
 
-        LOG.debug( "Configuring WikiEngine..." );
+        log.debug( "Configuring WikiEngine..." );
 
         //  Create and find the default working directory.
         m_workDir = TextUtil.getStringProperty( props, PROP_WORKDIR, null );
@@ -290,11 +290,11 @@ public class WikiEngine implements Engine {
                 throw new WikiException( "jspwiki.workDir does not point to a directory: " + m_workDir );
             }
         } catch( final SecurityException e ) {
-            LOG.fatal( "Unable to find or create the working directory: {}", m_workDir, e );
+            log.error( "Unable to find or create the working directory: {}", m_workDir, e );
             throw new IllegalArgumentException( "Unable to find or create the working dir: " + m_workDir, e );
         }
 
-        LOG.info( "JSPWiki working directory is '{}'", m_workDir );
+        log.info( "JSPWiki working directory is '{}'", m_workDir );
 
         m_saveUserInfo   = TextUtil.getBooleanProperty( props, PROP_STOREUSERNAME, m_saveUserInfo );
         m_useUTF8        = StandardCharsets.UTF_8.name().equals( TextUtil.getStringProperty( props, PROP_ENCODING, StandardCharsets.ISO_8859_1.name() ) );
@@ -346,20 +346,20 @@ public class WikiEngine implements Engine {
             getManager( FilterManager.class ).addPageFilter( getManager( SearchManager.class ), -1002 );
         } catch( final RuntimeException e ) {
             // RuntimeExceptions may occur here, even if they shouldn't.
-            LOG.fatal( "Failed to start managers.", e );
+            log.error( "Failed to start managers.", e );
             throw new WikiException( "Failed to start managers: " + e.getMessage(), e );
         } catch( final ClassNotFoundException e ) {
-            LOG.fatal( "JSPWiki could not start, URLConstructor was not found: {}", e.getMessage(), e );
+            log.error( "JSPWiki could not start, URLConstructor was not found: {}", e.getMessage(), e );
             throw new WikiException( e.getMessage(), e );
         } catch( final InstantiationException e ) {
-            LOG.fatal( "JSPWiki could not start, URLConstructor could not be instantiated: {}", e.getMessage(), e );
+            log.error( "JSPWiki could not start, URLConstructor could not be instantiated: {}", e.getMessage(), e );
             throw new WikiException( e.getMessage(), e );
         } catch( final IllegalAccessException e ) {
-            LOG.fatal( "JSPWiki could not start, URLConstructor cannot be accessed: {}", e.getMessage(), e );
+            log.error( "JSPWiki could not start, URLConstructor cannot be accessed: {}", e.getMessage(), e );
             throw new WikiException( e.getMessage(), e );
         } catch( final Exception e ) {
             // Final catch-all for everything
-            LOG.fatal( "JSPWiki could not start, due to an unknown exception when starting.", e );
+            log.error( "JSPWiki could not start, due to an unknown exception when starting.", e );
             throw new WikiException( "Failed to start. Caused by: " + e.getMessage() + "; please check log files for better information.", e );
         }
 
@@ -369,7 +369,7 @@ public class WikiEngine implements Engine {
                 initComponent( RSSGenerator.class, this, props );
             }
         } catch( final Exception e ) {
-            LOG.error( "Unable to start RSS generator - JSPWiki will still work, but there will be no RSS feed.", e );
+            log.error( "Unable to start RSS generator - JSPWiki will still work, but there will be no RSS feed.", e );
         }
 
         final Map< String, String > extraComponents = ClassUtil.getExtraClassMappings();
@@ -377,17 +377,17 @@ public class WikiEngine implements Engine {
 
         fireEvent( WikiEngineEvent.INITIALIZED ); // initialization complete
 
-        LOG.info( "WikiEngine configured." );
+        log.info( "WikiEngine configured." );
         m_isConfigured = true;
     }
 
     void initExtraComponents( final Map< String, String > extraComponents ) {
         for( final Map.Entry< String, String > extraComponent : extraComponents.entrySet() ) {
             try {
-                LOG.info( "Registering on WikiEngine {} as {}", extraComponent.getKey(), extraComponent.getValue() );
+                log.info( "Registering on WikiEngine {} as {}", extraComponent.getKey(), extraComponent.getValue() );
                 initComponent( extraComponent.getKey(), Class.forName( extraComponent.getValue() ) );
             } catch( final Exception e ) {
-                LOG.error( "Unable to start {}", extraComponent.getKey(), e );
+                log.error( "Unable to start {}", extraComponent.getKey(), e );
             }
         }
     }
@@ -453,11 +453,11 @@ public class WikiEngine implements Engine {
                     final URL url = m_servletContext.getResource( viewTemplate );
                     exists = url != null && StringUtils.isNotEmpty( url.getFile() );
                 } catch( final MalformedURLException e ) {
-                    LOG.warn( "template not found with viewTemplate {}", viewTemplate );
+                    log.warn( "template not found with viewTemplate {}", viewTemplate );
                 }
             }
             if( !exists ) {
-                LOG.warn( "{} template not found, updating WikiEngine's default template to {}", getTemplateDir(), DEFAULT_TEMPLATE_NAME );
+                log.warn( "{} template not found, updating WikiEngine's default template to {}", getTemplateDir(), DEFAULT_TEMPLATE_NAME );
                 m_templateDir = DEFAULT_TEMPLATE_NAME;
             }
         }
@@ -482,7 +482,8 @@ public class WikiEngine implements Engine {
             }
 
         } catch( final ProviderException e ) {
-            LOG.fatal( "PageProvider is unable to list pages: ", e );
+            log.error( "PageProvider is unable to list pages: ", e);
+            throw new WikiRuntimeException( "PageProvider is unable to list pages: ", e);
         } catch( final Exception e ) {
             throw new WikiException( "Could not instantiate ReferenceManager: " + e.getMessage(), e );
         }
@@ -614,7 +615,7 @@ public class WikiEngine implements Engine {
         try {
             return URLEncoder.encode( pagename, m_useUTF8 ? StandardCharsets.UTF_8.name() : StandardCharsets.ISO_8859_1.name() );
         } catch( final UnsupportedEncodingException e ) {
-            throw new InternalWikiException( "ISO-8859-1 not a supported encoding!?!  Your platform is borked." , e);
+            throw new WikiRuntimeException( "ISO-8859-1 not a supported encoding!?!  Your platform is borked." , e);
         }
     }
 
@@ -624,7 +625,7 @@ public class WikiEngine implements Engine {
         try {
             return URLDecoder.decode( pagerequest, m_useUTF8 ? StandardCharsets.UTF_8.name() : StandardCharsets.ISO_8859_1.name() );
         } catch( final UnsupportedEncodingException e ) {
-            throw new InternalWikiException("ISO-8859-1 not a supported encoding!?!  Your platform is borked.", e);
+            throw new WikiRuntimeException("ISO-8859-1 not a supported encoding!?!  Your platform is borked.", e);
         }
     }
 

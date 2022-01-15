@@ -20,8 +20,6 @@ package org.apache.wiki.workflow;
 
 import org.apache.commons.collections4.queue.CircularFifoQueue;
 import org.apache.commons.lang3.time.StopWatch;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.api.core.Session;
@@ -32,6 +30,7 @@ import org.apache.wiki.event.WikiEvent;
 import org.apache.wiki.event.WikiEventEmitter;
 import org.apache.wiki.event.WorkflowEvent;
 import org.apache.wiki.util.TextUtil;
+import org.apache.wiki.util.WikiLogger;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -49,7 +48,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class DefaultWorkflowManager implements WorkflowManager {
 
-    private static final Logger LOG = LogManager.getLogger( DefaultWorkflowManager.class );
+    private static final WikiLogger LOG = WikiLogger.getLogger( DefaultWorkflowManager.class );
     static final String SERIALIZATION_FILE = "wkflmgr.ser";
 
     /** We use this also a generic serialization id */

@@ -18,8 +18,6 @@
  */
 package org.apache.wiki.xmlrpc;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.api.core.Attachment;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.ContextEnum;
@@ -35,6 +33,7 @@ import org.apache.wiki.pages.PageManager;
 import org.apache.wiki.pages.PageTimeComparator;
 import org.apache.wiki.plugin.WeblogEntryPlugin;
 import org.apache.wiki.plugin.WeblogPlugin;
+import org.apache.wiki.util.WikiLogger;
 import org.apache.xmlrpc.XmlRpcException;
 
 import java.io.ByteArrayInputStream;
@@ -57,7 +56,7 @@ import java.util.List;
 
 public class MetaWeblogHandler implements WikiRPCHandler {
 
-    private static final Logger log = LogManager.getLogger( MetaWeblogHandler.class );
+    private static final WikiLogger log = WikiLogger.getLogger( MetaWeblogHandler.class );
 
     private Context m_context;
 

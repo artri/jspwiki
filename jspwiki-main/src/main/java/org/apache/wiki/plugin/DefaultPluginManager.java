@@ -21,8 +21,6 @@ package org.apache.wiki.plugin;
 
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.MatchResult;
 import org.apache.oro.text.regex.Pattern;
@@ -30,11 +28,11 @@ import org.apache.oro.text.regex.PatternCompiler;
 import org.apache.oro.text.regex.PatternMatcher;
 import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
-import org.apache.wiki.InternalWikiException;
 import org.apache.wiki.ajax.WikiAjaxDispatcherServlet;
 import org.apache.wiki.ajax.WikiAjaxServlet;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.Engine;
+import org.apache.wiki.api.exceptions.WikiRuntimeException;
 import org.apache.wiki.api.exceptions.PluginException;
 import org.apache.wiki.api.plugin.InitializablePlugin;
 import org.apache.wiki.api.plugin.Plugin;
@@ -44,6 +42,7 @@ import org.apache.wiki.preferences.Preferences;
 import org.apache.wiki.util.ClassUtil;
 import org.apache.wiki.util.FileUtil;
 import org.apache.wiki.util.TextUtil;
+import org.apache.wiki.util.WikiLogger;
 import org.apache.wiki.util.XHTML;
 import org.apache.wiki.util.XhtmlUtil;
 import org.apache.wiki.util.XmlUtil;
@@ -160,7 +159,7 @@ import java.util.StringTokenizer;
 public class DefaultPluginManager extends BaseModuleManager implements PluginManager {
 
     private static final String PLUGIN_INSERT_PATTERN = "\\{?(INSERT)?\\s*([\\w\\._]+)[ \\t]*(WHERE)?[ \\t]*";
-    private static final Logger log = LogManager.getLogger( DefaultPluginManager.class );
+    private static final WikiLogger log = WikiLogger.getLogger( DefaultPluginManager.class );
     private static final String DEFAULT_FORMS_PACKAGE = "org.apache.wiki.forms";
 
     private final ArrayList< String > m_searchPath = new ArrayList<>();
@@ -205,8 +204,8 @@ public class DefaultPluginManager extends BaseModuleManager implements PluginMan
         try {
             m_pluginPattern = compiler.compile( PLUGIN_INSERT_PATTERN );
         } catch( final MalformedPatternException e ) {
-            log.fatal( "Internal error: someone messed with pluginmanager patterns.", e );
-            throw new InternalWikiException( "PluginManager patterns are broken" , e );
+            log.error( "Internal error: someone messed with pluginmanager patterns.", e );
+            throw new WikiRuntimeException( "PluginManager patterns are broken" , e );
         }
     }
 

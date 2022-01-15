@@ -18,8 +18,6 @@
  */
 package org.apache.wiki.search.tika;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.ClimateForcast;
 import org.apache.tika.metadata.CreativeCommons;
@@ -37,6 +35,7 @@ import org.apache.wiki.api.core.Attachment;
 import org.apache.wiki.api.exceptions.ProviderException;
 import org.apache.wiki.attachment.AttachmentManager;
 import org.apache.wiki.search.LuceneSearchProvider;
+import org.apache.wiki.util.WikiLogger;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
@@ -53,7 +52,7 @@ import java.util.Set;
  */
 public class TikaSearchProvider extends LuceneSearchProvider {
 
-    private static final Logger LOG = LogManager.getLogger( TikaSearchProvider.class );
+    private static final WikiLogger LOG = WikiLogger.getLogger( TikaSearchProvider.class );
     final AutoDetectParser parser;
     final Set< String > textualMetadataFields;
 

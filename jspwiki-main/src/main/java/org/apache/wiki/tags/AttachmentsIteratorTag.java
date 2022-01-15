@@ -18,15 +18,15 @@
  */
 package org.apache.wiki.tags;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.api.core.Attachment;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.api.core.Page;
+import org.apache.wiki.api.exceptions.WikiRuntimeException;
 import org.apache.wiki.api.exceptions.ProviderException;
 import org.apache.wiki.attachment.AttachmentManager;
 import org.apache.wiki.pages.PageManager;
+import org.apache.wiki.util.WikiLogger;
 
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
@@ -45,10 +45,11 @@ import java.util.List;
  *  @since 2.0
  */
 // FIXME: Too much in common with IteratorTag - REFACTOR
+//TODO
 public class AttachmentsIteratorTag extends IteratorTag {
     private static final long serialVersionUID = 0L;
-    
-    private static final Logger log = LogManager.getLogger( AttachmentsIteratorTag.class );
+
+    private static final WikiLogger log = WikiLogger.getLogger( AttachmentsIteratorTag.class );
 
     /**
      *  {@inheritDoc}
@@ -94,11 +95,9 @@ public class AttachmentsIteratorTag extends IteratorTag {
 
             return EVAL_BODY_BUFFERED;
         } catch( final ProviderException e ) {
-            log.fatal("Provider failed while trying to iterator through history",e);
-            // FIXME: THrow something.
+            log.error("Provider failed while trying to iterate through history", e);
+            throw new WikiRuntimeException(e);
         }
-
-        return SKIP_BODY;
     }
 
     /**

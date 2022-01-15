@@ -18,10 +18,9 @@
  */
 package org.apache.wiki.ui.progress;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.ajax.WikiAjaxDispatcherServlet;
 import org.apache.wiki.ajax.WikiAjaxServlet;
+import org.apache.wiki.util.WikiLogger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,119 +30,117 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-
 /**
- *  Manages progressing items.  In general this class is used whenever JSPWiki is doing something which may require a long time.
- *  In addition, this manager provides a JSON interface for finding remotely what the progress is.  The JSON object name is
- *  JSON_PROGRESSTRACKER = "{@value #JSON_PROGRESSTRACKER}".
+ * Manages progressing items. In general this class is used whenever JSPWiki is
+ * doing something which may require a long time. In addition, this manager
+ * provides a JSON interface for finding remotely what the progress is. The JSON
+ * object name is JSON_PROGRESSTRACKER = "{@value #JSON_PROGRESSTRACKER}".
  *
- *  @since  2.6
+ * @since 2.6
  */
 public class DefaultProgressManager implements ProgressManager {
-
-    private final Map< String,ProgressItem > m_progressingTasks = new ConcurrentHashMap<>();
-
-    private static final Logger log = LogManager.getLogger( DefaultProgressManager.class );
+    private static final WikiLogger log = WikiLogger.getLogger(DefaultProgressManager.class);
+    private final Map<String, ProgressItem> m_progressingTasks = new ConcurrentHashMap<>();
 
     /**
-     *  Creates a new ProgressManager.
+     * Creates a new ProgressManager.
      */
     public DefaultProgressManager() {
-    	// TODO: Replace with custom annotations. See JSPWIKI-566
-        WikiAjaxDispatcherServlet.registerServlet( JSON_PROGRESSTRACKER, new JSONTracker() );
+        // TODO: Replace with custom annotations. See JSPWIKI-566
+        WikiAjaxDispatcherServlet.registerServlet(JSON_PROGRESSTRACKER, new JSONTracker());
     }
 
     /**
-     *  You can use this to get an unique process identifier.
+     * You can use this to get an unique process identifier.
      *
-     *  @return A new random value
+     * @return A new random value
      */
-    public String getNewProgressIdentifier()
-    {
+    public String getNewProgressIdentifier() {
         return UUID.randomUUID().toString();
     }
 
     /**
-     *  Call this method to get your ProgressItem into the ProgressManager queue. The ProgressItem will be moved to state STARTED.
+     * Call this method to get your ProgressItem into the ProgressManager queue. The
+     * ProgressItem will be moved to state STARTED.
      *
-     *  @param pi ProgressItem to start
-     *  @param id The progress identifier
+     * @param pi ProgressItem to start
+     * @param id The progress identifier
      */
-    public void startProgress( final ProgressItem pi, final String id ) {
-        log.debug( "Adding " + id + " to progress queue" );
-        m_progressingTasks.put( id, pi );
-        pi.setState( ProgressItem.STARTED );
+    public void startProgress(final ProgressItem pi, final String id) {
+        log.debug("Adding " + id + " to progress queue");
+        m_progressingTasks.put(id, pi);
+        pi.setState(ProgressItem.STARTED);
     }
 
     /**
-     *  Call this method to remove your ProgressItem from the queue (after which getProgress() will no longer find it.
-     *  The ProgressItem will be moved to state STOPPED.
+     * Call this method to remove your ProgressItem from the queue (after which
+     * getProgress() will no longer find it. The ProgressItem will be moved to state
+     * STOPPED.
      *
-     *  @param id The progress identifier
+     * @param id The progress identifier
      */
-    public void stopProgress( final String id ) {
-        log.debug( "Removed " + id + " from progress queue" );
-        final ProgressItem pi = m_progressingTasks.remove( id );
-        if( pi != null ) {
-            pi.setState( ProgressItem.STOPPED );
+    public void stopProgress(final String id) {
+        log.debug("Removed " + id + " from progress queue");
+        final ProgressItem pi = m_progressingTasks.remove(id);
+        if (pi != null) {
+            pi.setState(ProgressItem.STOPPED);
         }
     }
 
     /**
-     *  Get the progress in percents.
+     * Get the progress in percents.
      *
-     *  @param id The progress identifier.
-     *  @return a value between 0 to 100 indicating the progress
-     *  @throws IllegalArgumentException If no such progress item exists.
+     * @param id The progress identifier.
+     * @return a value between 0 to 100 indicating the progress
+     * @throws IllegalArgumentException If no such progress item exists.
      */
-    public int getProgress( final String id ) throws IllegalArgumentException {
-        final ProgressItem pi = m_progressingTasks.get( id );
-        if( pi != null ) {
+    public int getProgress(final String id) throws IllegalArgumentException {
+        final ProgressItem pi = m_progressingTasks.get(id);
+        if (pi != null) {
             return pi.getProgress();
         }
 
-        throw new IllegalArgumentException( "No such id was found" );
+        throw new IllegalArgumentException("No such id was found");
     }
 
     /**
-     *  Provides access to a progress indicator, assuming you know the ID. Progress of zero (0) means that the progress has just started,
-     *  and a progress of 100 means that it is complete.
+     * Provides access to a progress indicator, assuming you know the ID. Progress
+     * of zero (0) means that the progress has just started, and a progress of 100
+     * means that it is complete.
      */
     public class JSONTracker implements WikiAjaxServlet {
         /**
-         *  Returns upload progress in percents so far.
+         * Returns upload progress in percents so far.
          *
-         *  @param progressId The string representation of the progress ID that you want to know the progress of.
-         *  @return a value between 0 to 100 indicating the progress
+         * @param progressId The string representation of the progress ID that you want
+         *                   to know the progress of.
+         * @return a value between 0 to 100 indicating the progress
          */
-        public int getProgress( final String progressId )
-        {
-            return DefaultProgressManager.this.getProgress( progressId );
+        public int getProgress(final String progressId) {
+            return DefaultProgressManager.this.getProgress(progressId);
         }
-        
+
         public String getServletMapping() {
-        	return JSON_PROGRESSTRACKER;
+            return JSON_PROGRESSTRACKER;
         }
-        
-        public void service( final HttpServletRequest req,
-                             final HttpServletResponse resp,
-                             final String actionName,
-                             final List< String > params ) throws IOException {
-        	log.debug( "ProgressManager.doGet() START" );
-        	if( params.size() < 1 ) {
-        		return;
-        	}
-        	final String progressId = params.get(0);
-        	log.debug( "progressId=" + progressId );
-        	String progressString = "";
-        	try {
-        		progressString = Integer.toString( getProgress( progressId ) );
-        	} catch( final IllegalArgumentException e ) { // ignore
-        		log.debug( "progressId " + progressId + " is no longer valid" );
-        	}
-        	log.debug( "progressString=" + progressString );
-        	resp.getWriter().write( progressString );
-        	log.debug( "ProgressManager.doGet() DONE" );
+
+        public void service(final HttpServletRequest req, final HttpServletResponse resp,
+                final String actionName, final List<String> params) throws IOException {
+            log.debug("ProgressManager.doGet() START");
+            if (params.size() < 1) {
+                return;
+            }
+            final String progressId = params.get(0);
+            log.debug("progressId=" + progressId);
+            String progressString = "";
+            try {
+                progressString = Integer.toString(getProgress(progressId));
+            } catch (final IllegalArgumentException e) { // ignore
+                log.debug("progressId " + progressId + " is no longer valid");
+            }
+            log.debug("progressString=" + progressString);
+            resp.getWriter().write(progressString);
+            log.debug("ProgressManager.doGet() DONE");
         }
 
     }

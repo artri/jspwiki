@@ -18,9 +18,6 @@
  */
 package org.apache.wiki.util;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import javax.mail.*;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
@@ -197,7 +194,7 @@ public final class MailUtil {
 
     private static final String PROP_MAIL_AUTH = "mail.smtp.auth";
 
-    static final Logger log = LogManager.getLogger(MailUtil.class);
+    static final WikiLogger log = WikiLogger.getLogger(MailUtil.class);
 
     static final String DEFAULT_MAIL_JNDI_NAME       = "mail/Session";
 
@@ -282,7 +279,7 @@ public final class MailUtil {
             Transport.send(msg);
             log.info("Sent e-mail to={}, subject=\"{}\", used {} mail session.", to, subject, (c_useJndi ? "JNDI" : "standalone") );
         } catch (final MessagingException e) {
-            log.error(e);
+            log.error(e.getMessage(), e);
             throw e;
         }
     }

@@ -1,6 +1,7 @@
 target
 .settings
 .classpath
+.factorypath
 .project
 nb-configuration.xml
 **/*.iml

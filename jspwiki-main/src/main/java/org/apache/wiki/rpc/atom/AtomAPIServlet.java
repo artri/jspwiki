@@ -18,8 +18,6 @@
  */
 package org.apache.wiki.rpc.atom;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.api.core.Page;
@@ -30,6 +28,7 @@ import org.apache.wiki.pages.PageManager;
 import org.apache.wiki.plugin.WeblogEntryPlugin;
 import org.apache.wiki.plugin.WeblogPlugin;
 import org.apache.wiki.util.TextUtil;
+import org.apache.wiki.util.WikiLogger;
 import org.intabulas.sandler.Sandler;
 import org.intabulas.sandler.SyndicationFactory;
 import org.intabulas.sandler.elements.Content;
@@ -58,7 +57,7 @@ import java.util.Date;
 // FIXME: Rewrite using some other library
 public class AtomAPIServlet extends HttpServlet {
 
-    private static final Logger log = LogManager.getLogger( AtomAPIServlet.class );
+    private static final WikiLogger log = WikiLogger.getLogger( AtomAPIServlet.class );
 
     private static final long serialVersionUID = 0L;
 

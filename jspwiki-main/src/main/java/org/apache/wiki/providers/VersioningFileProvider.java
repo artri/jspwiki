@@ -18,17 +18,16 @@
  */
 package org.apache.wiki.providers;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.wiki.InternalWikiException;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.api.core.Page;
+import org.apache.wiki.api.exceptions.WikiRuntimeException;
 import org.apache.wiki.api.exceptions.NoRequiredPropertyException;
 import org.apache.wiki.api.exceptions.ProviderException;
 import org.apache.wiki.api.providers.PageProvider;
 import org.apache.wiki.api.providers.WikiProvider;
 import org.apache.wiki.api.spi.Wiki;
 import org.apache.wiki.util.FileUtil;
+import org.apache.wiki.util.WikiLogger;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -71,7 +70,7 @@ import java.util.Properties;
  */
 public class VersioningFileProvider extends AbstractFileProvider {
 
-    private static final Logger log = LogManager.getLogger( VersioningFileProvider.class );
+    private static final WikiLogger log = WikiLogger.getLogger( VersioningFileProvider.class );
 
     /** Name of the directory where the old versions are stored. */
     public static final String PAGEDIR = "OLD";
@@ -110,7 +109,7 @@ public class VersioningFileProvider extends AbstractFileProvider {
      */
     private File findOldPageDir( final String page ) {
         if( page == null ) {
-            throw new InternalWikiException( "Page may NOT be null in the provider!" );
+            throw new WikiRuntimeException( "Page may NOT be null in the provider!" );
         }
         final File oldpages = new File( getPageDirectory(), PAGEDIR );
         return new File( oldpages, mangleName( page ) );
@@ -606,9 +605,9 @@ public class VersioningFileProvider extends AbstractFileProvider {
                     pageFile.setLastModified( previousFile.lastModified() );
                 }
             } catch( final IOException e ) {
-                log.fatal("Something wrong with the page directory - you may have just lost data!",e);
+                log.error("Something wrong with the page directory - you may have just lost data!", e);
+                throw new WikiRuntimeException(e);
             }
-
             return;
         }
 

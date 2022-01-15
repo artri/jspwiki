@@ -18,13 +18,13 @@
  */
 package org.apache.wiki.tags;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.api.core.Page;
+import org.apache.wiki.api.exceptions.WikiRuntimeException;
 import org.apache.wiki.api.exceptions.ProviderException;
 import org.apache.wiki.attachment.AttachmentManager;
 import org.apache.wiki.pages.PageManager;
+import org.apache.wiki.util.WikiLogger;
 
 
 /**
@@ -35,7 +35,7 @@ import org.apache.wiki.pages.PageManager;
 public class HasAttachmentsTag extends WikiTagBase {
 
     private static final long serialVersionUID = 0L;
-    private static final Logger log = LogManager.getLogger( HasAttachmentsTag.class );
+    private static final WikiLogger log = WikiLogger.getLogger( HasAttachmentsTag.class );
     
     @Override
     public final int doWikiStartTag() {
@@ -49,9 +49,9 @@ public class HasAttachmentsTag extends WikiTagBase {
                     return EVAL_BODY_INCLUDE;
                 }
             }
-        } catch( final ProviderException e ) {
-            log.fatal("Provider failed while trying to check for attachements",e);
-            // FIXME: THrow something.
+        } catch(final ProviderException e ) {
+            log.error("Provider failed while trying to check for attachements",e);
+            throw new WikiRuntimeException(e);
         }
 
         return SKIP_BODY;

@@ -19,9 +19,8 @@
 
 package org.apache.wiki.pages;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.util.ClassUtil;
+import org.apache.wiki.util.WikiLogger;
 import org.apache.wiki.util.comparators.JavaNaturalComparator;
 
 import java.util.Arrays;
@@ -36,7 +35,7 @@ import java.util.Properties;
  */
 public class PageSorter implements Comparator< String > {
     
-    private static final Logger LOG = LogManager.getLogger( PageSorter.class );
+    private static final WikiLogger LOG = WikiLogger.getLogger( PageSorter.class );
 
     // The name of the property that specifies the desired page name comparator
     protected static final String PROP_PAGE_NAME_COMPARATOR = "jspwiki.pageNameComparator.class";

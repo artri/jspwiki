@@ -21,14 +21,13 @@ package org.apache.wiki.preferences;
 import com.google.gson.Gson;
 import org.apache.commons.lang3.LocaleUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.wiki.InternalWikiException;
 import org.apache.wiki.api.core.Context;
+import org.apache.wiki.api.exceptions.WikiRuntimeException;
 import org.apache.wiki.i18n.InternationalizationManager;
 import org.apache.wiki.util.HttpUtil;
 import org.apache.wiki.util.PropertyReader;
 import org.apache.wiki.util.TextUtil;
+import org.apache.wiki.util.WikiLogger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.PageContext;
@@ -58,7 +57,7 @@ public class Preferences extends HashMap< String,String > {
 
     public static final String COOKIE_USER_PREFS_NAME = "JSPWikiUserPrefs";
 
-    private static final Logger log = LogManager.getLogger( Preferences.class );
+    private static final WikiLogger log = WikiLogger.getLogger( Preferences.class );
 
     /**
      *  This is an utility method which is called to make sure that the
@@ -286,7 +285,7 @@ public class Preferences extends HashMap< String,String > {
                 break;
 
             default:
-                throw new InternalWikiException( "Got a TimeFormat for which we have no value!" );
+                throw new WikiRuntimeException( "Got a TimeFormat for which we have no value!" );
         }
 
         try {

@@ -18,9 +18,9 @@
  */
 package org.apache.wiki.tags;
 
-import org.apache.wiki.InternalWikiException;
 import org.apache.wiki.api.core.ContextEnum;
 import org.apache.wiki.api.core.Page;
+import org.apache.wiki.api.exceptions.WikiRuntimeException;
 
 import javax.servlet.jsp.JspWriter;
 import java.io.IOException;
@@ -66,7 +66,7 @@ public class CommentLinkTag
         switch( m_format ) {
         case ANCHOR: out.print( "<a href=\"" + getCommentURL( pageName ) + "\">" ); break;
         case URL: out.print( getCommentURL( pageName ) ); break;
-        default: throw new InternalWikiException( "Impossible format " + m_format );
+        default: throw new WikiRuntimeException( "Impossible format " + m_format );
         }
 
         return EVAL_BODY_INCLUDE;

@@ -18,13 +18,12 @@
  */
 package org.apache.wiki.forms;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.ContextEnum;
 import org.apache.wiki.api.exceptions.PluginException;
 import org.apache.wiki.api.plugin.Plugin;
 import org.apache.wiki.preferences.Preferences;
+import org.apache.wiki.util.WikiLogger;
 
 import java.text.MessageFormat;
 import java.util.Map;
@@ -68,7 +67,7 @@ import java.util.ResourceBundle;
  */
 public class FormOpen extends FormElement {
 
-    private static final Logger log = LogManager.getLogger( FormOpen.class );
+    private static final WikiLogger log = WikiLogger.getLogger( FormOpen.class );
 
     /** Parameter name for setting the method (GET or POST).  Value is <tt>{@value}</tt>. */
     public static final String PARAM_METHOD = "method";

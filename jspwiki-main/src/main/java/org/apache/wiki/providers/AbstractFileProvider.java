@@ -19,8 +19,6 @@
 package org.apache.wiki.providers;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.api.core.Page;
 import org.apache.wiki.api.exceptions.NoRequiredPropertyException;
@@ -34,6 +32,7 @@ import org.apache.wiki.search.SearchMatcher;
 import org.apache.wiki.search.SearchResultComparator;
 import org.apache.wiki.util.FileUtil;
 import org.apache.wiki.util.TextUtil;
+import org.apache.wiki.util.WikiLogger;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -66,7 +65,7 @@ import java.util.TreeSet;
  */
 public abstract class AbstractFileProvider implements PageProvider {
 
-    private static final Logger log = LogManager.getLogger(AbstractFileProvider.class);
+    private static final WikiLogger log = WikiLogger.getLogger(AbstractFileProvider.class);
     private String m_pageDirectory = "/tmp/";
     protected String m_encoding;
 

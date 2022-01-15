@@ -18,8 +18,6 @@
  */
 package org.apache.wiki.auth;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.api.core.Acl;
 import org.apache.wiki.api.core.AclEntry;
 import org.apache.wiki.api.core.Context;
@@ -44,6 +42,7 @@ import org.apache.wiki.i18n.InternationalizationManager;
 import org.apache.wiki.pages.PageManager;
 import org.apache.wiki.preferences.Preferences;
 import org.apache.wiki.util.ClassUtil;
+import org.apache.wiki.util.WikiLogger;
 import org.freshcookies.security.policy.LocalPolicy;
 
 import javax.servlet.http.HttpServletResponse;
@@ -77,7 +76,7 @@ import java.util.WeakHashMap;
  */
 public class DefaultAuthorizationManager implements AuthorizationManager {
 
-    private static final Logger log = LogManager.getLogger( DefaultAuthorizationManager.class );
+    private static final WikiLogger log = WikiLogger.getLogger( DefaultAuthorizationManager.class );
 
     private Authorizer m_authorizer;
 
@@ -253,10 +252,10 @@ public class DefaultAuthorizationManager implements AuthorizationManager {
             } else {
                 final String sb = "JSPWiki was unable to initialize the default security policy (WEB-INF/jspwiki.policy) file. " +
                                   "Please ensure that the jspwiki.policy file exists in the default location. " +
-                		          "This file should exist regardless of the existance of a global policy file. " +
+                                  "This file should exist regardless of the existance of a global policy file. " +
                                   "The global policy file is identified by the java.security.policy variable. ";
                 final WikiSecurityException wse = new WikiSecurityException( sb );
-                log.fatal( sb, wse );
+                log.error( sb, wse );
                 throw wse;
             }
         } catch ( final Exception e) {
@@ -283,7 +282,7 @@ public class DefaultAuthorizationManager implements AuthorizationManager {
             try {
                 return ClassUtil.buildInstance( "org.apache.wiki.auth.authorize", clazz );
             } catch( final ReflectiveOperationException e ) {
-                log.fatal( "Authorizer {} cannot be instantiated", clazz, e );
+                log.error( "Authorizer {} cannot be instantiated", clazz, e );
                 throw new WikiException( "Authorizer " + clazz + " cannot be instantiated", e );
             }
         }

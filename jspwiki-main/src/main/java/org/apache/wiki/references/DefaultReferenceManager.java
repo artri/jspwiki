@@ -19,14 +19,12 @@
 package org.apache.wiki.references;
 
 import org.apache.commons.lang3.time.StopWatch;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.wiki.InternalWikiException;
 import org.apache.wiki.LinkCollector;
 import org.apache.wiki.api.core.Attachment;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.api.core.Page;
+import org.apache.wiki.api.exceptions.WikiRuntimeException;
 import org.apache.wiki.api.exceptions.ProviderException;
 import org.apache.wiki.api.filters.BasePageFilter;
 import org.apache.wiki.api.providers.PageProvider;
@@ -39,6 +37,7 @@ import org.apache.wiki.event.WikiPageEvent;
 import org.apache.wiki.pages.PageManager;
 import org.apache.wiki.render.RenderingManager;
 import org.apache.wiki.util.TextUtil;
+import org.apache.wiki.util.WikiLogger;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -124,7 +123,7 @@ public class DefaultReferenceManager extends BasePageFilter implements Reference
 
     private final boolean m_matchEnglishPlurals;
 
-    private static final Logger LOG = LogManager.getLogger( DefaultReferenceManager.class);
+    private static final WikiLogger LOG = WikiLogger.getLogger( DefaultReferenceManager.class);
     private static final String SERIALIZATION_FILE = "refmgr.ser";
     private static final String SERIALIZATION_DIR  = "refmgr-attr";
 
@@ -199,7 +198,8 @@ public class DefaultReferenceManager extends BasePageFilter implements Reference
                     final Page wp = m_engine.getManager( PageManager.class ).getPage( page.getName() );
 
                     if( wp.getLastModified() == null ) {
-                        LOG.fatal( "Provider returns null lastModified.  Please submit a bug report." );
+                        LOG.error("Provider returns null lastModified.  Please submit a bug report.");
+                        throw new WikiRuntimeException("Provider returns null lastModified.  Please submit a bug report.");
                     } else if( wp.getLastModified().getTime() > saved ) {
                         updatePageReferences( wp );
                     }
@@ -286,15 +286,15 @@ public class DefaultReferenceManager extends BasePageFilter implements Reference
         if( pageName == null ) {
             return null;
         }
-		try {
+        try {
             final MessageDigest digest = MessageDigest.getInstance( "MD5" );
             final byte[] dig = digest.digest( pageName.getBytes( StandardCharsets.UTF_8 ) );
 
-	        return TextUtil.toHexString( dig ) + ".cache";
-		} catch( final NoSuchAlgorithmException e ) {
-			LOG.fatal( "What do you mean - no such algorithm?", e );
-			return null;
-		}
+            return TextUtil.toHexString( dig ) + ".cache";
+        } catch( final NoSuchAlgorithmException e ) {
+            LOG.error( "What do you mean - no such algorithm?", e );
+            return null;
+        }
     }
 
     /**
@@ -306,7 +306,7 @@ public class DefaultReferenceManager extends BasePageFilter implements Reference
         //  Find attribute cache, and check if it exists
         final String hashName = getHashFileName( p.getName() );
         if( hashName != null ) {
-        	File f = new File( m_engine.getWorkDir(), SERIALIZATION_DIR );
+            File f = new File( m_engine.getWorkDir(), SERIALIZATION_DIR );
             f = new File( f, hashName );
             if( !f.exists() ) {
                 return 0L;
@@ -356,7 +356,7 @@ public class DefaultReferenceManager extends BasePageFilter implements Reference
 
         final String hashName = getHashFileName( p.getName() );
         if( hashName != null ) {
-        	File f = new File( m_engine.getWorkDir(), SERIALIZATION_DIR );
+            File f = new File( m_engine.getWorkDir(), SERIALIZATION_DIR );
             if( !f.exists() ) {
                 f.mkdirs();
             }
@@ -404,7 +404,7 @@ public class DefaultReferenceManager extends BasePageFilter implements Reference
      *  @param content {@inheritDoc}
      */
     @Override
-	public void postSave( final Context context, final String content ) {
+    public void postSave( final Context context, final String content ) {
         final Page page = context.getPage();
         updateReferences( page.getName(), scanWikiLinks( page, content ) );
         serializeAttrsToDisk( page );
@@ -451,7 +451,7 @@ public class DefaultReferenceManager extends BasePageFilter implements Reference
             for( final String referredPageName : refTo ) {
                 final Set< String > refBy = m_referredBy.get( referredPageName );
                 if( refBy == null ) {
-                    throw new InternalWikiException( "Refmgr out of sync: page " + pageName +
+                    throw new WikiRuntimeException( "Refmgr out of sync: page " + pageName +
                                                      " refers to " + referredPageName + ", which has null referrers." );
                 }
 
@@ -479,7 +479,7 @@ public class DefaultReferenceManager extends BasePageFilter implements Reference
 
         final String hashName = getHashFileName( pageName );
         if( hashName != null ) {
-        	File f = new File( m_engine.getWorkDir(), SERIALIZATION_DIR );
+            File f = new File( m_engine.getWorkDir(), SERIALIZATION_DIR );
             f = new File( f, getHashFileName( pageName ) );
             if( f.exists() ) {
                 f.delete();
@@ -628,7 +628,7 @@ public class DefaultReferenceManager extends BasePageFilter implements Reference
                 m_refersTo.put( page.getName(), new TreeSet<>() );
             }
         } catch( final ClassCastException e ) {
-            LOG.fatal( "Invalid collection entry in ReferenceManager.buildKeyLists().", e );
+            LOG.error( "Invalid collection entry in ReferenceManager.buildKeyLists().", e );
         }
     }
 
@@ -876,7 +876,7 @@ public class DefaultReferenceManager extends BasePageFilter implements Reference
      *  {@inheritDoc}
      */
     @Override
-	public void actionPerformed( final WikiEvent event ) {
+    public void actionPerformed( final WikiEvent event ) {
         if( event instanceof WikiPageEvent && event.getType() == WikiPageEvent.PAGE_DELETED ) {
             final String pageName = ( ( WikiPageEvent ) event ).getPageName();
             if( pageName != null ) {

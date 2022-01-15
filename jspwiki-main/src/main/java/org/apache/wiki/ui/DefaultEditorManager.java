@@ -18,8 +18,6 @@
  */
 package org.apache.wiki.ui;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.ContextEnum;
 import org.apache.wiki.api.core.Engine;
@@ -27,6 +25,7 @@ import org.apache.wiki.api.exceptions.NoSuchVariableException;
 import org.apache.wiki.modules.BaseModuleManager;
 import org.apache.wiki.modules.WikiModuleInfo;
 import org.apache.wiki.preferences.Preferences;
+import org.apache.wiki.util.WikiLogger;
 import org.apache.wiki.util.XmlUtil;
 import org.apache.wiki.variables.VariableManager;
 import org.jdom2.Element;
@@ -58,10 +57,9 @@ import java.util.Set;
  *  @since 2.4
  */
 public class DefaultEditorManager extends BaseModuleManager implements EditorManager {
+    private static final WikiLogger log = WikiLogger.getLogger( DefaultEditorManager.class );
 
     private Map< String, WikiEditorInfo > m_editors;
-
-    private static final Logger log = LogManager.getLogger( DefaultEditorManager.class );
 
     public DefaultEditorManager( final Engine engine ) {
         super( engine );

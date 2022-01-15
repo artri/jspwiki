@@ -19,8 +19,7 @@
 package org.apache.wiki.management;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.wiki.util.WikiLogger;
 
 import javax.management.*;
 import java.lang.reflect.InvocationTargetException;
@@ -42,7 +41,7 @@ import java.lang.reflect.Method;
 // FIXME: Exception handling is not probably according to spec...
 public abstract class SimpleMBean implements DynamicMBean {
 
-	private static final Logger LOG = LogManager.getLogger( SimpleMBean.class );
+	private static final WikiLogger LOG = WikiLogger.getLogger( SimpleMBean.class );
     protected MBeanInfo m_beanInfo;
 
     private static Method findGetterSetter(final Class<?> clazz, final String name, final Class<?> parm )

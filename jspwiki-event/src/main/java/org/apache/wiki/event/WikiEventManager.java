@@ -19,9 +19,6 @@
 
 package org.apache.wiki.event;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,6 +30,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.Vector;
+
+import org.apache.wiki.util.WikiLogger;
 
 /**
  *  A singleton class that manages the addition and removal of WikiEvent listeners to a event source, as well as the firing of events
@@ -124,7 +123,7 @@ import java.util.Vector;
  */
 public final class WikiEventManager {
 
-    private static final Logger log = LogManager.getLogger(WikiEventManager.class);
+    private static final WikiLogger log = WikiLogger.getLogger(WikiEventManager.class);
 
     /* If true, permits a WikiEventMonitor to be set. */
     private static final boolean c_permitMonitor = false;

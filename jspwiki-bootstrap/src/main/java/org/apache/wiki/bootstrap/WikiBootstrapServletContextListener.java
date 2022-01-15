@@ -18,14 +18,15 @@
  */
 package org.apache.wiki.bootstrap;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.LoggerContext;
-import org.apache.logging.log4j.core.config.Configuration;
-import org.apache.logging.log4j.core.config.ConfigurationSource;
-import org.apache.logging.log4j.core.config.properties.PropertiesConfigurationFactory;
+//import org.apache.logging.log4j.LogManager;
+//import org.apache.logging.log4j.Logger;
+//import org.apache.logging.log4j.core.LoggerContext;
+//import org.apache.logging.log4j.core.config.Configuration;
+//import org.apache.logging.log4j.core.config.ConfigurationSource;
+//import org.apache.logging.log4j.core.config.properties.PropertiesConfigurationFactory;
 import org.apache.wiki.api.spi.Wiki;
 import org.apache.wiki.util.TextUtil;
+import org.apache.wiki.util.WikiLogger;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -38,7 +39,7 @@ import java.util.Properties;
 
 public class WikiBootstrapServletContextListener implements ServletContextListener {
 
-    private static final Logger LOG = LogManager.getLogger( WikiBootstrapServletContextListener.class );
+    private static final WikiLogger LOG = WikiLogger.getLogger( WikiBootstrapServletContextListener.class );
 
     /** {@inheritDoc} */
     @Override
@@ -68,30 +69,30 @@ public class WikiBootstrapServletContextListener implements ServletContextListen
     boolean initWikiLoggingFramework( final Properties properties ) {
         final String useExternalLogConfig = TextUtil.getStringProperty( properties, "jspwiki.use.external.logconfig", "false" );
         if ( useExternalLogConfig.equals( "false" ) ) {
-            final ConfigurationSource source = createConfigurationSource( properties );
-            if( source != null ) {
-                final PropertiesConfigurationFactory factory = new PropertiesConfigurationFactory();
-                final LoggerContext ctx = ( LoggerContext ) LogManager.getContext( this.getClass().getClassLoader(), false );
-                final Configuration conf = factory.getConfiguration( ctx, source );
-                conf.initialize();
-                ctx.setConfiguration( conf );
-                LOG.info( "Log configuration reloaded from Wiki properties" );
-            }
+//            final ConfigurationSource source = createConfigurationSource( properties );
+//            if( source != null ) {
+//                final PropertiesConfigurationFactory factory = new PropertiesConfigurationFactory();
+//                final LoggerContext ctx = ( LoggerContext ) LogManager.getContext( this.getClass().getClassLoader(), false );
+//                final Configuration conf = factory.getConfiguration( ctx, source );
+//                conf.initialize();
+//                ctx.setConfiguration( conf );
+//                LOG.info( "Log configuration reloaded from Wiki properties" );
+//            }
         }
         return useExternalLogConfig.equals( "false" );
     }
 
-    ConfigurationSource createConfigurationSource( final Properties properties ) {
-        final ByteArrayOutputStream out = new ByteArrayOutputStream();
-        try {
-            properties.store( out, null );
-            final InputStream in = new ByteArrayInputStream( out.toByteArray() );
-            return new ConfigurationSource( in );
-        } catch( final IOException ioe ) {
-            LOG.error( "Unable to load the properties file into Log4j2, default Log4J2 configuration will be applied.", ioe );
-            return null;
-        }
-    }
+//    ConfigurationSource createConfigurationSource( final Properties properties ) {
+//        final ByteArrayOutputStream out = new ByteArrayOutputStream();
+//        try {
+//            properties.store( out, null );
+//            final InputStream in = new ByteArrayInputStream( out.toByteArray() );
+//            return new ConfigurationSource( in );
+//        } catch( final IOException ioe ) {
+//            LOG.error( "Unable to load the properties file into Log4j2, default Log4J2 configuration will be applied.", ioe );
+//            return null;
+//        }
+//    }
 
     /** {@inheritDoc} */
     @Override

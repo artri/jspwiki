@@ -18,8 +18,6 @@
  */
 package org.apache.wiki.plugin;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.ContextEnum;
 import org.apache.wiki.api.core.Engine;
@@ -32,6 +30,7 @@ import org.apache.wiki.pages.PageLock;
 import org.apache.wiki.pages.PageManager;
 import org.apache.wiki.preferences.Preferences;
 import org.apache.wiki.util.TextUtil;
+import org.apache.wiki.util.WikiLogger;
 
 import java.text.SimpleDateFormat;
 import java.util.Collection;
@@ -52,7 +51,7 @@ import java.util.ResourceBundle;
  */
 public class WeblogEntryPlugin implements Plugin {
 
-    private static final Logger log = LogManager.getLogger(WeblogEntryPlugin.class);
+    private static final WikiLogger log = WikiLogger.getLogger(WeblogEntryPlugin.class);
     private static final int MAX_BLOG_ENTRIES = 10_000; // Just a precaution.
 
     /**

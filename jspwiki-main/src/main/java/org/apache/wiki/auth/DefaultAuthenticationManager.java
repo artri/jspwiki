@@ -18,8 +18,6 @@
  */
 package org.apache.wiki.auth;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.api.core.Session;
 import org.apache.wiki.api.exceptions.WikiException;
@@ -39,6 +37,7 @@ import org.apache.wiki.event.WikiSecurityEvent;
 import org.apache.wiki.util.ClassUtil;
 import org.apache.wiki.util.TextUtil;
 import org.apache.wiki.util.TimedCounterList;
+import org.apache.wiki.util.WikiLogger;
 
 import javax.security.auth.Subject;
 import javax.security.auth.callback.CallbackHandler;
@@ -69,7 +68,7 @@ public class DefaultAuthenticationManager implements AuthenticationManager {
 
     private static final long MAX_LOGIN_DELAY = 20 * 1_000L; // 20 seconds
 
-    private static final Logger log = LogManager.getLogger( DefaultAuthenticationManager.class );
+    private static final WikiLogger log = WikiLogger.getLogger( DefaultAuthenticationManager.class );
 
     /** Empty Map passed to JAAS {@link #doJAASLogin(Class, CallbackHandler, Map)} method. */
     protected static final Map< String, String > EMPTY_MAP = Collections.unmodifiableMap( new HashMap<>() );

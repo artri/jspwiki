@@ -18,9 +18,9 @@
  */
 package org.apache.wiki.tags;
 
-import org.apache.wiki.InternalWikiException;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.api.core.Page;
+import org.apache.wiki.api.exceptions.WikiRuntimeException;
 import org.apache.wiki.pages.PageManager;
 
 
@@ -90,7 +90,7 @@ public class CheckVersionTag extends WikiTagBase {
                 case NOTLATEST : include = ( version > 0 ) && ( latest.getVersion() != version ); break;
                 case FIRST     : include = ( version == 1 ) || ( version < 0 && latest.getVersion() == 1 ); break;
                 case NOTFIRST  : include = version > 1; break;
-                default: throw new InternalWikiException( "Mode which is not available!" );
+                default: throw new WikiRuntimeException( "Mode which is not available!" );
             }
             if( include ) {
                 return EVAL_BODY_INCLUDE;

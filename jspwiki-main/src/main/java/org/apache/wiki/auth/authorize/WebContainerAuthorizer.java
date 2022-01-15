@@ -18,11 +18,10 @@
  */
 package org.apache.wiki.auth.authorize;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.wiki.InternalWikiException;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.api.core.Session;
+import org.apache.wiki.api.exceptions.WikiRuntimeException;
+import org.apache.wiki.util.WikiLogger;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -57,7 +56,7 @@ public class WebContainerAuthorizer implements WebAuthorizer  {
 
     private static final String J2EE_SCHEMA_25_NAMESPACE = "http://xmlns.jcp.org/xml/ns/javaee";
 
-    private static final Logger log = LogManager.getLogger( WebContainerAuthorizer.class );
+    private static final WikiLogger log = WikiLogger.getLogger( WebContainerAuthorizer.class );
 
     protected Engine m_engine;
 
@@ -111,10 +110,10 @@ public class WebContainerAuthorizer implements WebAuthorizer  {
             }
         } catch( final IOException e ) {
             log.error( "Initialization failed: ", e );
-            throw new InternalWikiException( e.getClass().getName() + ": " + e.getMessage(), e );
+            throw new WikiRuntimeException( e.getClass().getName() + ": " + e.getMessage(), e );
         } catch( final JDOMException e ) {
             log.error( "Malformed XML in web.xml", e );
-            throw new InternalWikiException( e.getClass().getName() + ": " + e.getMessage(), e );
+            throw new WikiRuntimeException( e.getClass().getName() + ": " + e.getMessage(), e );
         }
 
         if( m_containerRoles.length > 0 ) {

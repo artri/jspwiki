@@ -19,9 +19,6 @@
 package org.apache.wiki.ui;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.ThreadContext;
 import org.apache.wiki.WatchDog;
 import org.apache.wiki.WikiContext;
 import org.apache.wiki.api.core.Engine;
@@ -29,6 +26,7 @@ import org.apache.wiki.event.WikiEventManager;
 import org.apache.wiki.event.WikiPageEvent;
 import org.apache.wiki.url.URLConstructor;
 import org.apache.wiki.util.TextUtil;
+import org.apache.wiki.util.WikiLogger;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -37,25 +35,33 @@ import javax.servlet.http.HttpServletResponseWrapper;
 import java.io.*;
 import java.nio.charset.Charset;
 
-
 /**
- * This filter goes through the generated page response prior and places requested resources at the appropriate inclusion markers.
- * This is done to let dynamic content (e.g. plugins, editors) include custom resources, even after the HTML head section is
- * in fact built. This filter is typically the last filter to execute, and it <em>must</em> run after servlet or JSP code that performs
- * redirections or sends error codes (such as access control methods).
+ * This filter goes through the generated page response prior and places
+ * requested resources at the appropriate inclusion markers. This is done to let
+ * dynamic content (e.g. plugins, editors) include custom resources, even after
+ * the HTML head section is in fact built. This filter is typically the last
+ * filter to execute, and it <em>must</em> run after servlet or JSP code that
+ * performs redirections or sends error codes (such as access control methods).
  * <p>
- * Inclusion markers are placed by the IncludeResourcesTag; the default content templates (see .../templates/default/commonheader.jsp)
- * are configured to do this. As an example, a JavaScript resource marker is added like this:
+ * Inclusion markers are placed by the IncludeResourcesTag; the default content
+ * templates (see .../templates/default/commonheader.jsp) are configured to do
+ * this. As an example, a JavaScript resource marker is added like this:
+ * 
  * <pre>
  * &lt;wiki:IncludeResources type="script"/&gt;
  * </pre>
- * Any code that requires special resources must register a resource request with the TemplateManager. For example:
+ * 
+ * Any code that requires special resources must register a resource request
+ * with the TemplateManager. For example:
+ * 
  * <pre>
  * &lt;wiki:RequestResource type="script" path="scripts/custom.js" /&gt;
  * </pre>
+ * 
  * or programmatically,
+ * 
  * <pre>
- * TemplateManager.addResourceRequest( context, TemplateManager.RESOURCE_SCRIPT, "scripts/customresource.js" );
+ * TemplateManager.addResourceRequest(context, TemplateManager.RESOURCE_SCRIPT, "scripts/customresource.js");
  * </pre>
  *
  * @see TemplateManager
@@ -63,44 +69,48 @@ import java.nio.charset.Charset;
  */
 public class WikiJSPFilter extends WikiServletFilter {
 
-    private static final Logger log = LogManager.getLogger( WikiJSPFilter.class );
+    private static final WikiLogger log = WikiLogger.getLogger(WikiJSPFilter.class);
     private String m_wiki_encoding;
     private boolean useEncoding;
 
     /** {@inheritDoc} */
     @Override
-    public void init( final FilterConfig config ) throws ServletException {
-        super.init( config );
-        m_wiki_encoding = m_engine.getWikiProperties().getProperty( Engine.PROP_ENCODING );
+    public void init(final FilterConfig config) throws ServletException {
+        super.init(config);
+        m_wiki_encoding = m_engine.getWikiProperties().getProperty(Engine.PROP_ENCODING);
 
-        useEncoding = !Boolean.parseBoolean( m_engine.getWikiProperties().getProperty( Engine.PROP_NO_FILTER_ENCODING, "false" ).trim() );
+        useEncoding = !Boolean
+                .parseBoolean(m_engine.getWikiProperties().getProperty(Engine.PROP_NO_FILTER_ENCODING, "false").trim());
     }
 
     @Override
-    public void doFilter( final ServletRequest  request, final ServletResponse response, final FilterChain chain ) throws ServletException, IOException {
-        final WatchDog w = WatchDog.getCurrentWatchDog( m_engine );
+    public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain)
+            throws ServletException, IOException {
+        final WatchDog w = WatchDog.getCurrentWatchDog(m_engine);
         try {
-            ThreadContext.push( m_engine.getApplicationName() + ":" + ( ( HttpServletRequest )request ).getRequestURI() );
-            w.enterState("Filtering for URL "+((HttpServletRequest)request).getRequestURI(), 90 );
-            final HttpServletResponseWrapper responseWrapper = new JSPWikiServletResponseWrapper( ( HttpServletResponse )response, m_wiki_encoding, useEncoding );
+            w.enterState("Filtering for URL " + ((HttpServletRequest) request).getRequestURI(), 90);
+            final HttpServletResponseWrapper responseWrapper = new JSPWikiServletResponseWrapper(
+                    (HttpServletResponse) response, m_wiki_encoding, useEncoding);
 
             // fire PAGE_REQUESTED event
-            final String pagename = URLConstructor.parsePageFromURL( ( HttpServletRequest )request, Charset.forName( response.getCharacterEncoding() ) );
-            fireEvent( WikiPageEvent.PAGE_REQUESTED, pagename );
-            super.doFilter( request, responseWrapper, chain );
+            final String pagename = URLConstructor.parsePageFromURL((HttpServletRequest) request,
+                    Charset.forName(response.getCharacterEncoding()));
+            fireEvent(WikiPageEvent.PAGE_REQUESTED, pagename);
+            super.doFilter(request, responseWrapper, chain);
 
             // The response is now complete. Lets replace the markers now.
 
             // WikiContext is only available after doFilter! (That is after interpreting the jsp)
 
             try {
-                w.enterState( "Delivering response", 30 );
-                final WikiContext wikiContext = getWikiContext( request );
-                final String r = filter( wikiContext, responseWrapper );
+                w.enterState("Delivering response", 30);
+                final WikiContext wikiContext = getWikiContext(request);
+                final String r = filter(wikiContext, responseWrapper);
 
-                if( useEncoding ) {
-                    final OutputStreamWriter out = new OutputStreamWriter( response.getOutputStream(), response.getCharacterEncoding() );
-                    out.write( r );
+                if (useEncoding) {
+                    final OutputStreamWriter out = new OutputStreamWriter(response.getOutputStream(),
+                            response.getCharacterEncoding());
+                    out.write(r);
                     out.flush();
                     out.close();
                 } else {
@@ -108,20 +118,18 @@ public class WikiJSPFilter extends WikiServletFilter {
                 }
 
                 // Clean up the UI messages and loggers
-                if( wikiContext != null ) {
+                if (wikiContext != null) {
                     wikiContext.getWikiSession().clearMessages();
                 }
 
                 // fire PAGE_DELIVERED event
-                fireEvent( WikiPageEvent.PAGE_DELIVERED, pagename );
+                fireEvent(WikiPageEvent.PAGE_DELIVERED, pagename);
 
             } finally {
                 w.exitState();
             }
         } finally {
             w.exitState();
-            ThreadContext.pop();
-            ThreadContext.remove( m_engine.getApplicationName() + ":" + ( ( HttpServletRequest )request ).getRequestURI() );
         }
     }
 
@@ -129,31 +137,32 @@ public class WikiJSPFilter extends WikiServletFilter {
      * Goes through all types and writes the appropriate response.
      *
      * @param wikiContext The usual processing context
-     * @param response The source string
+     * @param response    The source string
      * @return The modified string with all the insertions in place.
      */
-    private String filter( final WikiContext wikiContext, final HttpServletResponse response ) {
+    private String filter(final WikiContext wikiContext, final HttpServletResponse response) {
         String string = response.toString();
 
-        if( wikiContext != null ) {
-            final String[] resourceTypes = TemplateManager.getResourceTypes( wikiContext );
-            for( final String resourceType : resourceTypes ) {
-                string = insertResources( wikiContext, string, resourceType );
+        if (wikiContext != null) {
+            final String[] resourceTypes = TemplateManager.getResourceTypes(wikiContext);
+            for (final String resourceType : resourceTypes) {
+                string = insertResources(wikiContext, string, resourceType);
             }
 
-            //  Add HTTP header Resource Requests
-            final String[] headers = TemplateManager.getResourceRequests( wikiContext, TemplateManager.RESOURCE_HTTPHEADER );
+            // Add HTTP header Resource Requests
+            final String[] headers = TemplateManager.getResourceRequests(wikiContext,
+                    TemplateManager.RESOURCE_HTTPHEADER);
 
-            for( final String header : headers ) {
+            for (final String header : headers) {
                 String key = header;
                 String value = "";
-                final int split = header.indexOf( ':' );
-                if( split > 0 && split < header.length() - 1 ) {
-                    key = header.substring( 0, split );
-                    value = header.substring( split + 1 );
+                final int split = header.indexOf(':');
+                if (split > 0 && split < header.length() - 1) {
+                    key = header.substring(0, split);
+                    value = header.substring(split + 1);
                 }
 
-                response.addHeader( key.trim(), value.trim() );
+                response.addHeader(key.trim(), value.trim());
             }
         }
 
@@ -161,40 +170,41 @@ public class WikiJSPFilter extends WikiServletFilter {
     }
 
     /**
-     *  Inserts whatever resources were requested by any plugins or other components for this particular type.
+     * Inserts whatever resources were requested by any plugins or other components
+     * for this particular type.
      *
-     *  @param wikiContext The usual processing context
-     *  @param string The source string
-     *  @param type Type identifier for insertion
-     *  @return The filtered string.
+     * @param wikiContext The usual processing context
+     * @param string      The source string
+     * @param type        Type identifier for insertion
+     * @return The filtered string.
      */
-    private String insertResources( final WikiContext wikiContext, final String string, final String type ) {
-        if( wikiContext == null ) {
+    private String insertResources(final WikiContext wikiContext, final String string, final String type) {
+        if (wikiContext == null) {
             return string;
         }
 
-        final String marker = TemplateManager.getMarker( wikiContext, type );
-        final int idx = string.indexOf( marker );
-        if( idx == -1 ) {
+        final String marker = TemplateManager.getMarker(wikiContext, type);
+        final int idx = string.indexOf(marker);
+        if (idx == -1) {
             return string;
         }
 
         log.debug("...Inserting...");
 
-        final String[] resources = TemplateManager.getResourceRequests( wikiContext, type );
-        final StringBuilder concat = new StringBuilder( resources.length * 40 );
+        final String[] resources = TemplateManager.getResourceRequests(wikiContext, type);
+        final StringBuilder concat = new StringBuilder(resources.length * 40);
 
-        for( final String resource : resources ) {
-            log.debug( "...:::" + resource );
-            concat.append( resource );
+        for (final String resource : resources) {
+            log.debug("...:::" + resource);
+            concat.append(resource);
         }
 
-        return TextUtil.replaceString( string, idx, idx + marker.length(), concat.toString() );
+        return TextUtil.replaceString(string, idx, idx + marker.length(), concat.toString());
     }
 
     /**
-     *  Simple response wrapper that just allows us to gobble through the entire
-     *  response before it's output.
+     * Simple response wrapper that just allows us to gobble through the entire
+     * response before it's output.
      */
     private static class JSPWikiServletResponseWrapper extends HttpServletResponseWrapper {
 
@@ -204,20 +214,27 @@ public class WikiJSPFilter extends WikiServletFilter {
         private final HttpServletResponse m_response;
         private final boolean useEncoding;
 
-        /** How large the initial buffer should be.  This should be tuned to achieve a balance in speed and memory consumption. */
+        /**
+         * How large the initial buffer should be. This should be tuned to achieve a
+         * balance in speed and memory consumption.
+         */
         private static final int INIT_BUFFER_SIZE = 0x8000;
 
-        public JSPWikiServletResponseWrapper( final HttpServletResponse r, final String wikiEncoding, final boolean useEncoding ) throws UnsupportedEncodingException {
-            super( r );
-            m_output = new ByteArrayOutputStream( INIT_BUFFER_SIZE );
-            m_servletOut = new ByteArrayServletOutputStream( m_output );
-            m_writer = new PrintWriter( new OutputStreamWriter( m_servletOut, wikiEncoding ), true );
+        public JSPWikiServletResponseWrapper(final HttpServletResponse r, final String wikiEncoding,
+                final boolean useEncoding) throws UnsupportedEncodingException {
+            super(r);
+            m_output = new ByteArrayOutputStream(INIT_BUFFER_SIZE);
+            m_servletOut = new ByteArrayServletOutputStream(m_output);
+            m_writer = new PrintWriter(new OutputStreamWriter(m_servletOut, wikiEncoding), true);
             this.useEncoding = useEncoding;
 
             m_response = r;
         }
 
-        /** Returns a writer for output; this wraps the internal buffer into a PrintWriter. */
+        /**
+         * Returns a writer for output; this wraps the internal buffer into a
+         * PrintWriter.
+         */
         @Override
         public PrintWriter getWriter() {
             return m_writer;
@@ -238,51 +255,51 @@ public class WikiJSPFilter extends WikiServletFilter {
 
             final ByteArrayOutputStream m_buffer;
 
-            public ByteArrayServletOutputStream( final ByteArrayOutputStream byteArrayOutputStream ) {
+            public ByteArrayServletOutputStream(final ByteArrayOutputStream byteArrayOutputStream) {
                 super();
                 m_buffer = byteArrayOutputStream;
             }
 
             //
-            /**{@inheritDoc} */
+            /** {@inheritDoc} */
             @Override
-            public void write( final int aInt ) {
-                m_buffer.write( aInt );
+            public void write(final int aInt) {
+                m_buffer.write(aInt);
             }
 
-            /**{@inheritDoc} */
+            /** {@inheritDoc} */
             @Override
-			public boolean isReady() {
-				return false;
-			}
+            public boolean isReady() {
+                return false;
+            }
 
-            /**{@inheritDoc} */
+            /** {@inheritDoc} */
             @Override
-			public void setWriteListener( final WriteListener writeListener ) {
-			}
-			
+            public void setWriteListener(final WriteListener writeListener) {
+            }
+
         }
 
         /** Returns whatever was written so far into the Writer. */
         @Override
         public String toString() {
             try {
-				flushBuffer();
-			} catch( final IOException e ) {
-                log.error( e );
+                flushBuffer();
+            } catch (final IOException e) {
+                log.error(e.getMessage(), e);
                 return StringUtils.EMPTY;
-			}
+            }
 
             try {
-				if( useEncoding ) {
-					return m_output.toString( m_response.getCharacterEncoding() );
-				}
+                if (useEncoding) {
+                    return m_output.toString(m_response.getCharacterEncoding());
+                }
 
-				return m_output.toString();
-			} catch( final UnsupportedEncodingException e ) {
-                log.error( e );
+                return m_output.toString();
+            } catch (final UnsupportedEncodingException e) {
+                log.error(e.getMessage(), e);
                 return StringUtils.EMPTY;
-             }
+            }
         }
 
     }
@@ -290,17 +307,16 @@ public class WikiJSPFilter extends WikiServletFilter {
     // events processing .......................................................
 
     /**
-     *  Fires a WikiPageEvent of the provided type and page name
-     *  to all registered listeners of the current Engine.
+     * Fires a WikiPageEvent of the provided type and page name to all registered
+     * listeners of the current Engine.
      *
      * @see org.apache.wiki.event.WikiPageEvent
-     * @param type       the event type to be fired
-     * @param pagename   the wiki page name as a String
+     * @param type     the event type to be fired
+     * @param pagename the wiki page name as a String
      */
-    protected final void fireEvent( final int type, final String pagename ) {
-        if( WikiEventManager.isListening( m_engine ) ) {
-            WikiEventManager.fireEvent( m_engine, new WikiPageEvent( m_engine, type, pagename ) );
+    protected final void fireEvent(final int type, final String pagename) {
+        if (WikiEventManager.isListening(m_engine)) {
+            WikiEventManager.fireEvent(m_engine, new WikiPageEvent(m_engine, type, pagename));
         }
     }
-
 }

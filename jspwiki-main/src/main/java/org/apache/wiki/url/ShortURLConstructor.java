@@ -18,12 +18,11 @@
  */
 package org.apache.wiki.url;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.wiki.InternalWikiException;
 import org.apache.wiki.api.core.ContextEnum;
 import org.apache.wiki.api.core.Engine;
+import org.apache.wiki.api.exceptions.WikiRuntimeException;
 import org.apache.wiki.util.TextUtil;
+import org.apache.wiki.util.WikiLogger;
 
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.Charset;
@@ -38,7 +37,7 @@ import java.util.Properties;
 public class ShortURLConstructor extends DefaultURLConstructor {
     
     private static final String DEFAULT_PREFIX = "wiki/";
-    private static final Logger log = LogManager.getLogger( ShortURLConstructor.class );
+    private static final WikiLogger log = WikiLogger.getLogger( ShortURLConstructor.class );
     
     /** Contains the path part after the JSPWiki base URL */
     protected String m_urlPrefix = "";
@@ -116,7 +115,7 @@ public class ShortURLConstructor extends DefaultURLConstructor {
             return doReplacement( viewurl + "?do=Group&group=%n", name );
         }
         
-        throw new InternalWikiException( "Requested unsupported context " + context );
+        throw new WikiRuntimeException( "Requested unsupported context " + context );
     }
 
     /**

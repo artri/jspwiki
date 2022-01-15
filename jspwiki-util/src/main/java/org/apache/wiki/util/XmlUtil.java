@@ -20,8 +20,6 @@
 package org.apache.wiki.util;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -51,95 +49,95 @@ import java.util.Set;
  */
 public final class XmlUtil  {
 
-	private static final String ALL_TEXT_NODES = "//text()";
-	private static final Logger LOG = LogManager.getLogger( XmlUtil.class );
-	private XmlUtil() {}
-	
-	/**
-	 * Parses the given XML file and returns the requested nodes. If there's an error accessing or parsing the file, an
-	 * empty list is returned.
-	 * 
-	 * @param xml file to parse; matches all resources from classpath, filters repeated items.
-	 * @param requestedNodes requested nodes on the xml file
-	 * @return the requested nodes of the XML file.
-	 */
-	public static List< Element > parse( final String xml, final String requestedNodes ) {
-		if( StringUtils.isNotEmpty( xml ) && StringUtils.isNotEmpty( requestedNodes ) ) {
-			final Set< Element > readed = new HashSet<>();
-			final SAXBuilder builder = new SAXBuilder();
-			try {
-				final Enumeration< URL > resources = XmlUtil.class.getClassLoader().getResources( xml );
-				while( resources.hasMoreElements() ) {
-					final URL resource = resources.nextElement();
-					LOG.debug( "reading {}", resource.toString() );
-					final Document doc = builder.build( resource );
-					final XPathFactory xpfac = XPathFactory.instance();
-					final XPathExpression<Element> xp = xpfac.compile( requestedNodes, Filters.element() );
-	                readed.addAll( xp.evaluate( doc ) ); // filter out repeated items
-	            }
-				return new ArrayList<>( readed );
-			} catch( final IOException ioe ) {
-				LOG.error( "Couldn't load all {} resources", xml, ioe );
-			} catch( final JDOMException jdome ) {
-				LOG.error( "error parsing {} resources", xml, jdome );
-			}
-		}
-		return Collections.emptyList();
-	}
-	
-	/**
-	 * Parses the given stream and returns the requested nodes. If there's an error accessing or parsing the stream, an
-	 * empty list is returned.
-	 * 
-	 * @param xmlStream stream to parse.
-	 * @param requestedNodes requestd nodes on the xml stream.
-	 * @return the requested nodes of the XML stream.
-	 */
-	public static List< Element > parse( final InputStream xmlStream, final String requestedNodes ) {
-		if( xmlStream != null && StringUtils.isNotEmpty( requestedNodes ) ) {
-			final SAXBuilder builder = new SAXBuilder();
-			try {
-				final Document doc = builder.build( xmlStream );
-				final XPathFactory xpfac = XPathFactory.instance();
-				final XPathExpression< Element > xp = xpfac.compile( requestedNodes, Filters.element() );
-				return xp.evaluate( doc );
-			} catch( final IOException ioe ) {
-				LOG.error( "Couldn't load all {} resources", xmlStream, ioe );
-			} catch( final JDOMException jdome ) {
-				LOG.error( "error parsing {} resources", xmlStream,  jdome );
-			}
-		}		
-		return Collections.emptyList();
-	}
+    private static final String ALL_TEXT_NODES = "//text()";
+    private static final WikiLogger LOG = WikiLogger.getLogger( XmlUtil.class );
+    private XmlUtil() {}
+    
+    /**
+     * Parses the given XML file and returns the requested nodes. If there's an error accessing or parsing the file, an
+     * empty list is returned.
+     * 
+     * @param xml file to parse; matches all resources from classpath, filters repeated items.
+     * @param requestedNodes requested nodes on the xml file
+     * @return the requested nodes of the XML file.
+     */
+    public static List< Element > parse( final String xml, final String requestedNodes ) {
+        if( StringUtils.isNotEmpty( xml ) && StringUtils.isNotEmpty( requestedNodes ) ) {
+            final Set< Element > readed = new HashSet<>();
+            final SAXBuilder builder = new SAXBuilder();
+            try {
+                final Enumeration< URL > resources = XmlUtil.class.getClassLoader().getResources( xml );
+                while( resources.hasMoreElements() ) {
+                    final URL resource = resources.nextElement();
+                    LOG.debug( "reading {}", resource.toString() );
+                    final Document doc = builder.build( resource );
+                    final XPathFactory xpfac = XPathFactory.instance();
+                    final XPathExpression<Element> xp = xpfac.compile( requestedNodes, Filters.element() );
+                    readed.addAll( xp.evaluate( doc ) ); // filter out repeated items
+                }
+                return new ArrayList<>( readed );
+            } catch( final IOException ioe ) {
+                LOG.error( "Couldn't load all {} resources", xml, ioe );
+            } catch( final JDOMException jdome ) {
+                LOG.error( "error parsing {} resources", xml, jdome );
+            }
+        }
+        return Collections.emptyList();
+    }
+    
+    /**
+     * Parses the given stream and returns the requested nodes. If there's an error accessing or parsing the stream, an
+     * empty list is returned.
+     * 
+     * @param xmlStream stream to parse.
+     * @param requestedNodes requestd nodes on the xml stream.
+     * @return the requested nodes of the XML stream.
+     */
+    public static List< Element > parse( final InputStream xmlStream, final String requestedNodes ) {
+        if( xmlStream != null && StringUtils.isNotEmpty( requestedNodes ) ) {
+            final SAXBuilder builder = new SAXBuilder();
+            try {
+                final Document doc = builder.build( xmlStream );
+                final XPathFactory xpfac = XPathFactory.instance();
+                final XPathExpression< Element > xp = xpfac.compile( requestedNodes, Filters.element() );
+                return xp.evaluate( doc );
+            } catch( final IOException ioe ) {
+                LOG.error( "Couldn't load all {} resources", xmlStream, ioe );
+            } catch( final JDOMException jdome ) {
+                LOG.error( "error parsing {} resources", xmlStream,  jdome );
+            }
+        }        
+        return Collections.emptyList();
+    }
 
-	/**
-	 * Renders all the text() nodes from the DOM tree. This is very useful for cleaning away all the XHTML.
-	 *
-	 * @param doc Dom tree
-	 * @return String containing only the text from the provided Dom tree.
-	 */
-	public static String extractTextFromDocument( final Document doc ) {
-		if( doc == null ) {
-			return "";
-		}
-		final StringBuilder sb = new StringBuilder();
-		final List< ? > nodes = XPathFactory.instance().compile( ALL_TEXT_NODES ).evaluate( doc );
-		for( final Object el : nodes ) {
-			if( el instanceof Text ) {
-				sb.append( ( ( Text )el ).getValue() );
-			}
-		}
+    /**
+     * Renders all the text() nodes from the DOM tree. This is very useful for cleaning away all the XHTML.
+     *
+     * @param doc Dom tree
+     * @return String containing only the text from the provided Dom tree.
+     */
+    public static String extractTextFromDocument( final Document doc ) {
+        if( doc == null ) {
+            return "";
+        }
+        final StringBuilder sb = new StringBuilder();
+        final List< ? > nodes = XPathFactory.instance().compile( ALL_TEXT_NODES ).evaluate( doc );
+        for( final Object el : nodes ) {
+            if( el instanceof Text ) {
+                sb.append( ( ( Text )el ).getValue() );
+            }
+        }
 
-		return sb.toString();
-	}
+        return sb.toString();
+    }
 
-	public static Element getXPathElement( final Element base, final String expression ) {
-		final List< ? > nodes = XPathFactory.instance().compile( expression ).evaluate( base );
-		if( nodes == null || nodes.size() == 0 ) {
-			return null;
-		} else {
-			return ( Element )nodes.get( 0 );
-		}
-	}
+    public static Element getXPathElement( final Element base, final String expression ) {
+        final List< ? > nodes = XPathFactory.instance().compile( expression ).evaluate( base );
+        if( nodes == null || nodes.size() == 0 ) {
+            return null;
+        } else {
+            return ( Element )nodes.get( 0 );
+        }
+    }
 
 }

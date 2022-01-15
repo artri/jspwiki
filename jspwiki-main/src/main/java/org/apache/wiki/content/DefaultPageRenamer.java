@@ -18,8 +18,6 @@
  */
 package org.apache.wiki.content;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.api.core.Attachment;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.Engine;
@@ -34,6 +32,7 @@ import org.apache.wiki.parser.MarkupParser;
 import org.apache.wiki.references.ReferenceManager;
 import org.apache.wiki.search.SearchManager;
 import org.apache.wiki.util.TextUtil;
+import org.apache.wiki.util.WikiLogger;
 
 import java.util.Collection;
 import java.util.List;
@@ -51,7 +50,7 @@ import java.util.regex.Pattern;
  */
 public class DefaultPageRenamer implements PageRenamer {
 
-    private static final Logger log = LogManager.getLogger( DefaultPageRenamer.class );
+    private static final WikiLogger log = WikiLogger.getLogger( DefaultPageRenamer.class );
     
     private boolean m_camelCase;
     

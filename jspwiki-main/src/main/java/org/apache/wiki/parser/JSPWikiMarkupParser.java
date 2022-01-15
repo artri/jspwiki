@@ -20,8 +20,6 @@ package org.apache.wiki.parser;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.MatchResult;
 import org.apache.oro.text.regex.Pattern;
@@ -29,12 +27,12 @@ import org.apache.oro.text.regex.PatternCompiler;
 import org.apache.oro.text.regex.PatternMatcher;
 import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
-import org.apache.wiki.InternalWikiException;
 import org.apache.wiki.StringTransmutator;
 import org.apache.wiki.api.core.Acl;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.ContextEnum;
 import org.apache.wiki.api.core.Page;
+import org.apache.wiki.api.exceptions.WikiRuntimeException;
 import org.apache.wiki.api.exceptions.PluginException;
 import org.apache.wiki.api.plugin.Plugin;
 import org.apache.wiki.api.spi.Wiki;
@@ -46,6 +44,7 @@ import org.apache.wiki.auth.acl.AclManager;
 import org.apache.wiki.i18n.InternationalizationManager;
 import org.apache.wiki.preferences.Preferences;
 import org.apache.wiki.util.TextUtil;
+import org.apache.wiki.util.WikiLogger;
 import org.apache.wiki.util.XmlUtil;
 import org.apache.wiki.variables.VariableManager;
 import org.jdom2.Attribute;
@@ -93,7 +92,7 @@ public class JSPWikiMarkupParser extends MarkupParser {
     protected static final int              IMAGEWIKILINK = 9;
     protected static final int              ATTACHMENT    = 10;
 
-    private static final Logger log = LogManager.getLogger( JSPWikiMarkupParser.class );
+    private static final WikiLogger log = WikiLogger.getLogger( JSPWikiMarkupParser.class );
 
     private boolean        m_isbold;
     private boolean        m_isitalic;
@@ -178,8 +177,8 @@ public class JSPWikiMarkupParser extends MarkupParser {
             try {
                 m_camelCasePattern = m_compiler.compile( WIKIWORD_REGEX,Perl5Compiler.DEFAULT_MASK|Perl5Compiler.READ_ONLY_MASK );
             } catch( final MalformedPatternException e ) {
-                log.fatal("Internal error: Someone put in a faulty pattern.",e);
-                throw new InternalWikiException("Faulty camelcasepattern in TranslatorReader", e);
+                log.error("Internal error: Someone put in a faulty pattern.",e);
+                throw new WikiRuntimeException("Faulty camelcasepattern in TranslatorReader", e);
             }
             m_engine.setAttribute( CAMELCASE_PATTERN, m_camelCasePattern );
         }
@@ -838,8 +837,8 @@ public class JSPWikiMarkupParser extends MarkupParser {
 
             return XmlUtil.extractTextFromDocument( doc );
         } catch( final IOException e ) {
-            log.fatal("Title parsing not working", e );
-            throw new InternalWikiException( "Xml text extraction not working as expected when cleaning title" + e.getMessage() , e );
+            log.error("Title parsing not working", e );
+            throw new WikiRuntimeException( "Xml text extraction not working as expected when cleaning title" + e.getMessage() , e );
         }
     }
 
@@ -871,7 +870,7 @@ public class JSPWikiMarkupParser extends MarkupParser {
             break;
 
           default:
-            throw new InternalWikiException( "Illegal heading type " + level );
+            throw new WikiRuntimeException( "Illegal heading type " + level );
         }
 
         return el;
@@ -1565,7 +1564,7 @@ public class JSPWikiMarkupParser extends MarkupParser {
         {
             return "ol";
         }
-        throw new InternalWikiException("Parser got faulty list type: "+c);
+        throw new WikiRuntimeException("Parser got faulty list type: "+c);
     }
     /**
      *  Like original handleOrderedList() and handleUnorderedList()

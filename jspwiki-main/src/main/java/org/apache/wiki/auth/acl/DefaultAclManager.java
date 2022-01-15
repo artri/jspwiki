@@ -18,8 +18,6 @@
  */
 package org.apache.wiki.auth.acl;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.api.core.Acl;
 import org.apache.wiki.api.core.AclEntry;
 import org.apache.wiki.api.core.Attachment;
@@ -35,6 +33,7 @@ import org.apache.wiki.auth.permissions.PermissionFactory;
 import org.apache.wiki.pages.PageLock;
 import org.apache.wiki.pages.PageManager;
 import org.apache.wiki.render.RenderingManager;
+import org.apache.wiki.util.WikiLogger;
 import org.apache.wiki.util.comparators.PrincipalComparator;
 
 import java.security.Permission;
@@ -57,7 +56,7 @@ import java.util.regex.Pattern;
  */
 public class DefaultAclManager implements AclManager {
 
-    private static final Logger log = LogManager.getLogger(DefaultAclManager.class);
+    private static final WikiLogger log = WikiLogger.getLogger(DefaultAclManager.class);
 
     private AuthorizationManager m_auth;
     private Engine m_engine;

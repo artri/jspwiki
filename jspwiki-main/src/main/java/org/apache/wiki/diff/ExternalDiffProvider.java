@@ -19,13 +19,12 @@
 
 package org.apache.wiki.diff;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.api.exceptions.NoRequiredPropertyException;
 import org.apache.wiki.util.FileUtil;
 import org.apache.wiki.util.TextUtil;
+import org.apache.wiki.util.WikiLogger;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -40,7 +39,7 @@ import java.util.Properties;
  */
 public class ExternalDiffProvider implements DiffProvider {
 
-    private static final Logger log = LogManager.getLogger(ExternalDiffProvider.class);
+    private static final WikiLogger log = WikiLogger.getLogger(ExternalDiffProvider.class);
 
     /**
      * Determines the command to be used for 'diff'. This program must be able

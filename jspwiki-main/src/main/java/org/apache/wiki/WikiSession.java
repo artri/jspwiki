@@ -19,8 +19,6 @@
 package org.apache.wiki;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.api.core.Session;
 import org.apache.wiki.auth.AuthenticationManager;
@@ -37,6 +35,7 @@ import org.apache.wiki.auth.user.UserProfile;
 import org.apache.wiki.event.WikiEvent;
 import org.apache.wiki.event.WikiSecurityEvent;
 import org.apache.wiki.util.HttpUtil;
+import org.apache.wiki.util.WikiLogger;
 
 import javax.security.auth.Subject;
 import javax.servlet.http.HttpServletRequest;
@@ -60,7 +59,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class WikiSession implements Session {
 
-    private static final Logger log = LogManager.getLogger( WikiSession.class );
+    private static final WikiLogger log = WikiLogger.getLogger( WikiSession.class );
 
     private static final String ALL = "*";
 

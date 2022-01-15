@@ -1,7 +1,5 @@
 package org.apache.wiki.tasks.auth;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.ContextEnum;
 import org.apache.wiki.api.exceptions.WikiException;
@@ -10,6 +8,7 @@ import org.apache.wiki.auth.user.UserProfile;
 import org.apache.wiki.i18n.InternationalizationManager;
 import org.apache.wiki.tasks.TasksManager;
 import org.apache.wiki.util.MailUtil;
+import org.apache.wiki.util.WikiLogger;
 import org.apache.wiki.workflow.Outcome;
 import org.apache.wiki.workflow.Task;
 import org.apache.wiki.workflow.WorkflowManager;
@@ -25,7 +24,7 @@ import java.util.Locale;
 public class SaveUserProfileTask extends Task {
 
     private static final long serialVersionUID = 6994297086560480285L;
-    private static final Logger LOG = LogManager.getLogger( SaveUserProfileTask.class );
+    private static final WikiLogger LOG = WikiLogger.getLogger( SaveUserProfileTask.class );
     private final Locale m_loc;
 
     /**

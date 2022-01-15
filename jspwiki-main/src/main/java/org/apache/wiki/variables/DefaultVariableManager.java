@@ -18,8 +18,6 @@
  */
 package org.apache.wiki.variables;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.api.Release;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.Page;
@@ -33,6 +31,7 @@ import org.apache.wiki.i18n.InternationalizationManager;
 import org.apache.wiki.modules.InternalModule;
 import org.apache.wiki.pages.PageManager;
 import org.apache.wiki.preferences.Preferences;
+import org.apache.wiki.util.WikiLogger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -51,7 +50,7 @@ import java.util.ResourceBundle;
  */
 public class DefaultVariableManager implements VariableManager {
 
-    private static final Logger log = LogManager.getLogger( DefaultVariableManager.class );
+    private static final WikiLogger log = WikiLogger.getLogger( DefaultVariableManager.class );
 
     /**
      *  Contains a list of those properties that shall never be shown. Put names here in lower case.

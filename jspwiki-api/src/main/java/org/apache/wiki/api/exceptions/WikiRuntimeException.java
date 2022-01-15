@@ -16,38 +16,33 @@
     specific language governing permissions and limitations
     under the License.   
  */
-package org.apache.wiki;
+package org.apache.wiki.api.exceptions;
 
 /**
- *  Denotes something really serious going on inside Wiki.
- *  It is a runtime exception so that the API does not need
- *  to be changed, but it's helluva lot better than NullPointerException =).
+ * Denotes something really serious going on inside Wiki. It is a runtime
+ * exception so that the API does not need to be changed, but it's helluva lot
+ * better than NullPointerException =).
  *
- *  @since 1.6.9
+ * @since 1.6.9
  */
-public class InternalWikiException extends RuntimeException
-{
-    private static final long          serialVersionUID = 1L;
+public class WikiRuntimeException extends RuntimeException {
+
+    private static final long serialVersionUID = -8874648535083138069L;
 
     /**
-     *  Create a new InternalWikiException.
+     * Create a new InternalWikiException.
      *
-     *  @param msg The Exception message.
+     * @param msg The Exception message.
      */
-    public InternalWikiException(final String msg )
-    {
-        super( msg );
+    public WikiRuntimeException(final String msg) {
+        super(msg);
     }
 
-	public InternalWikiException(final String message, final Throwable cause)
-	{
-		super(message, cause);
-	}
+    public WikiRuntimeException(final Throwable cause) {
+        super(cause);
+    }
 
-	public InternalWikiException(final Throwable cause)
-	{
-		super(cause);
-	}
-    
-    
+    public WikiRuntimeException(final String message, final Throwable cause) {
+        super(message, cause);
+    }
 }

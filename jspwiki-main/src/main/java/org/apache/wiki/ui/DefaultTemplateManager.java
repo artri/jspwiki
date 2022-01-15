@@ -19,15 +19,14 @@
 package org.apache.wiki.ui;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.wiki.InternalWikiException;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.Engine;
+import org.apache.wiki.api.exceptions.WikiRuntimeException;
 import org.apache.wiki.modules.BaseModuleManager;
 import org.apache.wiki.modules.WikiModuleInfo;
 import org.apache.wiki.preferences.Preferences;
 import org.apache.wiki.preferences.Preferences.TimeFormat;
+import org.apache.wiki.util.WikiLogger;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -55,7 +54,7 @@ import java.util.TreeSet;
  */
 public class DefaultTemplateManager extends BaseModuleManager implements TemplateManager {
 
-    private static final Logger log = LogManager.getLogger( DefaultTemplateManager.class );
+    private static final WikiLogger log = WikiLogger.getLogger( DefaultTemplateManager.class );
 
     /**
      *  Creates a new TemplateManager.  There is typically one manager per engine.
@@ -165,9 +164,9 @@ public class DefaultTemplateManager extends BaseModuleManager implements Templat
     @Override
     public String findJSP( final PageContext pageContext, final String template, final String name ) {
         if( name == null || template == null ) {
-            log.fatal("findJSP() was asked to find a null template or name (" + template + "," + name + ")." + " JSP page '" +
+            log.error("findJSP() was asked to find a null template or name (" + template + "," + name + ")." + " JSP page '" +
                       ( ( HttpServletRequest )pageContext.getRequest() ).getRequestURI() + "'" );
-            throw new InternalWikiException( "Illegal arguments to findJSP(); please check logs." );
+            throw new WikiRuntimeException( "Illegal arguments to findJSP(); please check logs." );
         }
 
         return findResource( pageContext.getServletContext(), template, name );

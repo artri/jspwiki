@@ -18,8 +18,6 @@
 */
 package org.apache.wiki.plugin;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.ContextEnum;
 import org.apache.wiki.api.core.Engine;
@@ -29,6 +27,7 @@ import org.apache.wiki.api.plugin.Plugin;
 import org.apache.wiki.api.search.SearchResult;
 import org.apache.wiki.render.RenderingManager;
 import org.apache.wiki.search.SearchManager;
+import org.apache.wiki.util.WikiLogger;
 import org.apache.wiki.util.XHTML;
 import org.apache.wiki.util.XhtmlUtil;
 import org.jdom2.Element;
@@ -52,7 +51,7 @@ import java.util.Map;
  */
 public class Search implements Plugin {
 
-    private static final Logger log = LogManager.getLogger(Search.class);
+    private static final WikiLogger log = WikiLogger.getLogger(Search.class);
 
     /** Parameter name for setting the query string.  Value is <tt>{@value}</tt>. */
     public static final String PARAM_QUERY = "query";

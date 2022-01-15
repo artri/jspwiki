@@ -18,8 +18,6 @@
  */
 package org.apache.wiki.attachment;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.api.core.Attachment;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.Engine;
@@ -35,6 +33,7 @@ import org.apache.wiki.references.ReferenceManager;
 import org.apache.wiki.search.SearchManager;
 import org.apache.wiki.util.ClassUtil;
 import org.apache.wiki.util.TextUtil;
+import org.apache.wiki.util.WikiLogger;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -58,7 +57,7 @@ public class DefaultAttachmentManager implements AttachmentManager {
     /** List of attachment types which are forced to be downloaded */
     private String[] m_forceDownloadPatterns;
 
-    private static final Logger LOG = LogManager.getLogger( DefaultAttachmentManager.class );
+    private static final WikiLogger LOG = WikiLogger.getLogger( DefaultAttachmentManager.class );
     private AttachmentProvider m_provider;
     private final Engine m_engine;
     private final CachingManager cachingManager;

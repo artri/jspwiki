@@ -19,8 +19,6 @@
 package org.apache.wiki.util;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,7 +35,7 @@ import java.util.Random;
  */
 public final class TextUtil {
 
-    private static final Logger LOG = LogManager.getLogger( TextUtil.class );
+    private static final WikiLogger LOG = WikiLogger.getLogger( TextUtil.class );
 
     static final String HEX_DIGITS = "0123456789ABCDEF";
 

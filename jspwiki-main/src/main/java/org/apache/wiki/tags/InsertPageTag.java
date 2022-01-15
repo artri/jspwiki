@@ -18,13 +18,12 @@
  */
 package org.apache.wiki.tags;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.api.core.Page;
 import org.apache.wiki.api.exceptions.ProviderException;
 import org.apache.wiki.pages.PageManager;
 import org.apache.wiki.render.RenderingManager;
+import org.apache.wiki.util.WikiLogger;
 
 import javax.servlet.jsp.JspWriter;
 import java.io.IOException;
@@ -53,7 +52,7 @@ import java.io.IOException;
 public class InsertPageTag extends WikiTagBase {
 
     private static final long serialVersionUID = 0L;
-    private static final Logger log = LogManager.getLogger( InsertPageTag.class );
+    private static final WikiLogger log = WikiLogger.getLogger( InsertPageTag.class );
     
     public static final int HTML  = 0;
     public static final int PLAIN = 1;

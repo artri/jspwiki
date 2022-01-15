@@ -18,14 +18,13 @@
  */
 package org.apache.wiki;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.api.core.Command;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.ContextEnum;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.api.core.Page;
 import org.apache.wiki.api.core.Session;
+import org.apache.wiki.api.exceptions.WikiRuntimeException;
 import org.apache.wiki.api.spi.Wiki;
 import org.apache.wiki.auth.AuthorizationManager;
 import org.apache.wiki.auth.NoSuchPrincipalException;
@@ -39,6 +38,7 @@ import org.apache.wiki.ui.Installer;
 import org.apache.wiki.ui.PageCommand;
 import org.apache.wiki.ui.WikiCommand;
 import org.apache.wiki.util.TextUtil;
+import org.apache.wiki.util.WikiLogger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -157,7 +157,7 @@ public class WikiContext implements Context, Command {
     /** User wants to view or administer workflows. */
     public static final String WORKFLOW = ContextEnum.WIKI_WORKFLOW.getRequestContext();
 
-    private static final Logger log = LogManager.getLogger( WikiContext.class );
+    private static final WikiLogger log = WikiLogger.getLogger( WikiContext.class );
 
     private static final Permission DUMMY_PERMISSION = new PropertyPermission( "os.name", "read" );
 
@@ -251,7 +251,7 @@ public class WikiContext implements Context, Command {
     public WikiContext( final Engine engine, final HttpServletRequest request, final String requestContext ) {
         this( engine, request, engine.getManager( CommandResolver.class ).findCommand( request, requestContext ) );
         if( !engine.isConfigured() ) {
-            throw new InternalWikiException( "Engine has not been properly started.  It is likely that the configuration is faulty.  Please check all logs for the possible reason." );
+            throw new WikiRuntimeException( "Engine has not been properly started.  It is likely that the configuration is faulty.  Please check all logs for the possible reason." );
         }
     }
 

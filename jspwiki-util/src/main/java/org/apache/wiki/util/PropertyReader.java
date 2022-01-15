@@ -20,19 +20,20 @@ package org.apache.wiki.util;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletContext;
-import java.io.*;
-import java.util.*;
-import java.util.stream.Collectors;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
+import java.util.AbstractMap;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-
+import java.util.stream.Collectors;
 
 /**
  * Property Reader for the WikiEngine. Reads the properties for the WikiEngine
@@ -45,7 +46,7 @@ import java.util.Properties;
  */
 public final class PropertyReader {
 	
-	private static final Logger LOG = LogManager.getLogger( PropertyReader.class );
+	private static final WikiLogger LOG = WikiLogger.getLogger( PropertyReader.class );
 	
     /**
      * Path to the base property file, usually overridden by values provided in

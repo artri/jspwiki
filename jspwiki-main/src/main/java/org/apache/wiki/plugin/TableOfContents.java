@@ -18,12 +18,10 @@
  */
 package org.apache.wiki.plugin;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.wiki.InternalWikiException;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.api.core.Page;
+import org.apache.wiki.api.exceptions.WikiRuntimeException;
 import org.apache.wiki.api.exceptions.PluginException;
 import org.apache.wiki.api.plugin.Plugin;
 import org.apache.wiki.filters.FilterManager;
@@ -34,6 +32,7 @@ import org.apache.wiki.parser.MarkupParser;
 import org.apache.wiki.preferences.Preferences;
 import org.apache.wiki.render.RenderingManager;
 import org.apache.wiki.util.TextUtil;
+import org.apache.wiki.util.WikiLogger;
 import org.apache.wiki.variables.VariableManager;
 
 import java.io.IOException;
@@ -54,7 +53,7 @@ import java.util.ResourceBundle;
  */
 public class TableOfContents implements Plugin, HeadingListener {
 
-    private static final Logger log = LogManager.getLogger( TableOfContents.class );
+    private static final WikiLogger log = WikiLogger.getLogger( TableOfContents.class );
 
     /** Parameter name for setting the title. */
     public static final String PARAM_TITLE = "title";
@@ -100,7 +99,7 @@ public class TableOfContents implements Plugin, HeadingListener {
             m_level1Index++;
             break;
           default:
-            throw new InternalWikiException("Unknown depth in toc! (Please submit a bug report.)");
+            throw new WikiRuntimeException("Unknown depth in toc! (Please submit a bug report.)");
         }
 
         if( m_level1Index < m_starting ) {
@@ -136,7 +135,7 @@ public class TableOfContents implements Plugin, HeadingListener {
                 m_buf.append( m_prefix ).append( m_level1Index ).append( " " );
                 break;
             default:
-                throw new InternalWikiException("Unknown depth in toc! (Please submit a bug report.)");
+                throw new WikiRuntimeException("Unknown depth in toc! (Please submit a bug report.)");
             }
         }
         m_buf.append( TextUtil.replaceEntities( hd.m_titleText ) ).append( "</a></li>\n" );

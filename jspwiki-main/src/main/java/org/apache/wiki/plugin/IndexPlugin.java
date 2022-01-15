@@ -20,8 +20,6 @@
 package org.apache.wiki.plugin;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.ContextEnum;
 import org.apache.wiki.api.exceptions.PluginException;
@@ -29,6 +27,7 @@ import org.apache.wiki.api.exceptions.ProviderException;
 import org.apache.wiki.api.plugin.Plugin;
 import org.apache.wiki.pages.PageManager;
 import org.apache.wiki.references.ReferenceManager;
+import org.apache.wiki.util.WikiLogger;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
 import org.jdom2.output.Format;
@@ -59,7 +58,7 @@ import java.util.regex.Pattern;
  */
 public class IndexPlugin extends AbstractReferralPlugin implements Plugin {
 
-    private static final Logger log = LogManager.getLogger(IndexPlugin.class);
+    private static final WikiLogger log = WikiLogger.getLogger(IndexPlugin.class);
 
     private final Namespace xmlns_XHTML = Namespace.getNamespace("http://www.w3.org/1999/xhtml");
     

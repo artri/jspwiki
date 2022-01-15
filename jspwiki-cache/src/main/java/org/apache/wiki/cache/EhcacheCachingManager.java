@@ -21,13 +21,12 @@ package org.apache.wiki.cache;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.api.engine.Initializable;
 import org.apache.wiki.api.exceptions.WikiException;
 import org.apache.wiki.util.CheckedSupplier;
 import org.apache.wiki.util.TextUtil;
+import org.apache.wiki.util.WikiLogger;
 
 import java.io.Serializable;
 import java.net.URL;
@@ -43,7 +42,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class EhcacheCachingManager implements CachingManager, Initializable {
 
-    private static final Logger LOG = LogManager.getLogger( EhcacheCachingManager.class );
+    private static final WikiLogger LOG = WikiLogger.getLogger( EhcacheCachingManager.class );
     private static final int DEFAULT_CACHE_SIZE = 1_000;
     private static final int DEFAULT_CACHE_EXPIRY_PERIOD = 24*60*60;
 

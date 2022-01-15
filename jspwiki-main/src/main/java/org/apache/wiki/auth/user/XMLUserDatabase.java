@@ -20,6 +20,7 @@ package org.apache.wiki.auth.user;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.wiki.api.core.Engine;
+import org.apache.wiki.api.exceptions.WikiRuntimeException;
 import org.apache.wiki.api.exceptions.NoRequiredPropertyException;
 import org.apache.wiki.auth.NoSuchPrincipalException;
 import org.apache.wiki.auth.WikiPrincipal;
@@ -224,7 +225,8 @@ public class XMLUserDatabase extends AbstractUserDatabase {
                 c_dom = factory.newDocumentBuilder().newDocument();
                 c_dom.appendChild( c_dom.createElement( "users" ) );
             } catch( final ParserConfigurationException e ) {
-                log.fatal( "Could not create in-memory DOM" );
+                log.error( "Could not create in-memory DOM" );
+                throw new WikiRuntimeException("Could not create in-memory DOM");
             }
         }
     }
@@ -322,8 +324,8 @@ public class XMLUserDatabase extends AbstractUserDatabase {
     @Override
     public synchronized void rename( final String loginName, final String newName) throws DuplicateUserException, WikiSecurityException {
         if( c_dom == null ) {
-            log.fatal( "Could not rename profile '" + loginName + "'; database does not exist" );
-            throw new IllegalStateException( "FATAL: database does not exist" );
+            log.error( "Could not rename profile '" + loginName + "'; database does not exist" );
+            throw new WikiRuntimeException( "FATAL: database does not exist" );
         }
         checkForRefresh();
 
@@ -363,7 +365,7 @@ public class XMLUserDatabase extends AbstractUserDatabase {
     @Override
     public synchronized void save( final UserProfile profile ) throws WikiSecurityException {
         if ( c_dom == null ) {
-            log.fatal( "Could not save profile " + profile + " database does not exist" );
+            log.error( "Could not save profile " + profile + " database does not exist" );
             throw new IllegalStateException( "FATAL: database does not exist" );
         }
 

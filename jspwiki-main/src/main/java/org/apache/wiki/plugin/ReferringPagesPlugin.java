@@ -18,8 +18,6 @@
  */
 package org.apache.wiki.plugin;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.ContextEnum;
 import org.apache.wiki.api.core.Page;
@@ -29,6 +27,7 @@ import org.apache.wiki.pages.PageManager;
 import org.apache.wiki.preferences.Preferences;
 import org.apache.wiki.references.ReferenceManager;
 import org.apache.wiki.util.TextUtil;
+import org.apache.wiki.util.WikiLogger;
 
 import java.text.MessageFormat;
 import java.util.Collection;
@@ -53,7 +52,7 @@ import java.util.ResourceBundle;
  */
 public class ReferringPagesPlugin extends AbstractReferralPlugin {
 
-    private static final Logger log = LogManager.getLogger( ReferringPagesPlugin.class );
+    private static final WikiLogger log = WikiLogger.getLogger( ReferringPagesPlugin.class );
 
     /** Parameter name for setting the maximum items to show.  Value is <tt>{@value}</tt>. */
     public static final String PARAM_MAX      = "max";

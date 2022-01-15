@@ -18,9 +18,8 @@
  */
 package org.apache.wiki.pages;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.wiki.api.core.Page;
+import org.apache.wiki.util.WikiLogger;
 
 import java.io.Serializable;
 import java.util.Comparator;
@@ -34,7 +33,7 @@ import java.util.Date;
 public class PageTimeComparator implements Comparator< Page >, Serializable {
 	
     private static final long serialVersionUID = 0L;
-    private static final Logger log = LogManager.getLogger( PageTimeComparator.class );
+    private static final WikiLogger log = WikiLogger.getLogger( PageTimeComparator.class );
 
     /**
      *  {@inheritDoc}
