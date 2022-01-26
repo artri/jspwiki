@@ -14,8 +14,8 @@
 package org.apache.wiki.references;
 
 import org.apache.wiki.TestEngine;
+import org.apache.wiki.api.Wiki;
 import org.apache.wiki.api.exceptions.WikiException;
-import org.apache.wiki.api.spi.Wiki;
 import org.apache.wiki.pages.PageManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;

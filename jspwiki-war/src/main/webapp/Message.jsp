@@ -18,14 +18,13 @@
 --%>
 
 <%@ page isErrorPage="true" %>
-<%@ page import="org.apache.logging.log4j.Logger" %>
-<%@ page import="org.apache.logging.log4j.LogManager" %>
 <%@ page import="org.apache.wiki.api.core.*" %>
-<%@ page import="org.apache.wiki.api.spi.Wiki" %>
+<%@ page import="org.apache.wiki.api.Wiki" %>
 <%@ page import="org.apache.wiki.ui.TemplateManager" %>
+<%@ page import="org.apache.wiki.util.WikiLogger" %>
 <%@ taglib uri="http://jspwiki.apache.org/tags" prefix="wiki" %>
 <%! 
-    Logger log = LogManager.getLogger("JSPWiki");
+    WikiLogger log = WikiLogger.getLogger(Wiki.PLATFORM_NAME);
 %>
 <%
     Engine wiki = Wiki.engine().find( getServletConfig() );

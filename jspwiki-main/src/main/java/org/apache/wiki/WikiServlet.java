@@ -18,8 +18,8 @@
  */
 package org.apache.wiki;
 
+import org.apache.wiki.api.Wiki;
 import org.apache.wiki.api.core.Engine;
-import org.apache.wiki.api.spi.Wiki;
 import org.apache.wiki.url.URLConstructor;
 import org.apache.wiki.util.WikiLogger;
 

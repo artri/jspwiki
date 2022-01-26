@@ -20,10 +20,10 @@
 package org.apache.wiki.plugin;
 
 import org.apache.wiki.TestEngine;
+import org.apache.wiki.api.Wiki;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.api.exceptions.ProviderException;
-import org.apache.wiki.api.spi.Wiki;
 import org.apache.wiki.pages.PageManager;
 import org.apache.wiki.render.RenderingManager;
 import org.junit.jupiter.api.AfterEach;

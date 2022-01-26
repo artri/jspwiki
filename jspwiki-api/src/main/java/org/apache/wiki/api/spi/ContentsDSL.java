@@ -27,7 +27,7 @@ public class ContentsDSL {
 
     final ContentsSPI contentsSPI;
 
-    ContentsDSL( final ContentsSPI contentsSPI ) {
+    public ContentsDSL( final ContentsSPI contentsSPI ) {
         this.contentsSPI = contentsSPI;
     }
 

@@ -19,10 +19,10 @@
 package org.apache.wiki.tasks.pages;
 
 import org.apache.wiki.TestEngine;
+import org.apache.wiki.api.Wiki;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.Page;
 import org.apache.wiki.api.search.SearchResult;
-import org.apache.wiki.api.spi.Wiki;
 import org.apache.wiki.search.SearchManager;
 import org.apache.wiki.workflow.Outcome;
 import org.apache.wiki.workflow.WorkflowManager;

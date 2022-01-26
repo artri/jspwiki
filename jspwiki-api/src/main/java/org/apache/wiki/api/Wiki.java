@@ -16,18 +16,48 @@
     specific language governing permissions and limitations
     under the License.
  */
-package org.apache.wiki.api.spi;
+package org.apache.wiki.api;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.wiki.api.spi.AclsDSL;
+import org.apache.wiki.api.spi.AclsSPI;
+import org.apache.wiki.api.spi.ContentsDSL;
+import org.apache.wiki.api.spi.ContentsSPI;
+import org.apache.wiki.api.spi.ContextDSL;
+import org.apache.wiki.api.spi.ContextSPI;
+import org.apache.wiki.api.spi.EngineDSL;
+import org.apache.wiki.api.spi.EngineSPI;
+import org.apache.wiki.api.spi.SessionDSL;
+import org.apache.wiki.api.spi.SessionSPI;
 import org.apache.wiki.util.PropertyReader;
 import org.apache.wiki.util.TextUtil;
+import org.apache.wiki.util.Version;
+import org.apache.wiki.util.WikiLogger;
+import org.apache.wiki.util.Version.VersionFormatException;
 
 import javax.servlet.ServletContext;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.ProviderNotFoundException;
 import java.util.Properties;
 import java.util.ServiceLoader;
 
-
+/**
+ *  Contains release and version information.  You may also invoke this class directly, in which case it prints
+ *  out the version string.  This is a handy way of checking which JSPWiki version you have - just type from a command line:
+ *  <pre>
+ *  % java -cp JSPWiki.jar org.apache.wiki.api.Wiki
+ *
+ */
 public class Wiki {
+    private static final WikiLogger log = WikiLogger.getLogger(Wiki.class);
+    /**
+     *  This is the default platform name.
+     */
+    public static final String PLATFORM_NAME = "JSPWiki";
+    public static final Version PLATFORM_VERSION = Wiki.readVersion();
 
     private static final String PROP_PROVIDER_IMPL_ACLS = "jspwiki.provider.impl.acls";
     private static final String PROP_PROVIDER_IMPL_CONTENTS = "jspwiki.provider.impl.contents";
@@ -114,4 +144,84 @@ public class Wiki {
         throw new ProviderNotFoundException( spi.getName() + " provider not found" );
     }
 
+    /**
+     *  Returns true, if this version of JSPWiki is newer or equal than what is requested.
+     *
+     *  @param version A version parameter string (a.b.c-something).
+     *  @return A boolean value describing whether the given version is newer than the current JSPWiki.
+     *  @since 2.4.57
+     *  @throws IllegalArgumentException If the version string could not be parsed.
+     */
+    public static boolean isNewerOrEqual( final String version ) throws IllegalArgumentException {
+        if(StringUtils.isBlank(version)) {
+            return true;
+        }
+        try {
+            return Wiki.PLATFORM_VERSION.isGreaterThanOrEqualTo(version);
+        } catch (VersionFormatException e) {
+            log.error("Found incorrect version: {}", version);
+        }
+
+        return true;
+    }
+
+    /**
+     *  Returns true, if this version of JSPWiki is older or equal than what is requested.
+     *
+     *  @param version A version parameter string (a.b.c-something)
+     *  @return A boolean value describing whether the given version is older than the current JSPWiki version
+     *  @since 2.4.57
+     *  @throws IllegalArgumentException If the version string could not be parsed.
+     */
+    public static boolean isOlderOrEqual( final String version ) throws IllegalArgumentException {
+        if( StringUtils.isBlank(version) ) {
+            return true;
+        }
+
+        try {
+            return Wiki.PLATFORM_VERSION.isLowerThanOrEqualTo(version);
+        } catch (VersionFormatException e) {
+            log.error("Found incorrect version: {}", version);
+        }
+        return false;
+    }
+
+    protected static Version readVersion() {
+        try {
+            return Version.parseVersion(IOUtils.resourceToString("/version.conf", StandardCharsets.UTF_8));
+        } catch (IOException ioe) {
+            log.error("Failed to read version", ioe);
+        }
+        return Version.ZERO;
+    }
+
+    public static String getPlatformNameString() {
+        return Wiki.PLATFORM_NAME;
+    }
+
+    /**
+     *  This method is useful for templates, because hopefully it will not be inlined, and thus any change to version number does not
+     *  need recompiling the pages.
+     *
+     *  @since 2.1.26.
+     *  @return The version string (e.g. 2.5.23).
+     */
+    public static String getPlatformVersionString() {
+        return Wiki.PLATFORM_VERSION.toString();
+    }
+
+    /**
+     *  Executing this class directly from command line prints out the current version.  It is very useful for
+     *  things like different command line tools.
+     *  <P>Example:
+     *  <PRE>
+     *  % java org.apache.wiki.api.Wiki
+     *  1.9.26-cvs
+     *  </PRE>
+     *
+     *  @param argv The argument string.  This class takes in no arguments.
+     */
+    public static void main(final String[] argv ) {
+        System.out.println(Wiki.PLATFORM_VERSION.toString());
+    }
 }

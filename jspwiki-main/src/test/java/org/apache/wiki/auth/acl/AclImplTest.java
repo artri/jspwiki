@@ -20,10 +20,10 @@ package org.apache.wiki.auth.acl;
 
 import org.apache.wiki.TestEngine;
 import org.apache.wiki.WikiSessionTest;
+import org.apache.wiki.api.Wiki;
 import org.apache.wiki.api.core.Acl;
 import org.apache.wiki.api.core.AclEntry;
 import org.apache.wiki.api.core.Session;
-import org.apache.wiki.api.spi.Wiki;
 import org.apache.wiki.auth.GroupPrincipal;
 import org.apache.wiki.auth.WikiPrincipal;
 import org.apache.wiki.auth.authorize.Group;

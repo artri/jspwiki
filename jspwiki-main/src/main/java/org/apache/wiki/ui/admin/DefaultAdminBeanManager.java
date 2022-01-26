@@ -18,7 +18,7 @@
  */
 package org.apache.wiki.ui.admin;
 
-import org.apache.wiki.api.Release;
+import org.apache.wiki.api.Wiki;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.event.WikiEngineEvent;
 import org.apache.wiki.event.WikiEvent;
@@ -129,7 +129,7 @@ public class DefaultAdminBeanManager implements WikiEventListener, AdminBeanMana
     private ObjectName getObjectName( final AdminBean ab ) throws MalformedObjectNameException {
         final String component = getJMXTitleString( ab.getType() );
         final String title     = ab.getTitle();
-        return new ObjectName( Release.APPNAME + ":component=" + component + ",name=" + title );
+        return new ObjectName(Wiki.PLATFORM_NAME + ":component=" + component + ",name=" + title );
     }
 
     /**

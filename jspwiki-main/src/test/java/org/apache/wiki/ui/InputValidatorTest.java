@@ -23,7 +23,7 @@
 package org.apache.wiki.ui;
 import org.apache.wiki.TestEngine;
 import org.apache.wiki.WikiContext;
-import org.apache.wiki.api.spi.Wiki;
+import org.apache.wiki.api.Wiki;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

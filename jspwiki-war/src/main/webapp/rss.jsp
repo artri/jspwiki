@@ -24,20 +24,19 @@
 <%@ page import="net.sf.ehcache.Cache" %>
 <%@ page import="net.sf.ehcache.Element" %>
 <%@ page import="net.sf.ehcache.CacheManager" %>
-<%@ page import="org.apache.logging.log4j.Logger" %>
-<%@ page import="org.apache.logging.log4j.LogManager" %>
 <%@ page import="org.apache.wiki.WatchDog" %>
 <%@ page import="org.apache.wiki.api.core.*" %>
-<%@ page import="org.apache.wiki.api.spi.Wiki" %>
+<%@ page import="org.apache.wiki.api.Wiki" %>
 <%@ page import="org.apache.wiki.auth.AuthorizationManager" %>
 <%@ page import="org.apache.wiki.plugin.WeblogPlugin" %>
 <%@ page import="org.apache.wiki.pages.PageManager" %>
 <%@ page import="org.apache.wiki.preferences.Preferences" %>
 <%@ page import="org.apache.wiki.rss.*" %>
 <%@ page import="org.apache.wiki.util.*" %>
+<%@ page import="org.apache.wiki.util.WikiLogger" %>
 
 <%!
-    private Logger log = LogManager.getLogger("JSPWiki");
+    WikiLogger log = WikiLogger.getLogger(Wiki.PLATFORM_NAME);
     private CacheManager m_cacheManager = CacheManager.getInstance();
     private String cacheName = "jspwiki.rssCache";
     private Cache m_rssCache;

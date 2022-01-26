@@ -23,9 +23,9 @@
 package org.apache.wiki.rss;
 
 import org.apache.wiki.TestEngine;
+import org.apache.wiki.api.Wiki;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.Page;
-import org.apache.wiki.api.spi.Wiki;
 import org.apache.wiki.pages.PageManager;
 import org.apache.wiki.plugin.WeblogEntryPlugin;
 import org.apache.wiki.plugin.WeblogPlugin;

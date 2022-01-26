@@ -20,10 +20,10 @@
 package org.apache.wiki.xmlrpc;
 
 import org.apache.wiki.TestEngine;
+import org.apache.wiki.api.Wiki;
 import org.apache.wiki.api.core.Attachment;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.Page;
-import org.apache.wiki.api.spi.Wiki;
 import org.apache.wiki.attachment.AttachmentManager;
 import org.apache.wiki.pages.PageManager;
 import org.apache.xmlrpc.XmlRpcException;

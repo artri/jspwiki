@@ -19,10 +19,8 @@
 
 <%@ page import="java.text.*" %>
 <%@ page import="java.util.*" %>
-<%@ page import="org.apache.logging.log4j.Logger" %>
-<%@ page import="org.apache.logging.log4j.LogManager" %>
 <%@ page import="org.apache.wiki.api.core.*" %>
-<%@ page import="org.apache.wiki.api.spi.Wiki" %>
+<%@ page import="org.apache.wiki.api.Wiki" %>
 <%@ page import="org.apache.wiki.api.exceptions.WikiException" %>
 <%@ page import="org.apache.wiki.auth.AuthorizationManager" %>
 <%@ page import="org.apache.wiki.content.PageRenamer" %>
@@ -32,12 +30,13 @@
 <%@ page import="org.apache.wiki.tags.BreadcrumbsTag.FixedQueue" %>
 <%@ page import="org.apache.wiki.ui.TemplateManager" %>
 <%@ page import="org.apache.wiki.util.TextUtil" %>
+<%@ page import="org.apache.wiki.util.WikiLogger" %>
 <%@ page errorPage="/Error.jsp" %>
 <%@ taglib uri="http://jspwiki.apache.org/tags" prefix="wiki" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setBundle basename="CoreResources"/>
 <%!
-    Logger log = LogManager.getLogger("JSPWiki");
+    WikiLogger log = WikiLogger.getLogger(Wiki.PLATFORM_NAME);
 %>
 
 <%

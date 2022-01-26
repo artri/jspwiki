@@ -18,10 +18,8 @@
 --%>
 
 <%@ page import="java.util.*" %>
-<%@ page import="org.apache.logging.log4j.Logger" %>
-<%@ page import="org.apache.logging.log4j.LogManager" %>
 <%@ page import="org.apache.wiki.api.core.*" %>
-<%@ page import="org.apache.wiki.api.spi.Wiki" %>
+<%@ page import="org.apache.wiki.api.Wiki" %>
 <%@ page import="org.apache.wiki.attachment.Attachment" %>
 <%@ page import="org.apache.wiki.auth.AuthorizationManager" %>
 <%@ page import="org.apache.wiki.pages.PageManager" %>
@@ -31,11 +29,12 @@
 <%@ page import="org.apache.wiki.ui.TemplateManager" %>
 <%@ page import="org.apache.wiki.util.HttpUtil" %>
 <%@ page import="org.apache.wiki.util.TextUtil" %>
+<%@ page import="org.apache.wiki.util.WikiLogger" %>
 <%@ page errorPage="/Error.jsp" %>
 <%@ taglib uri="http://jspwiki.apache.org/tags" prefix="wiki" %>
 
 <%!
-    Logger log = LogManager.getLogger("JSPWiki");
+    WikiLogger log = WikiLogger.getLogger(Wiki.PLATFORM_NAME);
 %>
 
 <%

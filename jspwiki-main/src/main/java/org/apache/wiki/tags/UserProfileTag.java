@@ -18,10 +18,10 @@
  */
 package org.apache.wiki.tags;
 
+import org.apache.wiki.api.Wiki;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.api.core.Session;
-import org.apache.wiki.api.spi.Wiki;
 import org.apache.wiki.auth.AuthenticationManager;
 import org.apache.wiki.auth.GroupPrincipal;
 import org.apache.wiki.auth.UserManager;

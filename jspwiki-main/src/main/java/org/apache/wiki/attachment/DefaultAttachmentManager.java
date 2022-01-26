@@ -18,6 +18,7 @@
  */
 package org.apache.wiki.attachment;
 
+import org.apache.wiki.api.Wiki;
 import org.apache.wiki.api.core.Attachment;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.Engine;
@@ -25,7 +26,6 @@ import org.apache.wiki.api.core.Page;
 import org.apache.wiki.api.exceptions.NoRequiredPropertyException;
 import org.apache.wiki.api.exceptions.ProviderException;
 import org.apache.wiki.api.providers.AttachmentProvider;
-import org.apache.wiki.api.spi.Wiki;
 import org.apache.wiki.cache.CachingManager;
 import org.apache.wiki.pages.PageManager;
 import org.apache.wiki.parser.MarkupParser;

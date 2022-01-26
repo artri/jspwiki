@@ -19,7 +19,7 @@
 package org.apache.wiki;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.wiki.api.Release;
+import org.apache.wiki.api.Wiki;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.api.core.Page;
 import org.apache.wiki.api.engine.Initializable;
@@ -227,7 +227,7 @@ public class WikiEngine implements Engine {
             initialize( props );
             log.info( "Root path for this Wiki is: '{}'", m_rootPath );
         } catch( final Exception e ) {
-            final String msg = Release.APPNAME+": Unable to load and setup properties from jspwiki.properties. "+e.getMessage();
+            final String msg = Wiki.PLATFORM_NAME + ": Unable to load and setup properties from jspwiki.properties. " + e.getMessage();
             if ( context != null ) {
                 context.log( msg );
             }
@@ -243,7 +243,7 @@ public class WikiEngine implements Engine {
         m_properties = props;
 
         log.info( "*******************************************" );
-        log.info( "{} {} starting. Whee!", Release.APPNAME, Release.getVersionString() );
+        log.info( "{} {} starting. Whee!", Wiki.PLATFORM_NAME, Wiki.getPlatformVersionString() );
 
         fireEvent( WikiEngineEvent.INITIALIZING ); // begin initialization
 
@@ -267,7 +267,7 @@ public class WikiEngine implements Engine {
 
         if( m_workDir == null ) {
             m_workDir = System.getProperty( "java.io.tmpdir", "." );
-            m_workDir += File.separator + Release.APPNAME + "-" + m_appid;
+            m_workDir += File.separator + Wiki.PLATFORM_NAME + "-" + m_appid;
         }
 
         try {
@@ -599,7 +599,7 @@ public class WikiEngine implements Engine {
     /** {@inheritDoc} */
     @Override
     public String getApplicationName() {
-        final String appName = TextUtil.getStringProperty( m_properties, PROP_APPNAME, Release.APPNAME );
+        final String appName = TextUtil.getStringProperty( m_properties, PROP_APPNAME, Wiki.PLATFORM_NAME );
         return TextUtil.cleanString( appName, TextUtil.PUNCTUATION_CHARS_ALLOWED );
     }
 

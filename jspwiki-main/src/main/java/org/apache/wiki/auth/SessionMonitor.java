@@ -18,9 +18,9 @@
  */
 package org.apache.wiki.auth;
 
+import org.apache.wiki.api.Wiki;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.api.core.Session;
-import org.apache.wiki.api.spi.Wiki;
 import org.apache.wiki.event.WikiEventListener;
 import org.apache.wiki.event.WikiEventManager;
 import org.apache.wiki.event.WikiSecurityEvent;

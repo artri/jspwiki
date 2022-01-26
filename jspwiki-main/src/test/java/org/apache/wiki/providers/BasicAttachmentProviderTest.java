@@ -19,9 +19,9 @@
 package org.apache.wiki.providers;
 
 import org.apache.wiki.TestEngine;
+import org.apache.wiki.api.Wiki;
 import org.apache.wiki.api.core.Attachment;
 import org.apache.wiki.api.exceptions.ProviderException;
-import org.apache.wiki.api.spi.Wiki;
 import org.apache.wiki.util.FileUtil;
 import org.awaitility.Awaitility;
 import org.awaitility.core.ConditionFactory;

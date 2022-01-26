@@ -20,8 +20,8 @@ under the License.
 package org.apache.wiki.plugin;
 
 import org.apache.wiki.TestEngine;
+import org.apache.wiki.api.Wiki;
 import org.apache.wiki.api.core.Context;
-import org.apache.wiki.api.spi.Wiki;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

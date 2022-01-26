@@ -18,7 +18,7 @@
  */
 package org.apache.wiki.rss;
 
-import org.apache.wiki.api.Release;
+import org.apache.wiki.api.Wiki;
 import org.apache.wiki.api.core.Attachment;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.ContextEnum;
@@ -136,7 +136,7 @@ public class RSS20Feed extends Feed
         //  Optional
         //
         channel.addContent( new Element("language").setText(getChannelLanguage()));
-        channel.addContent( new Element("generator").setText("JSPWiki "+Release.VERSTR));
+        channel.addContent( new Element("generator").setText(String.format("%s %s", Wiki.PLATFORM_NAME, Wiki.getPlatformVersionString())));
 
         String mail = engine.getManager( VariableManager.class ).getVariable(m_wikiContext,RSSGenerator.PROP_RSS_AUTHOREMAIL);
         if( mail != null )

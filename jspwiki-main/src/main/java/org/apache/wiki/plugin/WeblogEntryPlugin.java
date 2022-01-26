@@ -18,6 +18,7 @@
  */
 package org.apache.wiki.plugin;
 
+import org.apache.wiki.api.Wiki;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.ContextEnum;
 import org.apache.wiki.api.core.Engine;
@@ -25,7 +26,6 @@ import org.apache.wiki.api.core.Page;
 import org.apache.wiki.api.exceptions.PluginException;
 import org.apache.wiki.api.exceptions.ProviderException;
 import org.apache.wiki.api.plugin.Plugin;
-import org.apache.wiki.api.spi.Wiki;
 import org.apache.wiki.pages.PageLock;
 import org.apache.wiki.pages.PageManager;
 import org.apache.wiki.preferences.Preferences;

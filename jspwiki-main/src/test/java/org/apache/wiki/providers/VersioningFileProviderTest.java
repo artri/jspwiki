@@ -21,10 +21,10 @@ package org.apache.wiki.providers;
 
 import org.apache.wiki.TestEngine;
 import org.apache.wiki.WikiPage;
+import org.apache.wiki.api.Wiki;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.Page;
 import org.apache.wiki.api.providers.PageProvider;
-import org.apache.wiki.api.spi.Wiki;
 import org.apache.wiki.auth.Users;
 import org.apache.wiki.cache.CachingManager;
 import org.apache.wiki.pages.PageManager;

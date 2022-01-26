@@ -17,15 +17,14 @@
     under the License.
 --%>
 
-<%@ page import="org.apache.logging.log4j.Logger" %>
-<%@ page import="org.apache.logging.log4j.LogManager" %>
 <%@ page import="org.apache.commons.httpclient.*" %>
 <%@ page import="org.apache.commons.httpclient.methods.*" %>
 <%@ page import="org.apache.wiki.api.core.*" %>
-<%@ page import="org.apache.wiki.api.spi.Wiki" %>
+<%@ page import="org.apache.wiki.api.Wiki" %>
 <%@ page import="org.apache.wiki.auth.AuthorizationManager" %>
 <%@ page import="org.apache.wiki.preferences.Preferences" %>
 <%@ page import="org.apache.wiki.util.*" %>
+<%@ page import="org.apache.wiki.util.WikiLogger" %>
 <%@ page import="org.apache.wiki.ui.EditorManager" %>
 <%@ page import="org.apache.commons.lang3.time.StopWatch" %>
 <%@ page errorPage="/Error.jsp" %>
@@ -35,7 +34,7 @@
 <fmt:setBundle basename="CoreResources"/>
 
 <%!
-    Logger log = LogManager.getLogger("JSPWiki");
+    WikiLogger log = WikiLogger.getLogger(Wiki.PLATFORM_NAME);
 %>
 <%
     Engine wiki = Wiki.engine().find( getServletConfig() );

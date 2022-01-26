@@ -20,11 +20,11 @@ package org.apache.wiki.pages;
 
 import org.apache.wiki.TestEngine;
 import org.apache.wiki.WikiEngine;
+import org.apache.wiki.api.Wiki;
 import org.apache.wiki.api.core.Attachment;
 import org.apache.wiki.api.core.Page;
 import org.apache.wiki.api.providers.AttachmentProvider;
 import org.apache.wiki.api.providers.WikiProvider;
-import org.apache.wiki.api.spi.Wiki;
 import org.apache.wiki.attachment.AttachmentManager;
 import org.apache.wiki.cache.CachingManager;
 import org.apache.wiki.providers.CachingProvider;

@@ -18,11 +18,11 @@
  */
 package org.apache.wiki.tags;
 
+import org.apache.wiki.api.Wiki;
 import org.apache.wiki.api.core.Command;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.api.search.SearchResult;
-import org.apache.wiki.api.spi.Wiki;
 import org.apache.wiki.ui.PageCommand;
 import org.apache.wiki.util.WikiLogger;
 

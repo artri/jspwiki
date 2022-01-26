@@ -31,7 +31,7 @@ public class SessionDSL {
 
     private final SessionSPI sessionSPI;
 
-    SessionDSL( final SessionSPI sessionSPI ) {
+    public SessionDSL( final SessionSPI sessionSPI ) {
         this.sessionSPI = sessionSPI;
     }
 

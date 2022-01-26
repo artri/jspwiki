@@ -18,7 +18,7 @@
  */
 package org.apache.wiki.modules;
 
-import org.apache.wiki.api.Release;
+import org.apache.wiki.api.Wiki;
 import org.apache.wiki.api.core.Engine;
 
 import java.util.Collection;
@@ -54,7 +54,7 @@ public abstract class BaseModuleManager implements ModuleManager {
         final String minVersion = info.getMinVersion();
         final String maxVersion = info.getMaxVersion();
 
-        return Release.isNewerOrEqual( minVersion ) && Release.isOlderOrEqual( maxVersion );
+        return Wiki.isNewerOrEqual( minVersion ) && Wiki.isOlderOrEqual( maxVersion );
     }
 
     protected < T extends WikiModuleInfo > Collection< WikiModuleInfo > modules( final Iterator< T > iterator ) {

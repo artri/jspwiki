@@ -22,19 +22,20 @@
 <%@ page import="java.text.MessageFormat" %>
 <%@ page import="java.util.*" %>
 <%@ page import="javax.servlet.jsp.jstl.fmt.*" %>
+<%@ page import="org.apache.wiki.api.Wiki" %>
 <%@ page import="org.apache.wiki.api.core.Context" %>
 <%@ page import="org.apache.wiki.auth.*" %>
 <%@ page import="org.apache.wiki.auth.authorize.Group" %>
 <%@ page import="org.apache.wiki.auth.authorize.GroupManager" %>
 <%@ page import="org.apache.wiki.preferences.Preferences" %>
+<%@ page import="org.apache.wiki.util.WikiLogger" %>
 <%@ page import="org.apache.wiki.util.comparators.PrincipalComparator" %>
-<%@ page import="org.apache.logging.log4j.Logger" %>
-<%@ page import="org.apache.logging.log4j.LogManager" %>
 <%@ page errorPage="/Error.jsp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setLocale value="${prefs.Language}" />
 <fmt:setBundle basename="templates.default"/>
 <%!
+  WikiLogger log = WikiLogger.getLogger(Wiki.PLATFORM_NAME);
   String printWikiGroupPutGroup( Group group, String name, boolean cursor, PageContext pageContext)
   {
     Principal[] m = group.members();

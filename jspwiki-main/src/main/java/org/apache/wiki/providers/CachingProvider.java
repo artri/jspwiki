@@ -18,6 +18,7 @@
  */
 package org.apache.wiki.providers;
 
+import org.apache.wiki.api.Wiki;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.api.core.Page;
@@ -26,7 +27,6 @@ import org.apache.wiki.api.exceptions.ProviderException;
 import org.apache.wiki.api.providers.PageProvider;
 import org.apache.wiki.api.search.QueryItem;
 import org.apache.wiki.api.search.SearchResult;
-import org.apache.wiki.api.spi.Wiki;
 import org.apache.wiki.cache.CacheInfo;
 import org.apache.wiki.cache.CachingManager;
 import org.apache.wiki.pages.PageManager;

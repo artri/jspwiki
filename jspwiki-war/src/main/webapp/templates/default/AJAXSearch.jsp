@@ -23,16 +23,15 @@
 <%@ page import="java.util.Collection" %>
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="org.apache.commons.lang3.*" %>
-<%@ page import="org.apache.logging.log4j.Logger" %>
-<%@ page import="org.apache.logging.log4j.LogManager" %>
 <%@ page import="org.apache.wiki.api.core.*" %>
-<%@ page import="org.apache.wiki.api.spi.Wiki" %>
+<%@ page import="org.apache.wiki.api.Wiki" %>
 <%@ page import="org.apache.wiki.api.search.SearchResult" %>
 <%@ page import="org.apache.wiki.auth.*" %>
 <%@ page import="org.apache.wiki.auth.permissions.*" %>
 <%@ page import="org.apache.wiki.preferences.Preferences" %>
 <%@ page import="org.apache.wiki.search.SearchManager" %>
 <%@ page import="org.apache.wiki.ui.*" %>
+<%@ page import="org.apache.wiki.util.WikiLogger" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page import="javax.servlet.jsp.jstl.fmt.*" %>
@@ -43,7 +42,7 @@
   {
     wiki = Wiki.engine().find( getServletConfig() );
   }
-  Logger log = LogManager.getLogger("JSPWikiSearch");
+  WikiLogger log = WikiLogger.getLogger("JSPWikiSearch");
   Engine wiki;
 %>
 <%

@@ -19,11 +19,11 @@
 package org.apache.wiki.xmlrpc;
 
 import org.apache.wiki.LinkCollector;
+import org.apache.wiki.api.Wiki;
 import org.apache.wiki.api.core.Attachment;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.ContextEnum;
 import org.apache.wiki.api.core.Page;
-import org.apache.wiki.api.spi.Wiki;
 import org.apache.wiki.auth.permissions.PagePermission;
 import org.apache.wiki.auth.permissions.PermissionFactory;
 import org.apache.wiki.pages.PageManager;

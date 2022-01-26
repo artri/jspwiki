@@ -18,10 +18,10 @@
  */
 package org.apache.wiki.ui;
 
+import org.apache.wiki.api.Wiki;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.api.core.Session;
 import org.apache.wiki.api.providers.AttachmentProvider;
-import org.apache.wiki.api.spi.Wiki;
 import org.apache.wiki.auth.NoSuchPrincipalException;
 import org.apache.wiki.auth.UserManager;
 import org.apache.wiki.auth.WikiPrincipal;

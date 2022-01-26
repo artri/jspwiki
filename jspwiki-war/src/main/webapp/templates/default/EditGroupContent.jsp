@@ -19,8 +19,6 @@
 
 <%@ page import="java.security.Principal" %>
 <%@ page import="java.util.Arrays" %>
-<%@ page import="org.apache.logging.log4j.Logger" %>
-<%@ page import="org.apache.logging.log4j.LogManager" %>
 <%@ page import="org.apache.wiki.api.core.*" %>
 <%@ page import="org.apache.wiki.auth.authorize.Group" %>
 <%@ page import="org.apache.wiki.util.comparators.PrincipalComparator" %>

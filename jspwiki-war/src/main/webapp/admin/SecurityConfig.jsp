@@ -19,20 +19,19 @@
 
 <%@ taglib uri="http://jspwiki.apache.org/tags" prefix="wiki" %>
 <%@ page import="java.security.Principal" %>
-<%@ page import="org.apache.logging.log4j.Logger" %>
-<%@ page import="org.apache.logging.log4j.LogManager" %>
 <%@ page import="org.apache.wiki.api.core.*" %>
-<%@ page import="org.apache.wiki.api.spi.Wiki" %>
+<%@ page import="org.apache.wiki.api.Wiki" %>
 <%@ page import="org.apache.wiki.auth.*" %>
 <%@ page import="org.apache.wiki.preferences.Preferences" %>
 <%@ page import="org.apache.wiki.util.TextUtil" %>
+<%@ page import="org.apache.wiki.util.WikiLogger" %>
 <%@ page errorPage="/Error.jsp" %>
 <%!
   public void jspInit()
   {
     wiki = Wiki.engine().find( getServletConfig() );
   }
-  Logger log = LogManager.getLogger("JSPWiki");
+  WikiLogger log = WikiLogger.getLogger(Wiki.PLATFORM_NAME);
   Engine wiki;
   SecurityVerifier verifier;
 %>

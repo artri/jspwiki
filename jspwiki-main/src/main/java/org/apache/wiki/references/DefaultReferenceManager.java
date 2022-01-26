@@ -20,6 +20,7 @@ package org.apache.wiki.references;
 
 import org.apache.commons.lang3.time.StopWatch;
 import org.apache.wiki.LinkCollector;
+import org.apache.wiki.api.Wiki;
 import org.apache.wiki.api.core.Attachment;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.Engine;
@@ -29,7 +30,6 @@ import org.apache.wiki.api.exceptions.ProviderException;
 import org.apache.wiki.api.filters.BasePageFilter;
 import org.apache.wiki.api.providers.PageProvider;
 import org.apache.wiki.api.providers.WikiProvider;
-import org.apache.wiki.api.spi.Wiki;
 import org.apache.wiki.attachment.AttachmentManager;
 import org.apache.wiki.event.WikiEvent;
 import org.apache.wiki.event.WikiEventManager;

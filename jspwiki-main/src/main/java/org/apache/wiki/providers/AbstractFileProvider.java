@@ -19,6 +19,7 @@
 package org.apache.wiki.providers;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.wiki.api.Wiki;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.api.core.Page;
 import org.apache.wiki.api.exceptions.NoRequiredPropertyException;
@@ -27,7 +28,6 @@ import org.apache.wiki.api.providers.PageProvider;
 import org.apache.wiki.api.providers.WikiProvider;
 import org.apache.wiki.api.search.QueryItem;
 import org.apache.wiki.api.search.SearchResult;
-import org.apache.wiki.api.spi.Wiki;
 import org.apache.wiki.search.SearchMatcher;
 import org.apache.wiki.search.SearchResultComparator;
 import org.apache.wiki.util.FileUtil;

@@ -21,7 +21,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page import="javax.servlet.jsp.jstl.fmt.*" %>
 <%@ page import="org.apache.wiki.api.core.*" %>
-<%@ page import="org.apache.wiki.api.Release" %>
+<%@ page import="org.apache.wiki.api.Wiki" %>
 <fmt:setLocale value="${prefs.Language}" />
 <fmt:setBundle basename="templates.default"/>
 
@@ -131,7 +131,7 @@
 
   </wiki:CheckRequestContext>
   
-  <div class="wikiversion"><%=Release.APPNAME%> v<%=Release.getVersionString()%>
+  <div class="wikiversion"><%=Wiki.PLATFORM_NAME%> v<%=Wiki.getPlatformVersionString()%>
   <span class="rssfeed">
     <wiki:RSSImageLink title='<%=LocaleSupport.getLocalizedMessage(pageContext,"fav.aggregatewiki.title")%>' />
   </span>

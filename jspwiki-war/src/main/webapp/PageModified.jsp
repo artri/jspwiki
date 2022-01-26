@@ -17,22 +17,21 @@
     under the License.
 --%>
 
-<%@ page import="org.apache.logging.log4j.Logger" %>
-<%@ page import="org.apache.logging.log4j.LogManager" %>
 <%@ page import="org.apache.commons.text.*" %>
 <%@ page import="org.apache.wiki.api.core.*" %>
-<%@ page import="org.apache.wiki.api.spi.Wiki" %>
+<%@ page import="org.apache.wiki.api.Wiki" %>
 <%@ page import="org.apache.wiki.auth.AuthorizationManager" %>
 <%@ page import="org.apache.wiki.pages.PageManager" %>
 <%@ page import="org.apache.wiki.preferences.Preferences" %>
 <%@ page import="org.apache.wiki.ui.EditorManager" %>
 <%@ page import="org.apache.wiki.ui.TemplateManager" %>
 <%@ page import="org.apache.wiki.util.TextUtil" %>
+<%@ page import="org.apache.wiki.util.WikiLogger" %>
 <%@ page errorPage="/Error.jsp" %>
 <%@ taglib uri="http://jspwiki.apache.org/tags" prefix="wiki" %>
 
 <%!
-    Logger log = LogManager.getLogger("JSPWiki");
+    WikiLogger log = WikiLogger.getLogger(Wiki.PLATFORM_NAME);
 %>
 
 <%
@@ -56,7 +55,7 @@
 
     pageContext.setAttribute( "conflicttext", conflicttext, PageContext.REQUEST_SCOPE );
 
-    log.info("Page concurrently modified "+pagereq);
+    log.info("Page concurrently modified {}", pagereq);
     pageContext.setAttribute( "usertext", usertext, PageContext.REQUEST_SCOPE );
 
     // Set the content type and include the response content

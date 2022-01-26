@@ -20,10 +20,10 @@ package org.apache.wiki.search;
 
 import net.sourceforge.stripes.mock.MockHttpServletRequest;
 import org.apache.wiki.TestEngine;
+import org.apache.wiki.api.Wiki;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.ContextEnum;
 import org.apache.wiki.api.search.SearchResult;
-import org.apache.wiki.api.spi.Wiki;
 import org.apache.wiki.pages.PageManager;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.AfterEach;

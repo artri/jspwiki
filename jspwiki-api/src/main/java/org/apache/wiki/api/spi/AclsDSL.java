@@ -26,7 +26,7 @@ public class AclsDSL {
 
     private final AclsSPI aclsSPI;
 
-    AclsDSL( final AclsSPI aclsSPI ) {
+    public AclsDSL( final AclsSPI aclsSPI ) {
         this.aclsSPI = aclsSPI;
     }
 

@@ -19,11 +19,11 @@
 
 package org.apache.wiki;
 
+import org.apache.wiki.api.Wiki;
 import org.apache.wiki.api.core.Attachment;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.Page;
 import org.apache.wiki.api.engine.RenderApi;
-import org.apache.wiki.api.spi.Wiki;
 import org.apache.wiki.attachment.AttachmentManager;
 import org.apache.wiki.cache.CachingManager;
 import org.apache.wiki.content.PageRenamer;

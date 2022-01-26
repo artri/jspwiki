@@ -19,11 +19,11 @@
 package org.apache.wiki.workflow;
 
 import org.apache.wiki.TestEngine;
+import org.apache.wiki.api.Wiki;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.exceptions.FilterException;
 import org.apache.wiki.api.exceptions.WikiException;
 import org.apache.wiki.api.filters.BasePageFilter;
-import org.apache.wiki.api.spi.Wiki;
 import org.apache.wiki.auth.Users;
 import org.apache.wiki.auth.WikiPrincipal;
 import org.apache.wiki.filters.FilterManager;

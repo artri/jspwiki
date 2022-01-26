@@ -20,8 +20,8 @@
 package org.apache.wiki.ajax;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.wiki.api.Wiki;
 import org.apache.wiki.api.core.Engine;
-import org.apache.wiki.api.spi.Wiki;
 import org.apache.wiki.auth.AuthorizationManager;
 import org.apache.wiki.auth.permissions.PagePermission;
 import org.apache.wiki.util.TextUtil;

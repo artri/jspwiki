@@ -19,8 +19,8 @@
 package org.apache.wiki.pages;
 
 import org.apache.wiki.TestEngine;
+import org.apache.wiki.api.Wiki;
 import org.apache.wiki.api.core.Page;
-import org.apache.wiki.api.spi.Wiki;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

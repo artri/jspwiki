@@ -20,10 +20,10 @@ package org.apache.wiki.search;
 
 import org.apache.wiki.WikiEngine;
 import org.apache.wiki.WikiPage;
+import org.apache.wiki.api.Wiki;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.api.core.Page;
 import org.apache.wiki.api.search.QueryItem;
-import org.apache.wiki.api.spi.Wiki;
 
 import java.io.BufferedReader;
 import java.io.IOException;

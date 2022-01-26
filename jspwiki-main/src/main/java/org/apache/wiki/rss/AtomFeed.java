@@ -19,7 +19,7 @@
 package org.apache.wiki.rss;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.apache.wiki.api.Release;
+import org.apache.wiki.api.Wiki;
 import org.apache.wiki.api.core.Attachment;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.ContextEnum;
@@ -146,7 +146,7 @@ public class AtomFeed extends Feed {
         //  Optional
         // root.addContent( getElement("author").addContent(getElement("name").setText(format())))
         root.addContent( getElement( "link" ).setAttribute( "href", engine.getBaseURL() ) );
-        root.addContent( getElement( "generator" ).setText( "JSPWiki " + Release.VERSTR ) );
+        root.addContent( getElement( "generator" ).setText(String.format("%s %s", Wiki.PLATFORM_NAME, Wiki.getPlatformVersionString())));
 
         final String rssFeedURL  = engine.getURL( ContextEnum.PAGE_NONE.getRequestContext(), "rss.jsp",
                                                  "page=" + engine.encodeName( m_wikiContext.getPage().getName() ) +

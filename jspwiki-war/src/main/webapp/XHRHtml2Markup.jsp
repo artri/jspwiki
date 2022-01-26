@@ -18,20 +18,18 @@
 --%>
 
 <%@ page language="java" pageEncoding="UTF-8"%>
-<%@ page import="org.apache.logging.log4j.Logger" %>
-<%@ page import="org.apache.logging.log4j.LogManager" %>
 <%@ page import="org.apache.wiki.api.core.*" %>
-<%@ page import="org.apache.wiki.api.spi.Wiki" %>
+<%@ page import="org.apache.wiki.api.Wiki" %>
 <%@ page import="org.apache.wiki.auth.AuthorizationManager" %>
 <%@ page import="org.apache.wiki.htmltowiki.HtmlStringToWikiTranslator" %>
+<%@ page import="org.apache.wiki.util.WikiLogger" %>
 <%@ taglib uri="http://jspwiki.apache.org/tags" prefix="wiki" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%!
-  public void jspInit()
-  {
+  public void jspInit() {
     wiki = Wiki.engine().find( getServletConfig() );
   }
-  //Logger log = LogManager.getLogger("XHRHtml2Markup");
+  //WikiLogger log = WikiLogger.getLogger("XHRHtml2Markup");
   Engine wiki;
 %>
 <%

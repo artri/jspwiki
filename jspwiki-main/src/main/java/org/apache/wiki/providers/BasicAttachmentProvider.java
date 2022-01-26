@@ -18,6 +18,7 @@
  */
 package org.apache.wiki.providers;
 
+import org.apache.wiki.api.Wiki;
 import org.apache.wiki.api.core.Attachment;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.api.core.Page;
@@ -26,7 +27,6 @@ import org.apache.wiki.api.exceptions.ProviderException;
 import org.apache.wiki.api.providers.AttachmentProvider;
 import org.apache.wiki.api.providers.WikiProvider;
 import org.apache.wiki.api.search.QueryItem;
-import org.apache.wiki.api.spi.Wiki;
 import org.apache.wiki.pages.PageTimeComparator;
 import org.apache.wiki.util.FileUtil;
 import org.apache.wiki.util.TextUtil;

@@ -17,15 +17,13 @@
     under the License.
 --%>
 
-<%@ page import="org.apache.logging.log4j.Logger" %>
-<%@ page import="org.apache.logging.log4j.LogManager" %>
 <%@ page import="java.util.*" %>
 <%@ page import="java.text.MessageFormat" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="org.apache.commons.lang3.StringUtils" %>
 <%@ page import="org.apache.wiki.*" %>
 <%@ page import="org.apache.wiki.api.core.*" %>
-<%@ page import="org.apache.wiki.api.spi.Wiki" %>
+<%@ page import="org.apache.wiki.api.Wiki" %>
 <%@ page import="org.apache.wiki.api.exceptions.RedirectException" %>
 <%@ page import="org.apache.wiki.auth.AuthorizationManager" %>
 <%@ page import="org.apache.wiki.auth.login.CookieAssertionLoginModule" %>
@@ -39,6 +37,7 @@
 <%@ page import="org.apache.wiki.ui.TemplateManager" %>
 <%@ page import="org.apache.wiki.util.HttpUtil" %>
 <%@ page import="org.apache.wiki.util.TextUtil" %>
+<%@ page import="org.apache.wiki.util.WikiLogger" %>
 <%@ page import="org.apache.wiki.variables.VariableManager" %>
 <%@ page import="org.apache.wiki.workflow.DecisionRequiredException" %>
 <%@ page errorPage="/Error.jsp" %>
@@ -47,19 +46,19 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page import="javax.servlet.jsp.jstl.fmt.*" %>
 <%!
-    Logger log = LogManager.getLogger("JSPWiki");
+    WikiLogger log = WikiLogger.getLogger(Wiki.PLATFORM_NAME);
 
-	String findParam( PageContext ctx, String key ) {
-	    ServletRequest req = ctx.getRequest();
+    String findParam( PageContext ctx, String key ) {
+        ServletRequest req = ctx.getRequest();
 
-	    String val = req.getParameter( key );
+        String val = req.getParameter( key );
 
-	    if( val == null ) {
-	        val = (String)ctx.findAttribute( key );
-	    }
+        if( val == null ) {
+            val = (String)ctx.findAttribute( key );
+        }
 
-	    return val;
-	}
+        return val;
+    }
 %>
 
 <%

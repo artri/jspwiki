@@ -29,7 +29,7 @@ public class EngineDSL {
 
     private final EngineSPI engineSPI;
 
-    EngineDSL( final EngineSPI engineSPI ) {
+    public EngineDSL( final EngineSPI engineSPI ) {
         this.engineSPI = engineSPI;
     }
 

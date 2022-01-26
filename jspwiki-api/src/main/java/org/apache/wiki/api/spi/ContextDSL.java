@@ -30,7 +30,7 @@ public class ContextDSL {
 
     private final ContextSPI contextSPI;
 
-    ContextDSL( final ContextSPI contextSPI ) {
+    public ContextDSL( final ContextSPI contextSPI ) {
         this.contextSPI = contextSPI;
     }
 

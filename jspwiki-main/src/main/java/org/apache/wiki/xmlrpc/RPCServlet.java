@@ -18,10 +18,10 @@
  */
 package org.apache.wiki.xmlrpc;
 
+import org.apache.wiki.api.Wiki;
 import org.apache.wiki.api.core.Context;
 import org.apache.wiki.api.core.ContextEnum;
 import org.apache.wiki.api.core.Engine;
-import org.apache.wiki.api.spi.Wiki;
 import org.apache.wiki.util.ClassUtil;
 import org.apache.wiki.util.WikiLogger;
 import org.apache.xmlrpc.ContextXmlRpcHandler;

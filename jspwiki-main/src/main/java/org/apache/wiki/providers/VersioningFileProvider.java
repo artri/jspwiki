@@ -18,6 +18,7 @@
  */
 package org.apache.wiki.providers;
 
+import org.apache.wiki.api.Wiki;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.api.core.Page;
 import org.apache.wiki.api.exceptions.WikiRuntimeException;
@@ -25,7 +26,6 @@ import org.apache.wiki.api.exceptions.NoRequiredPropertyException;
 import org.apache.wiki.api.exceptions.ProviderException;
 import org.apache.wiki.api.providers.PageProvider;
 import org.apache.wiki.api.providers.WikiProvider;
-import org.apache.wiki.api.spi.Wiki;
 import org.apache.wiki.util.FileUtil;
 import org.apache.wiki.util.WikiLogger;
 

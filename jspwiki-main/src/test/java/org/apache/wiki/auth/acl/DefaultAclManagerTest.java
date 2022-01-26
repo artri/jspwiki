@@ -20,11 +20,11 @@ package org.apache.wiki.auth.acl;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.wiki.TestEngine;
+import org.apache.wiki.api.Wiki;
 import org.apache.wiki.api.core.Acl;
 import org.apache.wiki.api.core.AclEntry;
 import org.apache.wiki.api.core.Page;
 import org.apache.wiki.api.exceptions.ProviderException;
-import org.apache.wiki.api.spi.Wiki;
 import org.apache.wiki.auth.WikiPrincipal;
 import org.apache.wiki.auth.permissions.PermissionFactory;
 import org.apache.wiki.pages.PageManager;

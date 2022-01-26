@@ -18,7 +18,7 @@
 --%>
 
 <%@page import="org.apache.wiki.api.core.Engine" %>
-<%@page import="org.apache.wiki.api.spi.Wiki" %>
+<%@page import="org.apache.wiki.api.Wiki" %>
 <%@page import="org.apache.wiki.auth.AuthenticationManager" %>
 <%@page import="org.apache.wiki.auth.login.CookieAssertionLoginModule" %>
 <%@page import="org.apache.wiki.auth.login.CookieAuthenticationLoginModule"%>

@@ -19,7 +19,7 @@
 
 <%@ taglib uri="http://jspwiki.apache.org/tags" prefix="wiki" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ page import="org.apache.wiki.api.Release" %>
+<%@ page import="org.apache.wiki.api.Wiki" %>
 <%@ page import="org.apache.wiki.api.core.*" %>
 <%@ page import="javax.servlet.jsp.jstl.fmt.*" %>
 <fmt:setLocale value="${prefs.Language}" />
@@ -40,7 +40,7 @@
   <div class="copyright"><wiki:InsertPage page="CopyrightNotice"/></div>
 
   <div class="wikiversion">
-    <%=Release.APPNAME%> v<%=Release.getVersionString()%>
+    <%=Wiki.PLATFORM_NAME%> v<%=Wiki.getPlatformVersionString()%>
   </div>
 
   <div class="rssfeed">

@@ -18,10 +18,10 @@
  */
 package org.apache.wiki.auth;
 
+import org.apache.wiki.api.Wiki;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.api.core.Session;
 import org.apache.wiki.api.exceptions.WikiException;
-import org.apache.wiki.api.spi.Wiki;
 import org.apache.wiki.auth.authorize.WebAuthorizer;
 import org.apache.wiki.auth.authorize.WebContainerAuthorizer;
 import org.apache.wiki.auth.login.AnonymousLoginModule;

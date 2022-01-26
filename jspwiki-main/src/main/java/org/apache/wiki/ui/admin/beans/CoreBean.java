@@ -18,7 +18,7 @@
  */
 package org.apache.wiki.ui.admin.beans;
 
-import org.apache.wiki.api.Release;
+import org.apache.wiki.api.Wiki;
 import org.apache.wiki.api.core.Engine;
 import org.apache.wiki.pages.PageManager;
 import org.apache.wiki.ui.admin.SimpleAdminBean;
@@ -52,7 +52,7 @@ public class CoreBean extends SimpleAdminBean {
     }
 
     public String getVersion() {
-        return Release.VERSTR;
+        return Wiki.getPlatformVersionString();
     }
 
     public String getVersionDescription() {

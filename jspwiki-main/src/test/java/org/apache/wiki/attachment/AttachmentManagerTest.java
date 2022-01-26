@@ -15,10 +15,10 @@ package org.apache.wiki.attachment;
 
 import org.apache.wiki.TestEngine;
 import org.apache.wiki.WikiContext;
+import org.apache.wiki.api.Wiki;
 import org.apache.wiki.api.core.Attachment;
 import org.apache.wiki.api.exceptions.ProviderException;
 import org.apache.wiki.api.exceptions.WikiException;
-import org.apache.wiki.api.spi.Wiki;
 import org.apache.wiki.pages.PageManager;
 import org.apache.wiki.util.FileUtil;
 import org.junit.jupiter.api.AfterEach;

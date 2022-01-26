@@ -20,6 +20,7 @@ package org.apache.wiki.pages;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.wiki.WikiBackgroundThread;
+import org.apache.wiki.api.Wiki;
 import org.apache.wiki.api.core.Acl;
 import org.apache.wiki.api.core.AclEntry;
 import org.apache.wiki.api.core.Attachment;
@@ -31,7 +32,6 @@ import org.apache.wiki.api.exceptions.ProviderException;
 import org.apache.wiki.api.exceptions.WikiException;
 import org.apache.wiki.api.providers.PageProvider;
 import org.apache.wiki.api.providers.WikiProvider;
-import org.apache.wiki.api.spi.Wiki;
 import org.apache.wiki.attachment.AttachmentManager;
 import org.apache.wiki.auth.WikiPrincipal;
 import org.apache.wiki.auth.WikiSecurityException;

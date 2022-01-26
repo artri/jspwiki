@@ -18,13 +18,7 @@
  */
 package org.apache.wiki.bootstrap;
 
-//import org.apache.logging.log4j.LogManager;
-//import org.apache.logging.log4j.Logger;
-//import org.apache.logging.log4j.core.LoggerContext;
-//import org.apache.logging.log4j.core.config.Configuration;
-//import org.apache.logging.log4j.core.config.ConfigurationSource;
-//import org.apache.logging.log4j.core.config.properties.PropertiesConfigurationFactory;
-import org.apache.wiki.api.spi.Wiki;
+import org.apache.wiki.api.Wiki;
 import org.apache.wiki.util.TextUtil;
 import org.apache.wiki.util.WikiLogger;
 

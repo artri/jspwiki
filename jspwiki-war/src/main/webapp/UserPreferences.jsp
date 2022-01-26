@@ -17,13 +17,11 @@
     under the License.  
 --%>
 
-<%@ page import="org.apache.logging.log4j.Logger" %>
-<%@ page import="org.apache.logging.log4j.LogManager" %>
 <%@ page import="org.apache.wiki.api.core.Context" %>
 <%@ page import="org.apache.wiki.api.core.ContextEnum" %>
 <%@ page import="org.apache.wiki.api.core.Engine" %>
 <%@ page import="org.apache.wiki.api.core.Session" %>
-<%@ page import="org.apache.wiki.api.spi.Wiki" %>
+<%@ page import="org.apache.wiki.api.Wiki" %>
 <%@ page import="org.apache.wiki.auth.AuthorizationManager" %>
 <%@ page import="org.apache.wiki.auth.UserManager" %>
 <%@ page import="org.apache.wiki.auth.WikiSecurityException" %>
@@ -36,13 +34,14 @@
 <%@ page import="org.apache.wiki.ui.EditorManager" %>
 <%@ page import="org.apache.wiki.ui.TemplateManager" %>
 <%@ page import="org.apache.wiki.util.HttpUtil" %>
+<%@ page import="org.apache.wiki.util.WikiLogger" %>
 <%@ page import="org.apache.wiki.variables.VariableManager" %>
 <%@ page import="org.apache.wiki.workflow.DecisionRequiredException" %>
 <%@ page errorPage="/Error.jsp" %>
 <%@ taglib uri="http://jspwiki.apache.org/tags" prefix="wiki" %>
 
 <%! 
-    Logger log = LogManager.getLogger("JSPWiki");
+    WikiLogger log = WikiLogger.getLogger(Wiki.PLATFORM_NAME);
 %>
 
 <%
@@ -56,10 +55,9 @@
     Session wikiSession = wikiContext.getWikiSession();
 
 /* FIXME: Obsolete
-    if( request.getParameter(EditorManager.PARA_EDITOR) != null )
-    {
-    	String editor = request.getParameter(EditorManager.PARA_EDITOR);
-    	session.setAttribute(EditorManager.PARA_EDITOR,editor);
+    if( request.getParameter(EditorManager.PARA_EDITOR) != null ) {
+        String editor = request.getParameter(EditorManager.PARA_EDITOR);
+        session.setAttribute(EditorManager.PARA_EDITOR,editor);
     }
 */
 
